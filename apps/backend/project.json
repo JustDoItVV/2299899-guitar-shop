@@ -1,21 +1,21 @@
 {
-  "name": "guitar",
+  "name": "backend",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/guitar/src",
+  "sourceRoot": "apps/backend/src",
   "projectType": "application",
   "targets": {
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "guitar:build"
+        "buildTarget": "backend:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "guitar:build:development"
+          "buildTarget": "backend:build:development"
         },
         "production": {
-          "buildTarget": "guitar:build:production"
+          "buildTarget": "backend:build:production"
         }
       }
     }
