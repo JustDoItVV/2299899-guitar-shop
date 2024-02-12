@@ -1,6 +1,6 @@
 import { CliCommand, CliCommandsCollection } from '@guitar-shop/types';
 
-import { CommandParser } from './command-parser.js';
+import { CommandParser } from './command-parser';
 
 export class CliApplication {
   private commands: CliCommandsCollection = {};
