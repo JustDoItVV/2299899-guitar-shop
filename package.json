@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "cli": "npx nx run cli:serve"
+    "cli": "npx nx run cli:serve",
+    "backend": "npx nx serve backend",
+    "frontend": "npx nx serve frontend"
   },
   "private": true,
   "dependencies": {
