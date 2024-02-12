@@ -1,5 +1,5 @@
 {
-  "name": "@2299899-guitar-shop/source",
+  "name": "@guitar-shop/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {},
@@ -9,6 +9,7 @@
     "@nestjs/core": "^10.0.2",
     "@nestjs/platform-express": "^10.0.2",
     "axios": "^1.6.0",
+    "class-transformer": "0.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "reflect-metadata": "^0.1.13",

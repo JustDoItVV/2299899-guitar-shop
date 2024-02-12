@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@2299899-guitar-shop/types": ["libs/types/src/index.ts"]
+      "@guitar-shop/dtos": ["libs/dtos/src/index.ts"],
+      "@guitar-shop/types": ["libs/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
