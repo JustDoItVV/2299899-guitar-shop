@@ -1,7 +1,8 @@
+import { JwtAuthGuard } from '@guitar-shop/core';
 import { CreateUserDto, LoggedUserRdo, LoginUserDto, UserRdo } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { RequestWithTokenPayload } from '@guitar-shop/types';
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 
 import { UserService } from './user.service';
 
@@ -23,6 +24,7 @@ export class UserController {
   }
 
   @Post('check')
+  @UseGuards(JwtAuthGuard)
   public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
     return payload;
   }

@@ -1,4 +1,5 @@
 import { getJwtOptions } from '@guitar-shop/config';
+import { JwtAccessStrategy } from '@guitar-shop/core';
 import { PrismaClientModule } from '@guitar-shop/models';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -21,6 +22,7 @@ import { UserService } from './user.service';
   providers: [
     UserRepository,
     UserService,
+    JwtAccessStrategy,
   ],
 })
 export class UserModule {}
