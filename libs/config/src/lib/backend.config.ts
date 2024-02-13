@@ -6,11 +6,13 @@ import { registerAs } from '@nestjs/config';
 export interface BackendConfig {
   environment: string;
   appPort: number;
+  // uploadDirectory: string;
 }
 
 const validationSchema = Joi.object({
   environment: Joi.string().valid(...Object.values(Environment)).required(),
   appPort: Joi.number().port().required(),
+  // uploadDirectory: Joi.string().required(),
 });
 
 function validateConfig(config: BackendConfig): void {

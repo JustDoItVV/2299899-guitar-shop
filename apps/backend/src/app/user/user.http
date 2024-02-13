@@ -17,8 +17,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA5MjcxLCJleHAiOjE3MDc4MDk1NzF9.xXaayndAf5FkZAAjE9Vq11QQ9-9dp-CtBxZxLMDcJsM
 
 {
-  "email": "admin5@local.local",
-  "password": "123456"
+  "email": "admin@local.local",
+  "password": "admin"
 }
 
 ###

@@ -13,9 +13,6 @@ export class GuitarRdo {
   public description: string;
 
   @Expose()
-  public photo: string;
-
-  @Expose()
   public type: GuitarType;
 
   @Expose()

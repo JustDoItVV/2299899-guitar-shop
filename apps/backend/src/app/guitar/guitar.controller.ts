@@ -1,12 +1,17 @@
-import { JwtAuthGuard } from '@guitar-shop/core';
+import 'multer';
+
+import { AllowedPhotoFormat, GuitarErrorMessage } from '@guitar-shop/consts';
+import { GuitarDataTrasformationPipe, JwtAuthGuard, PhotoValidationPipe } from '@guitar-shop/core';
 import {
     CreateGuitarDto, GuitarPaginationRdo, GuitarQuery, GuitarRdo, UpdateGuitarDto
 } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { RequestWithTokenPayload } from '@guitar-shop/types';
 import {
-    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, UseGuards
+    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req,
+    UploadedFile, UseGuards, UseInterceptors
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { GuitarService } from './guitar.service';
 
@@ -22,9 +27,11 @@ export class GuitarController {
   }
 
   @Post('/')
+  @UseInterceptors(FileInterceptor('file'))
   @UseGuards(JwtAuthGuard)
-  public async create(@Body() dto: CreateGuitarDto, @Req() { user }: RequestWithTokenPayload ) {
-    const newGuitar = await this.guitarService.create(dto, user.id);
+  public async create(@Body(new GuitarDataTrasformationPipe()) dto: CreateGuitarDto, @Req() { user }: RequestWithTokenPayload, @UploadedFile(new PhotoValidationPipe(AllowedPhotoFormat, GuitarErrorMessage.PhotoWrongFormat)) file: Express.Multer.File) {
+    const filePath = await this.guitarService.saveFile(file);
+    const newGuitar = await this.guitarService.create(dto, user.id, filePath);
     return fillDto(GuitarRdo, newGuitar.toPOJO());
   }
 

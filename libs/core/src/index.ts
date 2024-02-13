@@ -10,7 +10,10 @@ export * from './lib/strategies/anonymous.strategy';
 export * from './lib/strategies/jwt-access.strategy';
 
 export * from './lib/pipes/anonymous-validation.pipe';
+export * from './lib/pipes/guitar-data-trasformation.pipe';
+export * from './lib/pipes/photo-validation.pipe';
 
 export * from './lib/exceptions/only-anonymous.exception';
 
 export * from './lib/decorators/user-param.decorator';
+export * from './lib/decorators/transfor-to-int.decorator';

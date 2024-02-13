@@ -1,9 +1,11 @@
+import 'multer';
+
+import { GuitarErrorMessage } from '@guitar-shop/consts';
 import { CreateGuitarDto, GuitarQuery, GuitarRdo, UpdateGuitarDto } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { Pagination } from '@guitar-shop/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { GuitarErrorMessage } from './guitar.const';
 import { GuitarEntity } from './guitar.entity';
 import { GuitarRepository } from './guitar.repository';
 
@@ -20,8 +22,8 @@ export class GuitarService {
     return paginatedResult;
   }
 
-  public async create(dto: CreateGuitarDto, userId: string): Promise<GuitarEntity> {
-    const entity = GuitarEntity.fromDto(dto, userId);
+  public async create(dto: CreateGuitarDto, userId: string, filePath: string): Promise<GuitarEntity> {
+    const entity = GuitarEntity.fromDto(dto, userId, filePath);
     const document = await this.guitarRepository.save(entity);
     entity.id = document.id;
     return entity;
@@ -64,5 +66,10 @@ export class GuitarService {
     } catch {
       throw new NotFoundException(GuitarErrorMessage.NotFound);
     }
+  }
+
+  public async saveFile(file: Express.Multer.File): Promise<string> {
+    console.log(file);
+    return '';
   }
 }

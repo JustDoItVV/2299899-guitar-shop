@@ -1,6 +1,7 @@
 import * as crypto from 'node:crypto';
 
 import { JwtConfig } from '@guitar-shop/config';
+import { UserErrorMessage } from '@guitar-shop/consts';
 import { CreateUserDto } from '@guitar-shop/dtos';
 import { createJWTPayload } from '@guitar-shop/helpers';
 import { Token } from '@guitar-shop/types';
@@ -11,7 +12,6 @@ import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
-import { UserErrorMessage } from './user.const';
 import { UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
 

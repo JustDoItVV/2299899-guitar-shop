@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@guitar-shop/config": ["libs/config/src/index.ts"],
+      "@guitar-shop/consts": ["libs/consts/src/index.ts"],
       "@guitar-shop/core": ["libs/core/src/index.ts"],
       "@guitar-shop/dtos": ["libs/dtos/src/index.ts"],
       "@guitar-shop/helpers": ["libs/helpers/src/index.ts"],

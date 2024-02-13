@@ -51,11 +51,11 @@ export class GuitarEntity implements Guitar, Entity<string, Guitar> {
     return new GuitarEntity().populate(data);
   }
 
-  static fromDto(dto: CreateGuitarDto, userId: string): GuitarEntity {
+  static fromDto(dto: CreateGuitarDto, userId: string, filePath: string): GuitarEntity {
     const entity = new GuitarEntity();
     entity.title = dto.title;
     entity.description = dto.description;
-    entity.photo = dto.photo;
+    entity.photo = filePath;
     entity.type = dto.type;
     entity.vendorCode = dto.vendorCode;
     entity.guitarStrings = dto.guitarStrings;
