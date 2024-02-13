@@ -29,11 +29,11 @@ export class RefreshTokenService {
 
   public async delete(tokenId: string) {
     await this.deleteExpired();
-    return this.refreshTokenRepository.deleteById(tokenId);
+    return this.refreshTokenRepository.deleteByTokenId(tokenId);
   }
 
   public async isExists(tokenId: string): Promise<boolean> {
-    const refreshToken = await this.refreshTokenRepository.findById(tokenId);
+    const refreshToken = await this.refreshTokenRepository.findByTokenId(tokenId);
     return refreshToken !== null;
   }
 

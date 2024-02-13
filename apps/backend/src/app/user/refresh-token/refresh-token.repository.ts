@@ -20,15 +20,16 @@ export class RefreshTokenRepository extends BasePostgresRepository<RefreshTokenE
     return entity;
   }
 
-  public async findById(id: string): Promise<RefreshTokenEntity | null> {
+  public async findByTokenId(tokenId: string): Promise<RefreshTokenEntity | null> {
     const document = await this.client.refreshToken.findFirst({
-      where: { id },
+      where: { tokenId },
     });
     return this.createEntityFromDocument(document);
   }
 
-  public async deleteById(id: string): Promise<void> {
-    await this.client.refreshToken.delete({ where: { id } });
+  public async deleteByTokenId(tokenId: string): Promise<void> {
+    const document = await this.findByTokenId(tokenId);
+    await this.client.refreshToken.delete({ where: { id: document.id } });
   }
 
   public async deleteExpired() {

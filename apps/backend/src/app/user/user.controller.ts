@@ -1,10 +1,13 @@
-import { AnonymousValidationPipe, JwtAuthGuard, UserParam } from '@guitar-shop/core';
+import {
+    AnonymousValidationPipe, JwtAuthGuard, JwtRefreshGuard, UserParam
+} from '@guitar-shop/core';
 import { CreateUserDto, LoggedUserRdo, LoginUserDto, UserRdo } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
-import { RequestWithTokenPayload, TokenPayload } from '@guitar-shop/types';
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { TokenPayload } from '@guitar-shop/types';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -28,7 +31,14 @@ export class UserController {
 
   @Post('check')
   @UseGuards(JwtAuthGuard)
-  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
+  public async checkToken(@UserParam() payload: TokenPayload) {
     return payload;
+  }
+
+  @Post('refresh')
+  @UseGuards(JwtRefreshGuard)
+  public async refreshToken(@UserParam() user: UserEntity) {
+    console.log(user);
+    return this.userService.createUserToken(user);
   }
 }
