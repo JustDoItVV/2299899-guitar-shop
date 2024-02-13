@@ -9,7 +9,7 @@ import { fillDto } from '@guitar-shop/helpers';
 import { RequestWithTokenPayload } from '@guitar-shop/types';
 import {
     Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, Res,
-    UploadedFile, UseGuards, UseInterceptors
+    UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -22,7 +22,7 @@ export class GuitarController {
   constructor(private readonly guitarService: GuitarService) {}
 
   @Get('/')
-  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe( { transform: true, transformOptions: {enableImplicitConversion: true} }))
   public async show(@Query() query: GuitarQuery) {
     const result = await this.guitarService.getByQuery(query);
     return fillDto(GuitarPaginationRdo, result);
@@ -58,7 +58,6 @@ export class GuitarController {
   }
 
   @Get('/:id/photo')
-  @UseGuards(JwtAuthGuard)
   public async getPhoto(@Param('id') id: string, @Res({ passthrough: true }) res: Response) {
     const file = await this.guitarService.getFile(id);
     res.set({

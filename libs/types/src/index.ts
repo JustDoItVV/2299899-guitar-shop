@@ -15,3 +15,5 @@ export * from './lib/request-with-token-payload.interface';
 export * from './lib/guitar-type.enum';
 export * from './lib/guitar.interface';
 export * from './lib/pagination.interface';
+export * from './lib/sort-direction.enum';
+export * from './lib/sort-option.enum';

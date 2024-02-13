@@ -1,7 +1,7 @@
 import { BasePostgresRepository } from '@guitar-shop/core';
 import { GuitarQuery } from '@guitar-shop/dtos';
 import { PrismaClientService } from '@guitar-shop/models';
-import { Guitar, GuitarType, Pagination } from '@guitar-shop/types';
+import { Guitar, GuitarType, Pagination, SortOption } from '@guitar-shop/types';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -36,6 +36,20 @@ export class GuitarRepository extends BasePostgresRepository<GuitarEntity, Guita
     const where: Prisma.GuitarWhereInput = {};
     const orderBy: Prisma.GuitarOrderByWithRelationAndSearchRelevanceInput = {};
 
+    if (query?.type) {
+      where.type = query.type;
+    }
+
+    if (query?.guitarStrings) {
+      where.guitarStrings = query.guitarStrings;
+    }
+
+    if (query.sortOption === SortOption.CreatedAt) {
+      orderBy.createdAt = query.sortDirection;
+    } else if (query.sortOption === SortOption.Price) {
+      orderBy.price = query.sortDirection;
+    }
+
     const [documents, count] = await Promise.all([
       this.client.guitar.findMany({ where, orderBy, skip, take }),
       this.getGuitarCount(where),
@@ -52,7 +66,7 @@ export class GuitarRepository extends BasePostgresRepository<GuitarEntity, Guita
 
   public async findById(id: string): Promise<GuitarEntity | null> {
     const document = await this.client.guitar.findFirst({ where: { id } });
-    return this.createEntityFromDocument({ ...document, type: document.type as GuitarType });
+    return document ? this.createEntityFromDocument({ ...document, type: document.type as GuitarType }) : null;
   }
 
   public async update(id: string, entity: GuitarEntity): Promise<GuitarEntity> {

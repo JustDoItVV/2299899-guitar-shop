@@ -7,7 +7,7 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { BackendConfig } from '@guitar-shop/config';
-import { GuitarErrorMessage } from '@guitar-shop/consts';
+import { GuitarErrorMessage, UPLOAD_SUBDIRECTORY_GUITAR } from '@guitar-shop/consts';
 import { CreateGuitarDto, GuitarQuery, GuitarRdo, UpdateGuitarDto } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { Pagination } from '@guitar-shop/types';
@@ -30,7 +30,7 @@ export class GuitarService {
   private async getUploadPath(filename: string): Promise<string> {
     const uploadDirectory = this.config.uploadDirectory;
     await ensureDir(uploadDirectory);
-    const uploadPath = join(uploadDirectory, 'guitar', filename);
+    const uploadPath = join(uploadDirectory, UPLOAD_SUBDIRECTORY_GUITAR, filename);
     return uploadPath;
   }
 
@@ -52,7 +52,13 @@ export class GuitarService {
   }
 
   public async getById(id: string): Promise<GuitarEntity> {
-    return await this.guitarRepository.findById(id);
+    const document = await this.guitarRepository.findById(id);
+
+    if (!document) {
+      throw new NotFoundException(GuitarErrorMessage.NotFound);
+    }
+
+    return document;
   }
 
   public async update(id: string, dto: UpdateGuitarDto, file: Express.Multer.File | undefined): Promise<GuitarEntity> {
@@ -92,7 +98,7 @@ export class GuitarService {
 
   public async delete(id: string) {
     try {
-      const document = await this.guitarRepository.findById(id);
+      const document = await this.getById(id);
       await this.deleteFile(document.photo);
       await this.guitarRepository.deleteById(id);
     } catch {

@@ -1,3 +1,5 @@
+import { SortDirection as SortDirectionEnum } from '@guitar-shop/types';
+
 export enum TitleLength {
   Min = 10,
   Max = 100,
@@ -51,3 +53,11 @@ export enum GuitarErrorMessage {
   PhotoWrongFormat = `File format not allowed. Allowed formats: ${AllowedPhotoFormat.jpg}, ${AllowedPhotoFormat.png}`,
   PhotoFileNotFound = `Photo file not found`,
 }
+
+export const UPLOAD_SUBDIRECTORY_GUITAR = 'guitar';
+
+export enum DefaultPagination {
+  Limit = 7,
+  Page = 1,
+}
+export const DEFAULT_SORT_DIRECTION = SortDirectionEnum.Asc;
