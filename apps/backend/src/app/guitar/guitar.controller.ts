@@ -27,6 +27,12 @@ export class GuitarController {
     return fillDto(GuitarRdo, newGuitar.toPOJO());
   }
 
+  @Get('/:id')
+  @UseGuards(JwtAuthGuard)
+  public async showById(@Param('id') id: string) {
+    return await this.guitarService.getById(id);
+  }
+
   @Patch('/:id')
   @UseGuards(JwtAuthGuard)
   public async update(@Param('id') id: string, @Body() dto: UpdateGuitarDto) {

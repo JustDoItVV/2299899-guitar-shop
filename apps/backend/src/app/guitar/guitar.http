@@ -20,6 +20,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhL
 
 ###
 
+# Get guitar by id
+GET http://localhost:3001/api/guitars/948ef5ac-9ca2-4f2e-9269-f360b886c243 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA1NDcxLCJleHAiOjE3MDc4MDU3NzF9.Oql7Zl3v42El6jv1hZ4mD0ampK9HLCpYZyVQzK6TiT0
+
+###
+
 # Update guitar by id
 PATCH http://localhost:3001/api/guitars/948ef5ac-9ca2-4f2e-9269-f360b886c243 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA1MTEzLCJleHAiOjE3MDc4MDU0MTN9.1Gxbkh0ja_uPU3nfSs12YbmcTfh5hCNg7tfequLGfAk

@@ -27,6 +27,10 @@ export class GuitarService {
     return entity;
   }
 
+  public async getById(id: string): Promise<GuitarEntity> {
+    return await this.guitarRepository.findById(id);
+  }
+
   public async update(id: string, dto: UpdateGuitarDto): Promise<GuitarEntity> {
     const document = await this.guitarRepository.findById(id);
 
