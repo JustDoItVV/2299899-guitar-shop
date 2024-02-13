@@ -31,9 +31,8 @@ export class GuitarController {
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
   @UseGuards(JwtAuthGuard)
-  public async create(@Body(new GuitarDataTrasformationPipe()) dto: CreateGuitarDto, @Req() { user }: RequestWithTokenPayload, @UploadedFile(new PhotoValidationPipe(AllowedPhotoFormat, GuitarErrorMessage.PhotoWrongFormat)) file: Express.Multer.File) {
-    const filePath = await this.guitarService.saveFile(file);
-    const newGuitar = await this.guitarService.create(dto, user.id, filePath);
+  public async create(@Req() { user }: RequestWithTokenPayload, @Body(new GuitarDataTrasformationPipe()) dto: CreateGuitarDto, @UploadedFile(new PhotoValidationPipe(AllowedPhotoFormat, GuitarErrorMessage.PhotoWrongFormat)) file: Express.Multer.File) {
+    const newGuitar = await this.guitarService.create(dto, user.id, file);
     return fillDto(GuitarRdo, newGuitar.toPOJO());
   }
 
@@ -44,9 +43,10 @@ export class GuitarController {
   }
 
   @Patch('/:id')
+  @UseInterceptors(FileInterceptor('file'))
   @UseGuards(JwtAuthGuard)
-  public async update(@Param('id') id: string, @Body() dto: UpdateGuitarDto) {
-    const updatedGuitar = await this.guitarService.update(id, dto);
+  public async update(@Param('id') id: string, @Body(new GuitarDataTrasformationPipe()) dto: UpdateGuitarDto, @UploadedFile(new PhotoValidationPipe(AllowedPhotoFormat, GuitarErrorMessage.PhotoWrongFormat)) file: Express.Multer.File) {
+    const updatedGuitar = await this.guitarService.update(id, dto, file);
     return fillDto(GuitarRdo, updatedGuitar.toPOJO());
   }
 

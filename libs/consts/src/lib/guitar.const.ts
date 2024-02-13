@@ -49,4 +49,5 @@ export enum GuitarErrorMessage {
   AlreadyExists = 'User with this email already exists',
   NotFound = 'Guitar with this id not found',
   PhotoWrongFormat = `File format not allowed. Allowed formats: ${AllowedPhotoFormat.jpg}, ${AllowedPhotoFormat.png}`,
+  PhotoFileNotFound = `Photo file not found`,
 }

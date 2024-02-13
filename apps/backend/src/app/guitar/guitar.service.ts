@@ -2,7 +2,7 @@ import 'multer';
 
 import { ensureDir } from 'fs-extra';
 import * as crypto from 'node:crypto';
-import { createReadStream } from 'node:fs';
+import { createReadStream, existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -35,7 +35,8 @@ export class GuitarService {
     return paginatedResult;
   }
 
-  public async create(dto: CreateGuitarDto, userId: string, filePath: string): Promise<GuitarEntity> {
+  public async create(dto: CreateGuitarDto, userId: string, file: Express.Multer.File): Promise<GuitarEntity> {
+    const filePath = await this.saveFile(file);
     const entity = GuitarEntity.fromDto(dto, userId, filePath);
     const document = await this.guitarRepository.save(entity);
     entity.id = document.id;
@@ -46,7 +47,7 @@ export class GuitarService {
     return await this.guitarRepository.findById(id);
   }
 
-  public async update(id: string, dto: UpdateGuitarDto): Promise<GuitarEntity> {
+  public async update(id: string, dto: UpdateGuitarDto, file: Express.Multer.File | undefined): Promise<GuitarEntity> {
     const document = await this.guitarRepository.findById(id);
 
     if (!document) {
@@ -54,6 +55,13 @@ export class GuitarService {
     }
 
     let hasChanges = false;
+
+    if (file) {
+      const filePath = await this.saveFile(file);
+      document.photo = filePath;
+      hasChanges = true;
+    }
+
     for (const [key, value] of Object.entries(dto)) {
       if (value !== undefined && document[key] !== value) {
         document[key] = value;
@@ -82,7 +90,6 @@ export class GuitarService {
   }
 
   public async saveFile(file: Express.Multer.File): Promise<string> {
-    console.log(file);
     if (!file) {
       throw new BadRequestException(GuitarErrorMessage.PhotoFileRequired);
     }
@@ -98,6 +105,11 @@ export class GuitarService {
 
   public async getFile(id: string): Promise<StreamableFile> {
     const document = await this.getById(id);
+
+    if (!existsSync(document.photo)) {
+      throw new NotFoundException(GuitarErrorMessage.PhotoFileNotFound);
+    }
+
     const file = createReadStream(document.photo);
     return new StreamableFile(file);
   }

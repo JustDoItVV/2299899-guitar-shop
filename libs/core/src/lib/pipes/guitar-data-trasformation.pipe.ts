@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
 export class GuitarDataTrasformationPipe implements PipeTransform<Record<string, string>, Record<string, unknown>> {
@@ -6,14 +6,10 @@ export class GuitarDataTrasformationPipe implements PipeTransform<Record<string,
     const guitarStrings = parseInt(value.guitarStrings, 10);
     const price = parseInt(value.price, 10);
 
-    if (!guitarStrings) {
-      throw new BadRequestException('GuitarStrings must be an integer');
-    }
-
-    if (!price) {
-      throw new BadRequestException('Price must be an integer');
-    }
-
-    return { ...value, guitarStrings, price };
+    return {
+      ...value,
+      guitarStrings: guitarStrings ? guitarStrings : value.guitarStrings,
+      price: price ? price : value.price,
+    };
   }
 }

@@ -16,4 +16,4 @@ export * from './lib/pipes/photo-validation.pipe';
 export * from './lib/exceptions/only-anonymous.exception';
 
 export * from './lib/decorators/user-param.decorator';
-export * from './lib/decorators/transfor-to-int.decorator';
+export * from './lib/decorators/transform-to-int.decorator';

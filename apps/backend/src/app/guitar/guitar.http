@@ -50,22 +50,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1L
 ###
 
 # Get guitar photo file
-GET http://localhost:3001/api/guitars/f7614fc4-f790-40bd-9d6f-8e0a14a7de63/photo HTTP/1.1
+GET http://localhost:3001/api/guitars/5f5b4d26-5b86-45bc-890f-5bf2efa041be/photo HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
 
 ###
 
 # Update guitar by id
-PATCH http://localhost:3001/api/guitars/030dc74b-b7d9-40e9-9249-4d01e3bddade HTTP/1.1
+PATCH http://localhost:3001/api/guitars/5f5b4d26-5b86-45bc-890f-5bf2efa041be HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=boundary
 
-{
-  "title": "Updated guitar title 1",
-  "vendorCode": "updated vendor code 1",
-  "guitarStrings": 6,
-  "price": 100
-}
+--boundary
+Content-Disposition: form-data; name="file"; filename="catalog-product-1@2x.png"
+Content-Type: image/png
+
+< ../../../../frontend/public/img/content/catalog-product-1@2x.png
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Updated guitar title 1
+--boundary
+Content-Disposition: form-data; name="price"
+
+300
+--boundary--
 
 ###
 
