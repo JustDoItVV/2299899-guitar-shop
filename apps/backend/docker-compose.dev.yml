@@ -35,6 +35,14 @@ services:
       - guitar_shop_postgres
     networks:
       - guitar_shop
+  
+  guitar_shop_fakesmtp:
+    image: gessnerfl/fake-smtp-server:2.2.0
+    container_name: guitar_shop_fakesmtp
+    hostname: guitar_shop_fakesmtp
+    ports:
+      - ${FAKE_SMTP_SERVER_PORT_1}:8025
+      - ${FAKE_SMTP_SERVER_PORT_2}:8080
 
 volumes:
   guitar_shop_postgres:

@@ -12,6 +12,7 @@ import {
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
+import { MailService } from '../mail/mail.service';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
@@ -25,6 +26,7 @@ export class UserService {
     private readonly refreshTokenService: RefreshTokenService,
     private readonly jwtService: JwtService,
     @Inject(JwtConfig.KEY) private readonly jwtConfig: ConfigType<typeof JwtConfig>,
+    private readonly mailService: MailService,
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -37,7 +39,9 @@ export class UserService {
     }
 
     const entity = await new UserEntity(user).setPassword(password);
-    return this.userRepository.save(entity);
+    const document = await this.userRepository.save(entity);
+    await this.mailService.sendRegisterSuccessMail({ ...dto })
+    return document;
   }
 
   public async createUserToken(user: UserEntity): Promise<Token> {

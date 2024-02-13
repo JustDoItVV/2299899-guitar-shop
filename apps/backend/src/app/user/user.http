@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
   "name": "admin",
-  "email": "admin6@local.local",
+  "email": "admin9@local.local",
   "password": "123456"
 }
 
@@ -25,7 +25,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhL
 
 # Check user token
 POST http://localhost:3001/api/user/check HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4NDY0OTcsImV4cCI6MTcwODE0NjQ5N30._QXcN7TGvqUHzPCmUGVvyNXCh1hNLGc3WGlCK2eSR_s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4NDczMzQsImV4cCI6MTcwODE0NzMzNH0.wD4DZWDPaDmsPH8cqAUZ_0uERALqqAh5CKptdaQIW9w
 
 ###
 

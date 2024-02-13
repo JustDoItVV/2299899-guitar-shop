@@ -2,15 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { ENV_FILE_PATH } from '../const';
-import backendConfig from './backend.config';
-import jwtConfig from './jwt.config';
+import BackendConfig from './backend.config';
+import JwtConfig from './jwt.config';
+import MailConfig from './mail.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [backendConfig, jwtConfig],
+      load: [BackendConfig, JwtConfig, MailConfig],
       envFilePath: ENV_FILE_PATH,
     }),
   ],
