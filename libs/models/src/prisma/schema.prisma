@@ -13,19 +13,20 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  passwordHash String   @map("password_hash")
-  guitars      Guitar[]
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  passwordHash  String         @map("password_hash")
+  guitars       Guitar[]
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model Guitar {
-  id            String   @id @default(uuid()) @map("id")
+  id            String   @id @default(uuid())
   title         String
   description   String
   photo         String
@@ -33,10 +34,21 @@ model Guitar {
   vendorCode    String   @map("vendor_code")
   guitarStrings Int      @map("guitar_strings")
   price         Float
-  user          User     @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String   @map("user_id")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("guitars")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenId   String   @map("token_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  expiresIn DateTime @map("expires_in")
+
+  @@map("refresh_tokens")
 }

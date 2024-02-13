@@ -1,6 +1,7 @@
-import { CreateUserDto, UserRdo } from '@guitar-shop/dtos';
+import { CreateUserDto, LoggedUserRdo, LoginUserDto, UserRdo } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
-import { Body, Controller, Post } from '@nestjs/common';
+import { RequestWithTokenPayload } from '@guitar-shop/types';
+import { Body, Controller, Post, Req } from '@nestjs/common';
 
 import { UserService } from './user.service';
 
@@ -12,5 +13,17 @@ export class UserController {
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.userService.register(dto);
     return fillDto(UserRdo, newUser.toPOJO());
+  }
+
+  @Post('login')
+  public async login(@Body() dto: LoginUserDto) {
+    const user = await this.userService.getUserByEmail(dto.email);
+    const userToken = await this.userService.createUserToken(user);
+    return fillDto(LoggedUserRdo, {  ...user.toPOJO(), ...userToken });
+  }
+
+  @Post('check')
+  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
+    return payload;
   }
 }

@@ -10,3 +10,20 @@ Content-Type: application/json
 }
 
 ###
+
+# Login user by email and password
+POST http://localhost:3001/api/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "admin5@local.local",
+  "password": "123456"
+}
+
+###
+
+# Check user token
+POST http://localhost:3001/api/user/check HTTP/1.1
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWFlYjI3NWI0YjAxMTI2MmRmYTZjYTkiLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6InVzZXIiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTcwNjA5ODU0NCwiZXhwIjoxNzA2NTMwNTQ0fQ.Np48aDQey3fkMpiVbDnTZIkdSaE9ZeSP3pkDOAUZUzY
+
+###
