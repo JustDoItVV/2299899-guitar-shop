@@ -53,4 +53,12 @@ export class GuitarService {
 
     return this.guitarRepository.update(id, document);
   }
+
+  public async delete(id: string) {
+    try {
+      await this.guitarRepository.deleteById(id);
+    } catch {
+      throw new NotFoundException(GuitarErrorMessage.NotFound);
+    }
+  }
 }

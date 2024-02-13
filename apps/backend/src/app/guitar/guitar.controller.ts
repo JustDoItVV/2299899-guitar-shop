@@ -4,7 +4,9 @@ import {
 } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { RequestWithTokenPayload } from '@guitar-shop/types';
-import { Body, Controller, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import {
+    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, UseGuards
+} from '@nestjs/common';
 
 import { GuitarService } from './guitar.service';
 
@@ -30,5 +32,12 @@ export class GuitarController {
   public async update(@Param('id') id: string, @Body() dto: UpdateGuitarDto) {
     const updatedGuitar = await this.guitarService.update(id, dto);
     return fillDto(GuitarRdo, updatedGuitar.toPOJO());
+  }
+
+  @Delete('/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  public async delete(@Param('id') id: string) {
+    await this.guitarService.delete(id);
   }
 }
