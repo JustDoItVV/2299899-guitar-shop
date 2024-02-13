@@ -1,12 +1,13 @@
 # Get all guitars
 GET http://localhost:3001/api/guitars HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA4OTA5LCJleHAiOjE3MDc4MDkyMDl9.zFi-i8EgFs28bIh2UgeVWIFgvWzLfGdyyG4kXcKjJzU
 
 ###
 
 # Create a new guitar
 POST http://localhost:3001/api/guitars HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA1MTEzLCJleHAiOjE3MDc4MDU0MTN9.1Gxbkh0ja_uPU3nfSs12YbmcTfh5hCNg7tfequLGfAk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA4OTA5LCJleHAiOjE3MDc4MDkyMDl9.zFi-i8EgFs28bIh2UgeVWIFgvWzLfGdyyG4kXcKjJzU
 
 {
   "title": "New guitar 1",
@@ -21,14 +22,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhL
 ###
 
 # Get guitar by id
-GET http://localhost:3001/api/guitars/948ef5ac-9ca2-4f2e-9269-f360b886c243 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA1NDcxLCJleHAiOjE3MDc4MDU3NzF9.Oql7Zl3v42El6jv1hZ4mD0ampK9HLCpYZyVQzK6TiT0
+GET http://localhost:3001/api/guitars/030dc74b-b7d9-40e9-9249-4d01e3bddade HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA4OTA5LCJleHAiOjE3MDc4MDkyMDl9.zFi-i8EgFs28bIh2UgeVWIFgvWzLfGdyyG4kXcKjJzU
 
 ###
 
 # Update guitar by id
-PATCH http://localhost:3001/api/guitars/948ef5ac-9ca2-4f2e-9269-f360b886c243 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA1MTEzLCJleHAiOjE3MDc4MDU0MTN9.1Gxbkh0ja_uPU3nfSs12YbmcTfh5hCNg7tfequLGfAk
+PATCH http://localhost:3001/api/guitars/030dc74b-b7d9-40e9-9249-4d01e3bddade HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA4OTA5LCJleHAiOjE3MDc4MDkyMDl9.zFi-i8EgFs28bIh2UgeVWIFgvWzLfGdyyG4kXcKjJzU
 Content-Type: application/json
 
 {
@@ -41,7 +42,7 @@ Content-Type: application/json
 ###
 
 # Delete the post by id
-DELETE http://localhost:3001/api/guitars/5e544a37-846b-4890-af9e-5432e9961c87 HTTP/1.1
+DELETE http://localhost:3001/api/guitars/030dc74b-b7d9-40e9-9249-4d01e3bddade HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA1MTEzLCJleHAiOjE3MDc4MDU0MTN9.1Gxbkh0ja_uPU3nfSs12YbmcTfh5hCNg7tfequLGfAk
 
 ###

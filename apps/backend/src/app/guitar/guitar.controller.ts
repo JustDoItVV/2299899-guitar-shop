@@ -15,6 +15,7 @@ export class GuitarController {
   constructor(private readonly guitarService: GuitarService) {}
 
   @Get('/')
+  @UseGuards(JwtAuthGuard)
   public async show(@Query() query: GuitarQuery) {
     const result = await this.guitarService.getByQuery(query);
     return fillDto(GuitarPaginationRdo, result);

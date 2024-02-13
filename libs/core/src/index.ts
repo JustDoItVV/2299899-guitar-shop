@@ -8,3 +8,9 @@ export * from './lib/repository/repository.interface';
 
 export * from './lib/strategies/anonymous.strategy';
 export * from './lib/strategies/jwt-access.strategy';
+
+export * from './lib/pipes/anonymous-validation.pipe';
+
+export * from './lib/exceptions/only-anonymous.exception';
+
+export * from './lib/decorators/user-param.decorator';
