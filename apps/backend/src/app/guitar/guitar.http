@@ -44,19 +44,19 @@ Content-Disposition: form-data; name="price"
 ###
 
 # Get guitar by id
-GET http://localhost:3001/api/guitars/030dc74b-b7d9-40e9-9249-4d01e3bddade HTTP/1.1
+GET http://localhost:3001/api/guitars/adb78fac-c23c-47f9-974f-6257cfc3423a HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
 
 ###
 
 # Get guitar photo file
-GET http://localhost:3001/api/guitars/5f5b4d26-5b86-45bc-890f-5bf2efa041be/photo HTTP/1.1
+GET http://localhost:3001/api/guitars/adb78fac-c23c-47f9-974f-6257cfc3423a/photo HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
 
 ###
 
 # Update guitar by id
-PATCH http://localhost:3001/api/guitars/5f5b4d26-5b86-45bc-890f-5bf2efa041be HTTP/1.1
+PATCH http://localhost:3001/api/guitars/adb78fac-c23c-47f9-974f-6257cfc3423a HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
 Content-Type: multipart/form-data; boundary=boundary
 
@@ -78,8 +78,8 @@ Content-Disposition: form-data; name="price"
 
 ###
 
-# Delete the post by id
-DELETE http://localhost:3001/api/guitars/030dc74b-b7d9-40e9-9249-4d01e3bddade HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMTJkNGRhLTdjZTctNGY2Ny1iODk0LWFjOTk3NTY1MjdhMiIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW41QGxvY2FsLmxvY2FsIiwiaWF0IjoxNzA3ODA1MTEzLCJleHAiOjE3MDc4MDU0MTN9.1Gxbkh0ja_uPU3nfSs12YbmcTfh5hCNg7tfequLGfAk
+# Delete guitar by id
+DELETE http://localhost:3001/api/guitars/adb78fac-c23c-47f9-974f-6257cfc3423a HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
 
 ###

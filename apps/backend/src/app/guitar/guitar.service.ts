@@ -2,7 +2,7 @@ import 'multer';
 
 import { ensureDir } from 'fs-extra';
 import * as crypto from 'node:crypto';
-import { createReadStream, existsSync } from 'node:fs';
+import { createReadStream, existsSync, unlink } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -12,7 +12,8 @@ import { CreateGuitarDto, GuitarQuery, GuitarRdo, UpdateGuitarDto } from '@guita
 import { fillDto } from '@guitar-shop/helpers';
 import { Pagination } from '@guitar-shop/types';
 import {
-    BadRequestException, Inject, Injectable, NotFoundException, StreamableFile
+    BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException,
+    StreamableFile
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
@@ -26,6 +27,13 @@ export class GuitarService {
     @Inject(BackendConfig.KEY) private readonly config: ConfigType<typeof BackendConfig>,
   ) {}
 
+  private async getUploadPath(filename: string): Promise<string> {
+    const uploadDirectory = this.config.uploadDirectory;
+    await ensureDir(uploadDirectory);
+    const uploadPath = join(uploadDirectory, 'guitar', filename);
+    return uploadPath;
+  }
+
   public async getByQuery(query?: GuitarQuery): Promise<Pagination<GuitarRdo>> {
     const pagination = await this.guitarRepository.find(query);
     const paginatedResult = {
@@ -36,8 +44,8 @@ export class GuitarService {
   }
 
   public async create(dto: CreateGuitarDto, userId: string, file: Express.Multer.File): Promise<GuitarEntity> {
-    const filePath = await this.saveFile(file);
-    const entity = GuitarEntity.fromDto(dto, userId, filePath);
+    const filename = await this.saveFile(file);
+    const entity = GuitarEntity.fromDto(dto, userId, filename);
     const document = await this.guitarRepository.save(entity);
     entity.id = document.id;
     return entity;
@@ -57,8 +65,9 @@ export class GuitarService {
     let hasChanges = false;
 
     if (file) {
-      const filePath = await this.saveFile(file);
-      document.photo = filePath;
+      await this.deleteFile(document.photo);
+      const filename = await this.saveFile(file);
+      document.photo = filename;
       hasChanges = true;
     }
 
@@ -83,6 +92,8 @@ export class GuitarService {
 
   public async delete(id: string) {
     try {
+      const document = await this.guitarRepository.findById(id);
+      await this.deleteFile(document.photo);
       await this.guitarRepository.deleteById(id);
     } catch {
       throw new NotFoundException(GuitarErrorMessage.NotFound);
@@ -94,23 +105,34 @@ export class GuitarService {
       throw new BadRequestException(GuitarErrorMessage.PhotoFileRequired);
     }
 
-    const uploadDirectory = this.config.uploadDirectory;
     const filename = `${crypto.randomUUID()}-${file.originalname}`
-    const uploadPath = join(uploadDirectory, 'guitar', filename);
-    await ensureDir(uploadDirectory);
+    const uploadPath = await this.getUploadPath(filename);
     await writeFile(uploadPath, file.buffer);
 
-    return uploadPath;
+    return filename;
   }
 
   public async getFile(id: string): Promise<StreamableFile> {
     const document = await this.getById(id);
+    const filePath = await this.getUploadPath(document.photo);
 
-    if (!existsSync(document.photo)) {
+    if (!existsSync(filePath)) {
       throw new NotFoundException(GuitarErrorMessage.PhotoFileNotFound);
     }
 
-    const file = createReadStream(document.photo);
+    const file = createReadStream(filePath);
     return new StreamableFile(file);
+  }
+
+  public async deleteFile(filename: string): Promise<void> {
+    const filePath = await this.getUploadPath(filename);
+
+    if (existsSync(filePath)) {
+      unlink(filePath, (error) => {
+        if (error) {
+          throw new InternalServerErrorException(error);
+        }
+      });
+    }
   }
 }

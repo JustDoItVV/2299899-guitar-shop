@@ -16,6 +16,9 @@ export class GuitarRdo {
   public type: GuitarType;
 
   @Expose()
+  public photo: string;
+
+  @Expose()
   public vendorCode: string;
 
   @Expose()
