@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PrismaClientService } from '@guitar-shop/models';
 
 import { DefaultPojoType, Entity, EntityIdType } from './entity.interface';
@@ -17,19 +18,19 @@ export abstract class BasePostgresRepository<EntityType extends Entity<EntityIdT
     return this.createEntity(document);
   }
 
-  public async findById(): Promise<EntityType | null> {
+  public async findById(_id: EntityType['id']): Promise<EntityType | null> {
     throw new Error('Not implemented');
   }
 
-  public async save(): Promise<EntityType> {
+  public async save(_entity: EntityType): Promise<EntityType> {
     throw new Error('Not implemented');
   }
 
-  public async update(): Promise<EntityType> {
+  public async update(_id: EntityType['id'], _entity: EntityType): Promise<EntityType> {
     throw new Error('Not implemented');
   }
 
-  public async deleteById(): Promise<void> {
+  public async deleteById(_id: EntityType['id']): Promise<void> {
     throw new Error('Not implemented');
   }
 }

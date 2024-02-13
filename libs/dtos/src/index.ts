@@ -5,5 +5,6 @@ export * from './lib/dto/update-guitar.dto';
 
 export * from './lib/rdo/guitar-pagination.rdo';
 export * from './lib/rdo/guitar.rdo';
-export * from './lib/rdo/logged-user.rdo';
+export * from './lib/rdo/logged-user.rdo'
 export * from './lib/rdo/token-payload.rdo';
+export * from './lib/rdo/user.rdo';
