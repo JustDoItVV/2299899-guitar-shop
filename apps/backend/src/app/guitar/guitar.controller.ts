@@ -1,8 +1,10 @@
 import { JwtAuthGuard } from '@guitar-shop/core';
-import { CreateGuitarDto, GuitarPaginationRdo, GuitarQuery, GuitarRdo } from '@guitar-shop/dtos';
+import {
+    CreateGuitarDto, GuitarPaginationRdo, GuitarQuery, GuitarRdo, UpdateGuitarDto
+} from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { RequestWithTokenPayload } from '@guitar-shop/types';
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 
 import { GuitarService } from './guitar.service';
 
@@ -21,5 +23,12 @@ export class GuitarController {
   public async create(@Body() dto: CreateGuitarDto, @Req() { user }: RequestWithTokenPayload ) {
     const newGuitar = await this.guitarService.create(dto, user.id);
     return fillDto(GuitarRdo, newGuitar.toPOJO());
+  }
+
+  @Patch('/:id')
+  @UseGuards(JwtAuthGuard)
+  public async update(@Param('id') id: string, @Body() dto: UpdateGuitarDto) {
+    const updatedGuitar = await this.guitarService.update(id, dto);
+    return fillDto(GuitarRdo, updatedGuitar.toPOJO());
   }
 }
