@@ -25,7 +25,7 @@ export class UserEntity implements UserAuth, Entity<string, UserAuth> {
   }
 
   public populate(data: UserAuth): void {
-    this.id = data.id || undefined;
+    this.id = data.id ?? undefined;
     this.name = data.name;
     this.email = data.email;
     this.passwordHash = data.passwordHash;

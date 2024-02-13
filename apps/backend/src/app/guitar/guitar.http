@@ -1,0 +1,4 @@
+# Get all guitars
+GET http://localhost:3001/api/guitars HTTP/1.1
+
+###

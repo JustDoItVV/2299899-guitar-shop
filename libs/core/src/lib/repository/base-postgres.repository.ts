@@ -18,11 +18,11 @@ export abstract class BasePostgresRepository<EntityType extends Entity<EntityIdT
     return this.createEntity(document);
   }
 
-  public async findById(_id: EntityType['id']): Promise<EntityType | null> {
+  public async save(_entity: EntityType): Promise<EntityType> {
     throw new Error('Not implemented');
   }
 
-  public async save(_entity: EntityType): Promise<EntityType> {
+  public async findById(_id: EntityType['id']): Promise<EntityType | null> {
     throw new Error('Not implemented');
   }
 
