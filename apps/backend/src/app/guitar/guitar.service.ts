@@ -1,17 +1,30 @@
 import 'multer';
 
+import { ensureDir } from 'fs-extra';
+import * as crypto from 'node:crypto';
+import { createReadStream } from 'node:fs';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
+import { BackendConfig } from '@guitar-shop/config';
 import { GuitarErrorMessage } from '@guitar-shop/consts';
 import { CreateGuitarDto, GuitarQuery, GuitarRdo, UpdateGuitarDto } from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { Pagination } from '@guitar-shop/types';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+    BadRequestException, Inject, Injectable, NotFoundException, StreamableFile
+} from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 
 import { GuitarEntity } from './guitar.entity';
 import { GuitarRepository } from './guitar.repository';
 
 @Injectable()
 export class GuitarService {
-  constructor(private readonly guitarRepository: GuitarRepository) {}
+  constructor(
+    private readonly guitarRepository: GuitarRepository,
+    @Inject(BackendConfig.KEY) private readonly config: ConfigType<typeof BackendConfig>,
+  ) {}
 
   public async getByQuery(query?: GuitarQuery): Promise<Pagination<GuitarRdo>> {
     const pagination = await this.guitarRepository.find(query);
@@ -70,6 +83,22 @@ export class GuitarService {
 
   public async saveFile(file: Express.Multer.File): Promise<string> {
     console.log(file);
-    return '';
+    if (!file) {
+      throw new BadRequestException(GuitarErrorMessage.PhotoFileRequired);
+    }
+
+    const uploadDirectory = this.config.uploadDirectory;
+    const filename = `${crypto.randomUUID()}-${file.originalname}`
+    const uploadPath = join(uploadDirectory, 'guitar', filename);
+    await ensureDir(uploadDirectory);
+    await writeFile(uploadPath, file.buffer);
+
+    return uploadPath;
+  }
+
+  public async getFile(id: string): Promise<StreamableFile> {
+    const document = await this.getById(id);
+    const file = createReadStream(document.photo);
+    return new StreamableFile(file);
   }
 }

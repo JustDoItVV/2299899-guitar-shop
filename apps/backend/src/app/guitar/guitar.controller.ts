@@ -8,12 +8,14 @@ import {
 import { fillDto } from '@guitar-shop/helpers';
 import { RequestWithTokenPayload } from '@guitar-shop/types';
 import {
-    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req,
+    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, Res,
     UploadedFile, UseGuards, UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { GuitarService } from './guitar.service';
+
+import type { Response } from 'express';
 
 @Controller('guitars')
 export class GuitarController {
@@ -53,5 +55,16 @@ export class GuitarController {
   @UseGuards(JwtAuthGuard)
   public async delete(@Param('id') id: string) {
     await this.guitarService.delete(id);
+  }
+
+  @Get('/:id/photo')
+  @UseGuards(JwtAuthGuard)
+  public async getPhoto(@Param('id') id: string, @Res({ passthrough: true }) res: Response) {
+    const file = await this.guitarService.getFile(id);
+    res.set({
+      'Content-Type': 'application/json',
+      'Content-Disposition': `attachment; filename="${'file'}"`,
+    });
+    return file;
   }
 }

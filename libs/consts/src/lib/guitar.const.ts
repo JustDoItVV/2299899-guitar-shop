@@ -36,6 +36,7 @@ export enum GuitarErrorMessage {
   DescriptionRequired = 'Description required',
   DescriptionMinLength = `Description min length is ${DescriptionLength.Min} symbols`,
   DescriptionMaxLength = `Description max length is ${DescriptionLength.Max} symbols`,
+  PhotoFileRequired = 'Photo file required',
   TypeRequired = 'Type required',
   VendorCodeRequired = 'Vendor code required',
   VendorCodeMinLength = `Vendor code min length is ${VendorCodelength.Min} symbols`,
