@@ -20,4 +20,6 @@ export enum UserErrorMessage {
   PasswordRequired = 'Password required',
   PasswordMinLength = `Password min length is ${PasswordLength.Min} symbols`,
   PasswordMaxLength = `Password max length is ${PasswordLength.Max} symbols`,
+  PasswordWrong = 'Wrong password',
+  NotFound = 'User with this email not found',
 }

@@ -2,11 +2,12 @@ import * as crypto from 'node:crypto';
 
 import { JwtConfig } from '@guitar-shop/config';
 import { UserErrorMessage } from '@guitar-shop/consts';
-import { CreateUserDto } from '@guitar-shop/dtos';
+import { CreateUserDto, LoginUserDto } from '@guitar-shop/dtos';
 import { createJWTPayload } from '@guitar-shop/helpers';
 import { Token } from '@guitar-shop/types';
 import {
-    ConflictException, HttpException, HttpStatus, Inject, Injectable, Logger, NotFoundException
+    ConflictException, HttpException, HttpStatus, Inject, Injectable, Logger, NotFoundException,
+    UnauthorizedException
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -62,9 +63,24 @@ export class UserService {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new NotFoundException(`User with email "${email}" not found`);
+      throw new NotFoundException(UserErrorMessage.NotFound);
     }
 
     return user;
+  }
+
+  public async verifyUser(dto: LoginUserDto) {
+    const { email, password } = dto;
+    const document = await this.userRepository.findByEmail(email);
+
+    if (!document) {
+      throw new NotFoundException(UserErrorMessage.NotFound);
+    }
+
+    if (!await document.comparePassword(password)) {
+      throw new UnauthorizedException(UserErrorMessage.PasswordWrong);
+    }
+
+    return document;
   }
 }

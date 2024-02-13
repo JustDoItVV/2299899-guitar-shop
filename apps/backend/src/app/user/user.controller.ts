@@ -24,7 +24,7 @@ export class UserController {
   @Post('login')
   @UseGuards(AuthGuard(['jwt', 'anonymous']))
   public async login(@UserParam(new AnonymousValidationPipe()) _user: TokenPayload, @Body() dto: LoginUserDto) {
-    const userEntity = await this.userService.getUserByEmail(dto.email);
+    const userEntity = await this.userService.verifyUser(dto);
     const userToken = await this.userService.createUserToken(userEntity);
     return fillDto(LoggedUserRdo, {  ...userEntity.toPOJO(), ...userToken });
   }
