@@ -5,6 +5,8 @@ export class CreateGuitarDto {
 
   public description: string;
 
+  public photo: string;
+
   public type: GuitarType;
 
   public vendorCode: string;

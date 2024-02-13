@@ -1,3 +1,4 @@
+import { JwtAccessStrategy } from '@guitar-shop/core';
 import { PrismaClientModule } from '@guitar-shop/models';
 import { Module } from '@nestjs/common';
 
@@ -15,6 +16,7 @@ import { GuitarService } from './guitar.service';
   providers: [
     GuitarRepository,
     GuitarService,
+    JwtAccessStrategy,
   ],
 })
 export class GuitarModule {}
