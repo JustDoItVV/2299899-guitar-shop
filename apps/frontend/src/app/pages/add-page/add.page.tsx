@@ -1,13 +1,132 @@
+import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { AppRoute } from '@guitar-shop/types';
+import { postGuitarAction, redirectToRoute } from '@guitar-shop/storage';
+import { AppRoute, GuitarType } from '@guitar-shop/types';
 
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
+import { useAppDispatch } from '../../hooks';
 
 export default function AddPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const typeRef = useRef<GuitarType>(GuitarType.Accustic);
+  const guitarStringsRef = useRef<string>('4');
+  const publishDateRef = useRef<string>('');
+  const titleRef = useRef<string>('');
+  const priceRef = useRef<string>('');
+  const vendorCodeRef = useRef<string>('');
+  const descriptionref = useRef<string>('');
+
+  const [imagePreview, setImagePreview] = useState<JSX.Element | null>(null);
+
+  const handleFileInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget.files) {
+      const file = evt.currentTarget.files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(
+        <img
+          className="edit-item-image__image"
+          src={imageUrl}
+          srcSet={`${imageUrl} 2x`}
+          width="133"
+          height="332"
+          alt="Preview"
+        />
+      );
+    } else {
+      setImagePreview(null);
+    }
+  };
+
+  const handleAddFileButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleClearFileButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+      setImagePreview(null);
+    }
+  };
+
+  const handleTypeRadioClick = (evt: MouseEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      typeRef.current = evt.currentTarget.defaultValue as GuitarType;
+    }
+  };
+
+  const handleGuitarStringsRadioClick = (evt: MouseEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      guitarStringsRef.current = evt.currentTarget.defaultValue;
+    }
+  };
+
+  const handlePublishDateInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      publishDateRef.current = evt.currentTarget.value;
+    }
+  };
+
+  const handleTitleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      titleRef.current = evt.currentTarget.value;
+    }
+  };
+
+  const handlePriceInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      priceRef.current = evt.currentTarget.value;
+    }
+  };
+
+  const handleVendorCodeInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      vendorCodeRef.current = evt.currentTarget.value;
+    }
+  };
+
+  const handleDesciptionInputChange = (
+    evt: ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    if (evt.currentTarget) {
+      descriptionref.current = evt.currentTarget.value;
+    }
+  };
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    const formData = new FormData();
+
+    if (fileInputRef.current?.files) {
+      formData.append('file', fileInputRef.current.files[0]);
+    }
+
+    formData.append('type', typeRef.current);
+    formData.append('guitarStrings', guitarStringsRef.current);
+    formData.append('publishDate', publishDateRef.current);
+    formData.append('title', titleRef.current);
+    formData.append('price', priceRef.current);
+    formData.append('vendorCode', vendorCodeRef.current);
+    formData.append('description', descriptionref.current);
+
+    dispatch(postGuitarAction(formData));
+    dispatch(redirectToRoute(AppRoute.Catalog));
+  };
+
+  const handleBackButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    dispatch(redirectToRoute(AppRoute.Catalog));
+  };
+
   return (
     <div>
       <Helmet>
@@ -37,15 +156,36 @@ export default function AddPage(): JSX.Element {
                   </Link>
                 </li>
               </ul>
-              <form className="add-item__form" action="#" method="get">
+              <form
+                className="add-item__form"
+                action="#"
+                method="post"
+                onSubmit={handleFormSubmit}
+              >
                 <div className="add-item__form-left">
                   <div className="edit-item-image add-item__form-image">
-                    <div className="edit-item-image__image-wrap"></div>
+                    <div className="edit-item-image__image-wrap">
+                      {imagePreview}
+                    </div>
                     <div className="edit-item-image__btn-wrap">
-                      <button className="button button--small button--black-border edit-item-image__btn">
+                      <input
+                        ref={fileInputRef}
+                        id="fileInput"
+                        type="file"
+                        name="file"
+                        style={{ display: 'none' }}
+                        onChange={handleFileInputChange}
+                      />
+                      <button
+                        className="button button--small button--black-border edit-item-image__btn"
+                        onClick={handleAddFileButtonClick}
+                      >
                         Добавить
                       </button>
-                      <button className="button button--small button--black-border edit-item-image__btn">
+                      <button
+                        className="button button--small button--black-border edit-item-image__btn"
+                        onClick={handleClearFileButtonClick}
+                      >
                         Удалить
                       </button>
                     </div>
@@ -55,23 +195,26 @@ export default function AddPage(): JSX.Element {
                     <input
                       type="radio"
                       id="guitar"
-                      name="item-type"
-                      defaultValue="guitar"
+                      name="type"
+                      defaultValue={GuitarType.Accustic}
+                      onClick={handleTypeRadioClick}
                       defaultChecked
                     />
                     <label htmlFor="guitar">Акустическая гитара</label>
                     <input
                       type="radio"
                       id="el-guitar"
-                      name="item-type"
-                      defaultValue="el-guitar"
+                      name="type"
+                      defaultValue={GuitarType.Electro}
+                      onClick={handleTypeRadioClick}
                     />
                     <label htmlFor="el-guitar">Электрогитара</label>
                     <input
                       type="radio"
                       id="ukulele"
-                      name="item-type"
-                      defaultValue="ukulele"
+                      name="type"
+                      defaultValue={GuitarType.Ukulele}
+                      onClick={handleTypeRadioClick}
                     />
                     <label htmlFor="ukulele">Укулеле</label>
                   </div>
@@ -80,29 +223,33 @@ export default function AddPage(): JSX.Element {
                     <input
                       type="radio"
                       id="string-qty-4"
-                      name="string-qty"
+                      name="guitarStrings"
                       defaultValue={4}
+                      onClick={handleGuitarStringsRadioClick}
                       defaultChecked
                     />
                     <label htmlFor="string-qty-4">4</label>
                     <input
                       type="radio"
                       id="string-qty-6"
-                      name="string-qty"
+                      name="guitarStrings"
+                      onClick={handleGuitarStringsRadioClick}
                       defaultValue={6}
                     />
                     <label htmlFor="string-qty-6">6</label>
                     <input
                       type="radio"
                       id="string-qty-7"
-                      name="string-qty"
+                      name="guitarStrings"
+                      onClick={handleGuitarStringsRadioClick}
                       defaultValue={7}
                     />
                     <label htmlFor="string-qty-7">7</label>
                     <input
                       type="radio"
                       id="string-qty-12"
-                      name="string-qty"
+                      name="guitarStrings"
+                      onClick={handleGuitarStringsRadioClick}
                       defaultValue={12}
                     />
                     <label htmlFor="string-qty-12">12</label>
@@ -114,9 +261,10 @@ export default function AddPage(): JSX.Element {
                       <span>Дата добавления товара</span>
                       <input
                         type="text"
-                        name="date"
+                        name="publishDate"
                         defaultValue=""
                         placeholder="Дата в формате 00.00.0000"
+                        onChange={handlePublishDateInputChange}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -129,6 +277,7 @@ export default function AddPage(): JSX.Element {
                         name="title"
                         defaultValue=""
                         placeholder="Наименование"
+                        onChange={handleTitleInputChange}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -141,6 +290,7 @@ export default function AddPage(): JSX.Element {
                         name="price"
                         defaultValue=""
                         placeholder="Цена в формате 00 000"
+                        onChange={handlePriceInputChange}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -150,9 +300,10 @@ export default function AddPage(): JSX.Element {
                       <span>Введите артикул товара</span>
                       <input
                         type="text"
-                        name="sku"
+                        name="vendorCode"
                         defaultValue=""
                         placeholder="Артикул товара"
+                        onChange={handleVendorCodeInputChange}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -164,6 +315,7 @@ export default function AddPage(): JSX.Element {
                         name="description"
                         placeholder=""
                         defaultValue={''}
+                        onChange={handleDesciptionInputChange}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -179,6 +331,7 @@ export default function AddPage(): JSX.Element {
                   <button
                     className="button button--small add-item__form-button"
                     type="button"
+                    onClick={handleBackButtonClick}
                   >
                     Вернуться к списку товаров
                   </button>

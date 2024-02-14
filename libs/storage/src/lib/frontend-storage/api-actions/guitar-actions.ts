@@ -61,3 +61,14 @@ export const fetchGuitarAction = createAsyncThunk<
   data.photoUrl = photoUrl;
   return data;
 });
+
+export const postGuitarAction = createAsyncThunk<
+  GuitarWithPhoto,
+  FormData,
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('guitar/postGuitar', async (formData, { extra: api }) => {
+  const { data } = await api.post<GuitarWithPhoto>(ApiRoute.Guitars, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+});
