@@ -1,10 +1,48 @@
+import 'react-tabs/style/react-tabs.css';
+
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link, useParams } from 'react-router-dom';
+import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+
+import {
+  fetchGuitarAction,
+  selectGuitar,
+  selectIsLoading,
+} from '@guitar-shop/storage';
+import { AppRoute } from '@guitar-shop/types';
+
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import LoadingPage from '../loading-page/loading-page';
+import NotFoundPage from '../not-found-page/not-found.page';
 
 export default function GuitarPage(): JSX.Element {
+  const { id = '' } = useParams();
+  const dispatch = useAppDispatch();
+
+  const guitar = useAppSelector(selectGuitar);
+  const isLoading = useAppSelector(selectIsLoading);
+
+  useEffect(() => {
+    dispatch(fetchGuitarAction(id));
+  }, [id, dispatch]);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (!guitar) {
+    return <NotFoundPage />;
+  }
+
   return (
     <div>
+      <Helmet>
+        <title>Товар — Guitar-shop: {guitar.title}</title>
+      </Helmet>
       <SvgIcons />
       <div className="wrapper">
         <Header />
@@ -13,74 +51,84 @@ export default function GuitarPage(): JSX.Element {
             <h1 className="page-content__title title title--bigger">Товар</h1>
             <ul className="breadcrumbs page-content__breadcrumbs">
               <li className="breadcrumbs__item">
-                <a className="link" href="./main.html">
+                <Link className="link" to={AppRoute.Login}>
                   Главная
-                </a>
+                </Link>
               </li>
               <li className="breadcrumbs__item">
-                <a className="link" href="./main.html">
+                <Link className="link" to={AppRoute.Catalog}>
                   Каталог
-                </a>
+                </Link>
               </li>
               <li className="breadcrumbs__item">
-                <a className="link">Товар</a>
+                <Link className="link" to={`.${AppRoute.Catalog}/${id}`}>
+                  Товар
+                </Link>
               </li>
             </ul>
             <div className="product-container">
               <img
                 className="product-container__img"
-                src="img/content/catalog-product-1.png"
-                srcSet="img/content/catalog-product-1@2x.png 2x"
+                src={guitar.photoUrl}
+                srcSet={`${guitar.photoUrl} 2x`}
                 width={90}
                 height={235}
                 alt=""
               />
               <div className="product-container__info-wrapper">
                 <h2 className="product-container__title title title--big title--uppercase">
-                  СURT Z30 Plus
+                  {guitar.title}
                 </h2>
                 <br />
                 <br />
-                <div className="tabs">
-                  <a
-                    className="button button--medium tabs__button"
-                    href="#characteristics"
-                  >
-                    Характеристики
-                  </a>
-                  <a
-                    className="button button--black-border button--medium tabs__button"
-                    href="#description"
-                  >
-                    Описание
-                  </a>
-                  <div className="tabs__content" id="characteristics">
+                <Tabs
+                  id="characteristics"
+                  className="tabs"
+                  disabledTabClassName="button--black-border"
+                  direction="ltr"
+                >
+                  <TabList style={{ margin: 0, padding: 0 }}>
+                    <Tab
+                      className="button button--medium tabs__button"
+                      href="#characteristics"
+                      style={{ display: 'inline-block' }}
+                    >
+                      Характеристики
+                    </Tab>
+                    <Tab
+                      className="button button--medium tabs__button"
+                      href="#description"
+                      style={{ display: 'inline-block' }}
+                    >
+                      Описание
+                    </Tab>
+                  </TabList>
+                  <TabPanel className="tabs__content">
                     <table className="tabs__table">
                       <tbody>
                         <tr className="tabs__table-row">
                           <td className="tabs__title">Артикул:</td>
-                          <td className="tabs__value">SO754565</td>
+                          <td className="tabs__value">{guitar.vendorCode}</td>
                         </tr>
                         <tr className="tabs__table-row">
                           <td className="tabs__title">Тип:</td>
-                          <td className="tabs__value">Электрогитара</td>
+                          <td className="tabs__value">{guitar.type}</td>
                         </tr>
                         <tr className="tabs__table-row">
                           <td className="tabs__title">Количество струн:</td>
-                          <td className="tabs__value">6 струнная</td>
+                          <td className="tabs__value">
+                            {guitar.guitarStrings} струнная
+                          </td>
                         </tr>
                       </tbody>
                     </table>
-                    <p className="tabs__product-description hidden">
-                      Гитара подходит как для старта обучения, так и для
-                      домашних занятий или использования в полевых условиях,
-                      например, в походах или для проведения уличных
-                      выступлений. Доступная стоимость, качество и надежная
-                      конструкция, а также приятный внешний вид, который сделает
-                      вас звездой вечеринки.
+                  </TabPanel>
+                  <TabPanel className="tabs__content">
+                    <p className="tabs__product-description">
+                      {guitar.description}
                     </p>
-                  </div>
-                </div>
+                  </TabPanel>
+                </Tabs>
               </div>
             </div>
           </div>

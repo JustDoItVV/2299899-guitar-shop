@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 import { DATE_FORMAT } from '@guitar-shop/consts';
 import { deleteGuitarAction, fetchGuitarsAction } from '@guitar-shop/storage';
-import { AppRoute, Guitar } from '@guitar-shop/types';
+import { AppRoute, GuitarWithPhoto } from '@guitar-shop/types';
 
 import { useAppDispatch } from '../../hooks';
 
 type GuitarItemProps = {
-  guitar: Guitar & { photoUrl: string };
+  guitar: GuitarWithPhoto;
 };
 
 export default function GuitarItem(props: GuitarItemProps): JSX.Element {

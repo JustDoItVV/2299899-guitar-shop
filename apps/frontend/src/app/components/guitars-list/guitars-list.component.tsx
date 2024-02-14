@@ -1,9 +1,9 @@
-import { Guitar, Pagination } from '@guitar-shop/types';
+import { GuitarWithPhoto, Pagination } from '@guitar-shop/types';
 
 import GuitarItem from '../guitar-item/guitar-item';
 
 type GuitarsListProps = {
-  pagination: Pagination<Guitar & { photoUrl: string }>;
+  pagination: Pagination<GuitarWithPhoto>;
 };
 
 export default function GuitarsList(props: GuitarsListProps): JSX.Element {

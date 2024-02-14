@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import {
   fetchGuitarsAction,
+  redirectToRoute,
   selectGuitars,
   selectIsLoading,
 } from '@guitar-shop/storage';
@@ -29,6 +30,11 @@ export default function CatalogPage(): JSX.Element {
   if (isLoading) {
     return <LoadingPage />;
   }
+
+  const handleAddButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    dispatch(redirectToRoute(AppRoute.Add));
+  };
 
   return (
     <div>
@@ -175,7 +181,10 @@ export default function CatalogPage(): JSX.Element {
                   <GuitarsList pagination={guitars} />
                 </div>
               </div>
-              <button className="button product-list__button button--red button--big">
+              <button
+                className="button product-list__button button--red button--big"
+                onClick={handleAddButtonClick}
+              >
                 Добавить новый товар
               </button>
               <div className="pagination product-list__pagination">

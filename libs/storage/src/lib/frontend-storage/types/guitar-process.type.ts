@@ -1,6 +1,7 @@
-import { Guitar, Pagination } from '@guitar-shop/types';
+import { GuitarWithPhoto, Pagination } from '@guitar-shop/types';
 
 export type GuitarProcess = {
-  guitars: Pagination<Guitar & { photoUrl: string }> | null;
+  guitars: Pagination<GuitarWithPhoto> | null;
+  guitar: GuitarWithPhoto | null;
   isLoading: boolean;
 };

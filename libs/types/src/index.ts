@@ -24,3 +24,4 @@ export * from './lib/name-space.enum';
 export * from './lib/auth-data.type';
 export * from './lib/user-with-token.interface';
 export * from './lib/register-data.type';
+export * from './lib/guitar-with-photo.interface';
