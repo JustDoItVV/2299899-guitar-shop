@@ -20,3 +20,4 @@ export * from './lib/sort-option.enum';
 
 export * from './lib/app-route.enum';
 export * from './lib/auth-status.enum';
+export * from './lib/name-space.enum';

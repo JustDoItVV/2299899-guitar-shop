@@ -25,6 +25,9 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/vite-env.d.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "../../libs/services/src/lib/api.ts",
+    "../../libs/services/src/lib/token.ts",
+    "../../libs/services/src/lib/browser-history.ts"
   ]
 }

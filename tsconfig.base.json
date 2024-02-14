@@ -21,6 +21,8 @@
       "@guitar-shop/dtos": ["libs/dtos/src/index.ts"],
       "@guitar-shop/helpers": ["libs/helpers/src/index.ts"],
       "@guitar-shop/models": ["libs/models/src/index.ts"],
+      "@guitar-shop/services": ["libs/services/src/index.ts"],
+      "@guitar-shop/storage": ["libs/storage/src/index.ts"],
       "@guitar-shop/types": ["libs/types/src/index.ts"]
     }
   },
