@@ -1,7 +1,7 @@
 import { AuthStatus, NameSpace, User } from '@guitar-shop/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { checkAuthAction } from '../api-actions';
+import { checkAuthAction, loginAction } from '../api-actions/user-actions';
 import { UserProcess } from '../types/user-process.type';
 
 const initialState: UserProcess = {
@@ -24,6 +24,14 @@ export const userProcess = createSlice({
         state.user = action.payload;
       })
       .addCase(checkAuthAction.rejected, (state) => {
+        state.authStatus = AuthStatus.NoAuth;
+      })
+      .addCase(loginAction.fulfilled, (state, action) => {
+        state.authStatus = AuthStatus.Auth;
+        console.log(action.payload);
+        state.user = action.payload;
+      })
+      .addCase(loginAction.rejected, (state) => {
         state.authStatus = AuthStatus.NoAuth;
       });
   },

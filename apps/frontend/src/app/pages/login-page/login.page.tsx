@@ -1,8 +1,43 @@
+import { FormEvent, useEffect, useRef } from 'react';
+
+import {
+  loginAction,
+  redirectToRoute,
+  selectAuthStatus,
+} from '@guitar-shop/storage';
+import { AppRoute, AuthStatus } from '@guitar-shop/types';
+
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function LoginPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+
+  const authStatus = useAppSelector(selectAuthStatus);
+
+  useEffect(() => {
+    if (authStatus === AuthStatus.Auth) {
+      dispatch(redirectToRoute(AppRoute.Catalog));
+    }
+  }, [dispatch, authStatus]);
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    if (emailRef.current !== null && passwordRef.current !== null) {
+      dispatch(
+        loginAction({
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        })
+      );
+    }
+  };
+
   return (
     <div>
       <SvgIcons />
@@ -19,10 +54,11 @@ export default function LoginPage(): JSX.Element {
                 </a>{' '}
                 прямо сейчас
               </p>
-              <form method="post" action="/">
+              <form method="post" action="/" onSubmit={handleFormSubmit}>
                 <div className="input-login">
                   <label htmlFor="email">Введите e-mail</label>
                   <input
+                    ref={emailRef}
                     type="email"
                     id="email"
                     name="email"
@@ -35,6 +71,7 @@ export default function LoginPage(): JSX.Element {
                   <label htmlFor="passwordLogin">Введите пароль</label>
                   <span>
                     <input
+                      ref={passwordRef}
                       type="password"
                       placeholder="• • • • • • • • • • • •"
                       id="passwordLogin"

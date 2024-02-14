@@ -1,8 +1,49 @@
+import { FormEvent, useEffect, useRef } from 'react';
+
+import {
+  redirectToRoute,
+  registerAction,
+  selectAuthStatus,
+} from '@guitar-shop/storage';
+import { AppRoute, AuthStatus } from '@guitar-shop/types';
+
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function RegisterPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const authStatus = useAppSelector(selectAuthStatus);
+
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (authStatus === AuthStatus.Auth) {
+      dispatch(redirectToRoute(AppRoute.Catalog));
+    }
+  }, [dispatch, authStatus]);
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    if (
+      nameRef.current !== null &&
+      emailRef.current !== null &&
+      passwordRef.current !== null
+    ) {
+      dispatch(
+        registerAction({
+          name: nameRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        })
+      );
+    }
+  };
+
   return (
     <div>
       <SvgIcons />
@@ -12,10 +53,11 @@ export default function RegisterPage(): JSX.Element {
           <div className="container">
             <section className="login">
               <h1 className="login__title">Регистрация</h1>
-              <form method="post" action="/">
+              <form method="post" action="/" onSubmit={handleFormSubmit}>
                 <div className="input-login">
                   <label htmlFor="name">Введите имя</label>
                   <input
+                    ref={nameRef}
                     type="text"
                     id="name"
                     name="name"
@@ -27,6 +69,7 @@ export default function RegisterPage(): JSX.Element {
                 <div className="input-login">
                   <label htmlFor="email">Введите e-mail</label>
                   <input
+                    ref={emailRef}
                     type="email"
                     id="email"
                     name="email"
@@ -39,6 +82,7 @@ export default function RegisterPage(): JSX.Element {
                   <label htmlFor="password">Придумайте пароль</label>
                   <span>
                     <input
+                      ref={passwordRef}
                       type="password"
                       placeholder="• • • • • • • • • • • •"
                       id="password"

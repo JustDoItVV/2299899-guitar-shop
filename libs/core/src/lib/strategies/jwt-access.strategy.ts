@@ -7,9 +7,7 @@ import { PassportStrategy } from '@nestjs/passport';
 
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private readonly configService: ConfigService,
-  ) {
+  constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -18,6 +16,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy) {
   }
 
   public async validate(payload: TokenPayload) {
+    console.log(payload);
     return payload;
   }
 }

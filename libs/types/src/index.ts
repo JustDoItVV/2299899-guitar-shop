@@ -21,3 +21,6 @@ export * from './lib/sort-option.enum';
 export * from './lib/app-route.enum';
 export * from './lib/auth-status.enum';
 export * from './lib/name-space.enum';
+export * from './lib/auth-data.type';
+export * from './lib/user-with-token.interface';
+export * from './lib/register-data.type';

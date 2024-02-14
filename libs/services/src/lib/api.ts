@@ -1,10 +1,9 @@
 import axios, {
   AxiosError,
   AxiosInstance,
-  AxiosRequestConfig,
   HttpStatusCode,
+  InternalAxiosRequestConfig,
 } from 'axios';
-import { toast } from 'react-toastify';
 
 import { BACKEND_URL, REQUEST_TIMEOUT } from '@guitar-shop/consts';
 
@@ -27,12 +26,13 @@ export const createApiService = (): AxiosInstance => {
     timeout: REQUEST_TIMEOUT,
   });
 
-  api.interceptors.request.use((config: AxiosRequestConfig) => {
+  api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const token = getToken();
 
     if (token && config.headers) {
       config.headers['X-token'] = token;
     }
+    console.log(token);
 
     return config;
   });
@@ -42,7 +42,7 @@ export const createApiService = (): AxiosInstance => {
     (error: AxiosError<DetailMessageType>) => {
       if (error.response && !!StatusCodeMapping[error.response.status]) {
         const detailMessage = error.response.data;
-        toast.warn(detailMessage.message);
+        console.log(detailMessage);
       }
 
       throw error;
