@@ -1,11 +1,40 @@
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+
+import {
+  fetchGuitarsAction,
+  selectGuitars,
+  selectIsLoading,
+} from '@guitar-shop/storage';
+import { AppRoute } from '@guitar-shop/types';
+
 import Footer from '../../components/footer/footer.component';
-import GuitarItem from '../../components/guitar-item/guitar-item';
+import GuitarsList from '../../components/guitars-list/guitars-list.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import LoadingPage from '../loading-page/loading-page';
 
 export default function CatalogPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const guitars = useAppSelector(selectGuitars);
+  const isLoading = useAppSelector(selectIsLoading);
+
+  useEffect(() => {
+    dispatch(fetchGuitarsAction());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
   return (
     <div>
+      <Helmet>
+        <title>Просмотр товаров — Guitar-shop</title>
+      </Helmet>
       <SvgIcons />
       <div className="wrapper">
         <Header />
@@ -15,12 +44,14 @@ export default function CatalogPage(): JSX.Element {
               <h1 className="product-list__title">Список товаров</h1>
               <ul className="breadcrumbs">
                 <li className="breadcrumbs__item">
-                  <a className="link" href="./main.html">
+                  <Link className="link" to={AppRoute.Login}>
                     Вход
-                  </a>
+                  </Link>
                 </li>
                 <li className="breadcrumbs__item">
-                  <a className="link">Товары</a>
+                  <Link className="link" to={AppRoute.Catalog}>
+                    Товары
+                  </Link>
                 </li>
               </ul>
               <div className="catalog">
@@ -141,9 +172,7 @@ export default function CatalogPage(): JSX.Element {
                   </div>
                 </div>
                 <div className="catalog-cards">
-                  <ul className="catalog-cards__list">
-                    <GuitarItem />
-                  </ul>
+                  <GuitarsList pagination={guitars} />
                 </div>
               </div>
               <button className="button product-list__button button--red button--big">
@@ -152,27 +181,39 @@ export default function CatalogPage(): JSX.Element {
               <div className="pagination product-list__pagination">
                 <ul className="pagination__list">
                   <li className="pagination__page pagination__page--active">
-                    <a className="link pagination__page-link" href={1}>
+                    <Link
+                      className="link pagination__page-link"
+                      to={`${AppRoute.Catalog}?page=1`}
+                    >
                       1
-                    </a>
+                    </Link>
                   </li>
                   <li className="pagination__page">
-                    <a className="link pagination__page-link" href={2}>
+                    <Link
+                      className="link pagination__page-link"
+                      to={`${AppRoute.Catalog}?page=2`}
+                    >
                       2
-                    </a>
+                    </Link>
                   </li>
                   <li className="pagination__page">
-                    <a className="link pagination__page-link" href={3}>
+                    <Link
+                      className="link pagination__page-link"
+                      to={`${AppRoute.Catalog}?page=3`}
+                    >
                       3
-                    </a>
+                    </Link>
                   </li>
                   <li
                     className="pagination__page pagination__page--next"
                     id="next"
                   >
-                    <a className="link pagination__page-link" href={2}>
+                    <Link
+                      className="link pagination__page-link"
+                      to={`${AppRoute.Catalog}?page=2`}
+                    >
                       Далее
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>

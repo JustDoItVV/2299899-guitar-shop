@@ -26,4 +26,7 @@ export class GuitarRdo {
 
   @Expose()
   public price: number;
+
+  @Expose()
+  public createdAt: Date;
 }

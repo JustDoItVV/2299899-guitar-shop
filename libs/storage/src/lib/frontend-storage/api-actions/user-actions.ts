@@ -21,7 +21,8 @@ export const checkAuthAction = createAsyncThunk<
   undefined,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
 >('user/checkAuth', async (_arg, { extra: api }) => {
-  const { data } = await api.post<UserWithToken>(ApiRoute.UserCheck);
+  const apiRoute = `${ApiRoute.User}${ApiRoute.Check}`;
+  const { data } = await api.post<UserWithToken>(apiRoute);
   return data;
 });
 
@@ -30,7 +31,8 @@ export const loginAction = createAsyncThunk<
   AuthData,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
 >('user/login', async ({ email, password }, { dispatch, extra: api }) => {
-  const { data } = await api.post<UserWithToken>(ApiRoute.UserLogin, {
+  const apiRoute = `${ApiRoute.User}${ApiRoute.Login}`;
+  const { data } = await api.post<UserWithToken>(apiRoute, {
     email,
     password,
   });
@@ -46,7 +48,8 @@ export const registerAction = createAsyncThunk<
 >(
   'user/register',
   async ({ name, email, password }, { dispatch, extra: api }) => {
-    const { data } = await api.post<User>(ApiRoute.UserRegister, {
+    const apiRoute = `${ApiRoute.User}${ApiRoute.Register}`;
+    const { data } = await api.post<User>(apiRoute, {
       name,
       email,
       password,

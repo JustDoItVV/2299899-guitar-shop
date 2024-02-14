@@ -9,24 +9,24 @@ export type TimeAndUnit = {
 export function fillDto<T, V>(
   DtoClass: new () => T,
   plainObject: V,
-  options?: ClassTransformOptions,
+  options?: ClassTransformOptions
 ): T;
 
 export function fillDto<T, V>(
   DtoClass: new () => T,
   plainObject: V,
-  options?: ClassTransformOptions,
+  options?: ClassTransformOptions
 ): T[];
 
 export function fillDto<T, V>(
   DtoClass: new () => T,
   plainObject: V,
-  options?: ClassTransformOptions,
+  options?: ClassTransformOptions
 ): T | T[] {
   return plainToInstance(DtoClass, plainObject, {
     excludeExtraneousValues: true,
     ...options,
-  })
+  });
 }
 
 export function parseTime(time: string): TimeAndUnit {

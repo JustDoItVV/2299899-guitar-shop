@@ -4,3 +4,4 @@ export * from './lib/backend/mail.const';
 
 export * from './lib/frontend/common.const';
 export * from './lib/frontend/user.const';
+export * from './lib/frontend/guitar.const';

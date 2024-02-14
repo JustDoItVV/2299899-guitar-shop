@@ -38,19 +38,19 @@ export function App() {
           }
         />
         <Route
-          path={`${AppRoute.Catalog}${AppRoute.Add}`}
+          path={AppRoute.Add}
           element={
             <PrivateRoute authStatus={authStatus} children={<AddPage />} />
           }
         />
         <Route
-          path={`${AppRoute.Catalog}/:id`}
+          path={'/:id'}
           element={
             <PrivateRoute authStatus={authStatus} children={<GuitarPage />} />
           }
         />
         <Route
-          path={`${AppRoute.Catalog}/:id${AppRoute.Edit}`}
+          path={`/:id${AppRoute.Edit}`}
           element={
             <PrivateRoute authStatus={authStatus} children={<EditPage />} />
           }

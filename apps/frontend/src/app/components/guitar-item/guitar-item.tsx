@@ -1,6 +1,21 @@
+import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
-export default function GuitarItem(): JSX.Element {
+import { DATE_FORMAT } from '@guitar-shop/consts';
+import { AppRoute, Guitar } from '@guitar-shop/types';
+
+type GuitarItemProps = {
+  guitar: Guitar;
+};
+
+export default function GuitarItem(props: GuitarItemProps): JSX.Element {
+  const { guitar } = props;
+
+  let publishDate = dayjs();
+  if (guitar.createdAt) {
+    publishDate = dayjs(guitar.createdAt.toString());
+  }
+
   return (
     <li className="catalog-item">
       <div className="catalog-item__data">
@@ -12,20 +27,20 @@ export default function GuitarItem(): JSX.Element {
           alt="Картинка гитары"
         />
         <div className="catalog-item__data-wrapper">
-          <Link className="link" to="./product">
-            <p className="catalog-item__data-title">
-              ЭлектроГитара Честер bass
-            </p>
+          <Link className="link" to={`/${guitar.id}`}>
+            <p className="catalog-item__data-title">{guitar.title}</p>
           </Link>
           <br />
-          <p className="catalog-item__data-date">Дата добавления 19.09.2022</p>
-          <p className="catalog-item__data-price">17 500 ₽</p>
+          <p className="catalog-item__data-date">
+            Дата добавления {publishDate.format(DATE_FORMAT)}
+          </p>
+          <p className="catalog-item__data-price">{guitar.price} ₽</p>
         </div>
       </div>
       <div className="catalog-item__buttons">
         <Link
           className="button button--small button--black-border"
-          to="./product/edit"
+          to={`/${guitar.id}${AppRoute.Edit}`}
           aria-label="Редактировать товар"
         >
           Редактировать
