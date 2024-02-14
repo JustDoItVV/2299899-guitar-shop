@@ -11,6 +11,7 @@ import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import LoadingPage from '../loading-page/loading-page';
 
 export default function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -25,6 +26,10 @@ export default function LoginPage(): JSX.Element {
       dispatch(redirectToRoute(AppRoute.Catalog));
     }
   }, [dispatch, authStatus]);
+
+  if (authStatus === AuthStatus.Auth) {
+    return <LoadingPage />;
+  }
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
