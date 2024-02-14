@@ -55,8 +55,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1L
 
 ###
 
-# Get guitar photo file
-GET http://localhost:3001/api/guitars/ec7f2050-823d-4cb3-9714-c162d73b5c0f/photo HTTP/1.1
+# Get guitar photoUrl
+GET http://localhost:3001/api/guitars/517be66e-32e8-423e-9eb4-b4cdf0a57d3b/photo HTTP/1.1
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
 
 ###

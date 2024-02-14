@@ -2,18 +2,29 @@ import 'multer';
 
 import { ensureDir } from 'fs-extra';
 import * as crypto from 'node:crypto';
-import { createReadStream, existsSync, unlink } from 'node:fs';
-import { writeFile } from 'node:fs/promises';
+import { existsSync, unlink } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { BackendConfig } from '@guitar-shop/config';
-import { GuitarErrorMessage, UPLOAD_SUBDIRECTORY_GUITAR } from '@guitar-shop/consts';
-import { CreateGuitarDto, GuitarQuery, GuitarRdo, UpdateGuitarDto } from '@guitar-shop/dtos';
+import {
+  GuitarErrorMessage,
+  UPLOAD_SUBDIRECTORY_GUITAR,
+} from '@guitar-shop/consts';
+import {
+  CreateGuitarDto,
+  GuitarQuery,
+  GuitarRdo,
+  UpdateGuitarDto,
+} from '@guitar-shop/dtos';
 import { fillDto } from '@guitar-shop/helpers';
 import { Pagination } from '@guitar-shop/types';
 import {
-    BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException,
-    StreamableFile
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
@@ -24,13 +35,18 @@ import { GuitarRepository } from './guitar.repository';
 export class GuitarService {
   constructor(
     private readonly guitarRepository: GuitarRepository,
-    @Inject(BackendConfig.KEY) private readonly config: ConfigType<typeof BackendConfig>,
+    @Inject(BackendConfig.KEY)
+    private readonly config: ConfigType<typeof BackendConfig>
   ) {}
 
   private async getUploadPath(filename: string): Promise<string> {
     const uploadDirectory = this.config.uploadDirectory;
     await ensureDir(uploadDirectory);
-    const uploadPath = join(uploadDirectory, UPLOAD_SUBDIRECTORY_GUITAR, filename);
+    const uploadPath = join(
+      uploadDirectory,
+      UPLOAD_SUBDIRECTORY_GUITAR,
+      filename
+    );
     return uploadPath;
   }
 
@@ -38,12 +54,18 @@ export class GuitarService {
     const pagination = await this.guitarRepository.find(query);
     const paginatedResult = {
       ...pagination,
-      entities: pagination.entities.map((entity) => fillDto(GuitarRdo, entity.toPOJO())),
+      entities: pagination.entities.map((entity) =>
+        fillDto(GuitarRdo, entity.toPOJO())
+      ),
     };
     return paginatedResult;
   }
 
-  public async create(dto: CreateGuitarDto, userId: string, file: Express.Multer.File): Promise<GuitarEntity> {
+  public async create(
+    dto: CreateGuitarDto,
+    userId: string,
+    file: Express.Multer.File
+  ): Promise<GuitarEntity> {
     const filename = await this.saveFile(file);
     const entity = GuitarEntity.fromDto(dto, userId, filename);
     const document = await this.guitarRepository.save(entity);
@@ -61,7 +83,11 @@ export class GuitarService {
     return document;
   }
 
-  public async update(id: string, dto: UpdateGuitarDto, file: Express.Multer.File | undefined): Promise<GuitarEntity> {
+  public async update(
+    id: string,
+    dto: UpdateGuitarDto,
+    file: Express.Multer.File | undefined
+  ): Promise<GuitarEntity> {
     const document = await this.guitarRepository.findById(id);
 
     if (!document) {
@@ -111,14 +137,14 @@ export class GuitarService {
       throw new BadRequestException(GuitarErrorMessage.PhotoFileRequired);
     }
 
-    const filename = `${crypto.randomUUID()}-${file.originalname}`
+    const filename = `${crypto.randomUUID()}-${file.originalname}`;
     const uploadPath = await this.getUploadPath(filename);
     await writeFile(uploadPath, file.buffer);
 
     return filename;
   }
 
-  public async getFile(id: string): Promise<StreamableFile> {
+  public async getFile(id: string): Promise<string> {
     const document = await this.getById(id);
     const filePath = await this.getUploadPath(document.photo);
 
@@ -126,8 +152,10 @@ export class GuitarService {
       throw new NotFoundException(GuitarErrorMessage.PhotoFileNotFound);
     }
 
-    const file = createReadStream(filePath);
-    return new StreamableFile(file);
+    const file = await readFile(filePath);
+    const fileBase64 = Buffer.from(file).toString('base64');
+
+    return `data:image/png;base64,${fileBase64}`;
   }
 
   public async deleteFile(filename: string): Promise<void> {

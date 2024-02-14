@@ -20,7 +20,10 @@ export const guitarProcess = createSlice({
       })
       .addCase(
         fetchGuitarsAction.fulfilled,
-        (state, action: PayloadAction<Pagination<Guitar>>) => {
+        (
+          state,
+          action: PayloadAction<Pagination<Guitar & { photoUrl: string }>>
+        ) => {
           state.isLoading = false;
           state.guitars = action.payload;
         }

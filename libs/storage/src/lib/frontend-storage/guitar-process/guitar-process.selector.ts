@@ -4,6 +4,6 @@ import { State } from '../types/state.type';
 
 export const selectGuitars = (
   state: Pick<State, NameSpace.Guitar>
-): Pagination<Guitar> => state[NameSpace.Guitar].guitars;
+): Pagination<Guitar & { photoUrl: string }> => state[NameSpace.Guitar].guitars;
 export const selectIsLoading = (state: Pick<State, NameSpace.Guitar>) =>
   state[NameSpace.Guitar].isLoading;

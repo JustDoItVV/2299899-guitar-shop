@@ -5,7 +5,7 @@ import { DATE_FORMAT } from '@guitar-shop/consts';
 import { AppRoute, Guitar } from '@guitar-shop/types';
 
 type GuitarItemProps = {
-  guitar: Guitar;
+  guitar: Guitar & { photoUrl: string };
 };
 
 export default function GuitarItem(props: GuitarItemProps): JSX.Element {
@@ -20,8 +20,8 @@ export default function GuitarItem(props: GuitarItemProps): JSX.Element {
     <li className="catalog-item">
       <div className="catalog-item__data">
         <img
-          src="img/content/catalog-product-1.png"
-          srcSet="img/content/catalog-product-1@2x.png 2x"
+          src={guitar.photoUrl}
+          srcSet={`${guitar.photoUrl} 2x`}
           width={36}
           height={93}
           alt="Картинка гитары"

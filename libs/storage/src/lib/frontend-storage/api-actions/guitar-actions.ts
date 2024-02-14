@@ -8,10 +8,36 @@ import { AppDispatch } from '../types/app-dispatch.type';
 import { State } from '../types/state.type';
 
 export const fetchGuitarsAction = createAsyncThunk<
-  Pagination<Guitar>,
+  Pagination<Guitar & { photoUrl: string }>,
   undefined,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
 >('guitar/fetchGuitars', async (_arg, { extra: api }) => {
-  const { data } = await api.get<Pagination<Guitar>>(ApiRoute.Guitars);
+  const { data } = await api.get<Pagination<Guitar & { photoUrl: string }>>(
+    ApiRoute.Guitars
+  );
+
+  const guitars = await Promise.all(
+    data.entities.map(async (guitar) => {
+      const { data } = await api.get<string>(
+        `${ApiRoute.Guitars}/${guitar.id}${ApiRoute.GuitarPhoto}`
+      );
+      guitar.photoUrl = data;
+      return guitar;
+    })
+  );
+
+  data.entities = guitars;
+
+  return data;
+});
+
+export const fetchGuitarPhotoAction = createAsyncThunk<
+  string,
+  string,
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('guitar/fetchGuitarPhoto', async (id: string, { extra: api }) => {
+  const { data } = await api.get<string>(
+    `${ApiRoute.Guitars}/${id}${ApiRoute.GuitarPhoto}`
+  );
   return data;
 });
