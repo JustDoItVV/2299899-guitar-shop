@@ -28,7 +28,6 @@ export const userProcess = createSlice({
       })
       .addCase(loginAction.fulfilled, (state, action) => {
         state.authStatus = AuthStatus.Auth;
-        console.log(action.payload);
         state.user = action.payload;
       })
       .addCase(loginAction.rejected, (state) => {

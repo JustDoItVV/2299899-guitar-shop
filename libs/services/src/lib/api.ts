@@ -32,7 +32,6 @@ export const createApiService = (): AxiosInstance => {
     if (token && config.headers) {
       config.headers['X-token'] = token;
     }
-    console.log(token);
 
     return config;
   });

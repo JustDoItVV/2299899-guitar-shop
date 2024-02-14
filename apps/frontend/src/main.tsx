@@ -1,6 +1,9 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 import { browserHistory } from '@guitar-shop/services';
 import { frontendStorage } from '@guitar-shop/storage';
@@ -15,6 +18,7 @@ root.render(
   <StrictMode>
     <Provider store={frontendStorage}>
       <HistoryRouter history={browserHistory}>
+        <ToastContainer />
         <App />
       </HistoryRouter>
     </Provider>

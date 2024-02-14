@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { toast } from 'react-toastify';
 
 import { ApiRoute } from '@guitar-shop/consts';
 import { saveToken } from '@guitar-shop/services';
@@ -51,6 +52,7 @@ export const registerAction = createAsyncThunk<
       password,
     });
     dispatch(redirectToRoute(AppRoute.Login));
+    toast(`Registration successful! Email was sent to ${email}. Please login!`);
     return data;
   }
 );
