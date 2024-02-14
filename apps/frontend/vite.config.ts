@@ -9,12 +9,14 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/apps/frontend',
 
   server: {
-    port: 4200,
+    // port: parseInt(import.meta.env.VITE_FRONTEND_SERVER_PORT, 10),
+    port: 3000,
     host: 'localhost',
   },
 
   preview: {
-    port: 4300,
+    // port: parseInt(import.meta.env.VITE_FRONTEND_PREVIEW_PORT, 10),
+    port: 3100,
     host: 'localhost',
   },
 
