@@ -1,8 +1,12 @@
 import dayjs from 'dayjs';
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DATE_FORMAT } from '@guitar-shop/consts';
+import { deleteGuitarAction, fetchGuitarsAction } from '@guitar-shop/storage';
 import { AppRoute, Guitar } from '@guitar-shop/types';
+
+import { useAppDispatch } from '../../hooks';
 
 type GuitarItemProps = {
   guitar: Guitar & { photoUrl: string };
@@ -10,11 +14,20 @@ type GuitarItemProps = {
 
 export default function GuitarItem(props: GuitarItemProps): JSX.Element {
   const { guitar } = props;
+  const dispatch = useAppDispatch();
 
   let publishDate = dayjs();
   if (guitar.createdAt) {
     publishDate = dayjs(guitar.createdAt.toString());
   }
+
+  const handleDeleteButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (guitar.id) {
+      dispatch(deleteGuitarAction(guitar.id));
+      dispatch(fetchGuitarsAction());
+    }
+  };
 
   return (
     <li className="catalog-item">
@@ -49,6 +62,7 @@ export default function GuitarItem(props: GuitarItemProps): JSX.Element {
           className="button button--small button--black-border"
           type="submit"
           aria-label="Удалить товар"
+          onClick={handleDeleteButtonClick}
         >
           Удалить
         </button>

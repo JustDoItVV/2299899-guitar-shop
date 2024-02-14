@@ -41,3 +41,11 @@ export const fetchGuitarPhotoAction = createAsyncThunk<
   );
   return data;
 });
+
+export const deleteGuitarAction = createAsyncThunk<
+  void,
+  string,
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('guitar/deleteGuitarAction', async (id: string, { extra: api }) => {
+  await api.delete(`${ApiRoute.Guitars}/${id}`);
+});
