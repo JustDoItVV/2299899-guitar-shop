@@ -23,7 +23,7 @@ export function App() {
   const authStatus = useAppSelector(selectAuthStatus);
 
   useEffect(() => {
-    dispatch(checkAuthAction);
+    dispatch(checkAuthAction());
   }, [dispatch, authStatus]);
 
   return (
