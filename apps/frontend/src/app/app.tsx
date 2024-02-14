@@ -11,7 +11,6 @@ import CatalogPage from './pages/catalog-page/catalog.page';
 import EditPage from './pages/edit-page/edit.page';
 import GuitarPage from './pages/guitar-page/guitar.page';
 import LoginPage from './pages/login-page/login.page';
-import MainPage from './pages/main-page/main.page';
 import NotFoundPage from './pages/not-found-page/not-found.page';
 import RegisterPage from './pages/register-page/register.page';
 
@@ -23,12 +22,6 @@ export function App() {
       <Routes>
         <Route path={AppRoute.Login} element={<LoginPage />} />
         <Route path={AppRoute.Register} element={<RegisterPage />} />
-        <Route
-          path={AppRoute.Main}
-          element={
-            <PrivateRoute authStatus={authStatus} children={<MainPage />} />
-          }
-        />
         <Route
           path={AppRoute.Catalog}
           element={
