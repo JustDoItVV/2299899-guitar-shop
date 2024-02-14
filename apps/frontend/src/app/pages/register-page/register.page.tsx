@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import {
   redirectToRoute,
@@ -51,6 +52,9 @@ export default function RegisterPage(): JSX.Element {
 
   return (
     <div>
+      <Helmet>
+        <title>Регистрация — Guitar-shop</title>
+      </Helmet>
       <SvgIcons />
       <div className="wrapper">
         <Header />

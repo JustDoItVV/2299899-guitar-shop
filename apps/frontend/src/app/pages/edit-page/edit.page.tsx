@@ -1,3 +1,8 @@
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+
+import { AppRoute } from '@guitar-shop/types';
+
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
@@ -5,6 +10,9 @@ import SvgIcons from '../../components/svg-icons/svg-icons.component';
 export default function EditPage(): JSX.Element {
   return (
     <div>
+      <Helmet>
+        <title>Редактирование товара — Guitar-shop</title>
+      </Helmet>
       <SvgIcons />
       <div className="wrapper">
         <Header />
@@ -14,15 +22,19 @@ export default function EditPage(): JSX.Element {
               <h1 className="edit-item__title">СURT Z30 Plus</h1>
               <ul className="breadcrumbs">
                 <li className="breadcrumbs__item">
-                  <a className="link" href="./main.html">
+                  <Link className="link" to={AppRoute.Login}>
                     Вход
-                  </a>
+                  </Link>
                 </li>
                 <li className="breadcrumbs__item">
-                  <a className="link">Товары</a>
+                  <Link className="link" to={AppRoute.Catalog}>
+                    Товары
+                  </Link>
                 </li>
                 <li className="breadcrumbs__item">
-                  <a className="link">СURT Z30 Plus</a>
+                  <Link className="link" to={`./:id`}>
+                    СURT Z30 Plus
+                  </Link>
                 </li>
               </ul>
               <form className="edit-item__form" action="#" method="get">

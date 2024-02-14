@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import {
   loginAction,
@@ -45,6 +46,9 @@ export default function LoginPage(): JSX.Element {
 
   return (
     <div>
+      <Helmet>
+        <title>Авторизация — Guitar-shop</title>
+      </Helmet>
       <SvgIcons />
       <div className="wrapper">
         <Header />

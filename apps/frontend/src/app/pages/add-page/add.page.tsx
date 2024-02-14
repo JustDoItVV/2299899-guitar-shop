@@ -1,3 +1,8 @@
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+
+import { AppRoute } from '@guitar-shop/types';
+
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
@@ -5,6 +10,9 @@ import SvgIcons from '../../components/svg-icons/svg-icons.component';
 export default function AddPage(): JSX.Element {
   return (
     <div>
+      <Helmet>
+        <title>Добавление товара — Guitar-shop</title>
+      </Helmet>
       <SvgIcons />
       <div className="wrapper">
         <Header />
@@ -14,15 +22,19 @@ export default function AddPage(): JSX.Element {
               <h1 className="add-item__title">Новый товар</h1>
               <ul className="breadcrumbs">
                 <li className="breadcrumbs__item">
-                  <a className="link" href="./main.html">
+                  <Link className="link" to={AppRoute.Login}>
                     Вход
-                  </a>
+                  </Link>
                 </li>
                 <li className="breadcrumbs__item">
-                  <a className="link">Товары</a>
+                  <Link className="link" to={AppRoute.Catalog}>
+                    Товары
+                  </Link>
                 </li>
                 <li className="breadcrumbs__item">
-                  <a className="link">Новый товар</a>
+                  <Link className="link" to={AppRoute.Add}>
+                    Новый товар
+                  </Link>
                 </li>
               </ul>
               <form className="add-item__form" action="#" method="get">
@@ -45,6 +57,7 @@ export default function AddPage(): JSX.Element {
                       id="guitar"
                       name="item-type"
                       defaultValue="guitar"
+                      defaultChecked
                     />
                     <label htmlFor="guitar">Акустическая гитара</label>
                     <input
@@ -52,7 +65,6 @@ export default function AddPage(): JSX.Element {
                       id="el-guitar"
                       name="item-type"
                       defaultValue="el-guitar"
-                      defaultChecked
                     />
                     <label htmlFor="el-guitar">Электрогитара</label>
                     <input
@@ -105,7 +117,6 @@ export default function AddPage(): JSX.Element {
                         name="date"
                         defaultValue=""
                         placeholder="Дата в формате 00.00.0000"
-                        readOnly
                       />
                     </label>
                     <p>Заполните поле</p>
