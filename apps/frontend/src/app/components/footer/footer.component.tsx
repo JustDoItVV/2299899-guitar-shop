@@ -1,10 +1,14 @@
+import { Link } from 'react-router-dom';
+
+import { AppRoute } from '@guitar-shop/types';
+
 export default function Footer(): JSX.Element {
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer__container">
           <div className="footer__logo-wrapper">
-            <a className="footer__logo logo" href="main.html">
+            <Link className="footer__logo logo" to={AppRoute.Login}>
               <img
                 className="logo__img"
                 width={70}
@@ -12,7 +16,7 @@ export default function Footer(): JSX.Element {
                 src="./img/svg/logo.svg"
                 alt="Логотип"
               />
-            </a>
+            </Link>
             <div className="socials footer__socials">
               <ul className="socials__list">
                 <li className="socials-item">
@@ -85,29 +89,29 @@ export default function Footer(): JSX.Element {
             </h2>
             <ul className="footer__nav-list">
               <li className="footer__nav-list-item">
-                <a className="link footer__nav-link" href="#top">
+                <Link className="link footer__nav-link" to="/info/where-to-buy">
                   Где купить?
-                </a>
+                </Link>
               </li>
               <li className="footer__nav-list-item">
-                <a className="link footer__nav-link" href="#top">
+                <Link className="link footer__nav-link" to="/info/blog">
                   Блог
-                </a>
+                </Link>
               </li>
               <li className="footer__nav-list-item">
-                <a className="link footer__nav-link" href="#top">
+                <Link className="link footer__nav-link" to="/info/q_and_a">
                   Вопрос - ответ
-                </a>
+                </Link>
               </li>
               <li className="footer__nav-list-item">
-                <a className="link footer__nav-link" href="#top">
+                <Link className="link footer__nav-link" to="/info/refund">
                   Возврат
-                </a>
+                </Link>
               </li>
               <li className="footer__nav-list-item">
-                <a className="link footer__nav-link" href="#top">
+                <Link className="link footer__nav-link" to="/info/services">
                   Сервис-центры
-                </a>
+                </Link>
               </li>
             </ul>
           </section>

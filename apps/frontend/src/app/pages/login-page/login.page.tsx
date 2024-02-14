@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 import {
   loginAction,
@@ -58,9 +59,9 @@ export default function LoginPage(): JSX.Element {
               <h1 className="login__title">Войти</h1>
               <p className="login__text">
                 Hовый пользователь?{' '}
-                <a className="login__link" href="registration.html">
+                <Link className="login__link" to={AppRoute.Register}>
                   Зарегистрируйтесь
-                </a>{' '}
+                </Link>{' '}
                 прямо сейчас
               </p>
               <form method="post" action="/" onSubmit={handleFormSubmit}>

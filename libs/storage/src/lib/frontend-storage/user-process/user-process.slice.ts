@@ -13,6 +13,9 @@ export const userProcess = createSlice({
   name: NameSpace.User,
   initialState,
   reducers: {
+    setAuthStatus: (state, action: PayloadAction<AuthStatus>) => {
+      state.authStatus = action.payload;
+    },
     setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
     },
@@ -36,4 +39,4 @@ export const userProcess = createSlice({
   },
 });
 
-export const { setUser } = userProcess.actions;
+export const { setUser, setAuthStatus } = userProcess.actions;
