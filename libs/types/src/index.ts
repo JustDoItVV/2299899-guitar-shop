@@ -17,3 +17,6 @@ export * from './lib/guitar.interface';
 export * from './lib/pagination.interface';
 export * from './lib/sort-direction.enum';
 export * from './lib/sort-option.enum';
+
+export * from './lib/app-route.enum';
+export * from './lib/auth-status.enum';
