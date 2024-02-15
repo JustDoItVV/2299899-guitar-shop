@@ -1,10 +1,14 @@
 import 'react-tabs/style/react-tabs.css';
 
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
+import { DATE_FORMAT } from '@guitar-shop/consts';
 import {
   fetchGuitarAction,
   selectGuitar,
@@ -18,6 +22,9 @@ import LoadingPage from '../../components/loading/loading.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFoundPage from '../not-found-page/not-found.page';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 export default function GuitarPage(): JSX.Element {
   const { id = '' } = useParams();
@@ -76,33 +83,12 @@ export default function GuitarPage(): JSX.Element {
                 alt=""
               />
               <div className="product-container__info-wrapper">
-                <h2 className="product-container__title title title--big title--uppercase">
-                  {guitar.title}
-                </h2>
-                <br />
-                <br />
                 <Tabs
                   id="characteristics"
                   className="tabs"
                   disabledTabClassName="button--black-border"
                   direction="ltr"
                 >
-                  <TabList style={{ margin: 0, padding: 0 }}>
-                    <Tab
-                      className="button button--medium tabs__button"
-                      href="#characteristics"
-                      style={{ display: 'inline-block' }}
-                    >
-                      Характеристики
-                    </Tab>
-                    <Tab
-                      className="button button--medium tabs__button"
-                      href="#description"
-                      style={{ display: 'inline-block' }}
-                    >
-                      Описание
-                    </Tab>
-                  </TabList>
                   <TabPanel className="tabs__content">
                     <table className="tabs__table">
                       <tbody>
@@ -120,6 +106,16 @@ export default function GuitarPage(): JSX.Element {
                             {guitar.guitarStrings} струнная
                           </td>
                         </tr>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Цена:</td>
+                          <td className="tabs__value">{guitar.price} ₽</td>
+                        </tr>
+                        <tr className="tabs__table-row">
+                          <td className="tabs__title">Дата публикации:</td>
+                          <td className="tabs__value">
+                            {dayjs(guitar.publishDate).format(DATE_FORMAT)}
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </TabPanel>
@@ -128,6 +124,29 @@ export default function GuitarPage(): JSX.Element {
                       {guitar.description}
                     </p>
                   </TabPanel>
+                  <br />
+                  <br />
+                  <h2 className="product-container__title title title--big title--uppercase">
+                    {guitar.title}
+                  </h2>
+                  <br />
+                  <br />
+                  <TabList style={{ margin: 0, padding: 0 }}>
+                    <Tab
+                      className="button button--medium tabs__button"
+                      href="#characteristics"
+                      style={{ display: 'inline-block' }}
+                    >
+                      Характеристики
+                    </Tab>
+                    <Tab
+                      className="button button--medium tabs__button"
+                      href="#description"
+                      style={{ display: 'inline-block' }}
+                    >
+                      Описание
+                    </Tab>
+                  </TabList>
                 </Tabs>
               </div>
             </div>
