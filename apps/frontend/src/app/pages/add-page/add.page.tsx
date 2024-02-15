@@ -1,3 +1,6 @@
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
 import React, {
   ChangeEvent,
   FormEvent,
@@ -7,7 +10,9 @@ import React, {
 } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
+import { DATE_FORMAT, PUBLISH_DATE_FORMAT } from '@guitar-shop/consts';
 import { postGuitarAction, redirectToRoute } from '@guitar-shop/storage';
 import { AppRoute, GuitarType } from '@guitar-shop/types';
 
@@ -15,6 +20,9 @@ import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
 import { useAppDispatch } from '../../hooks';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 export default function AddPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -82,24 +90,41 @@ export default function AddPage(): JSX.Element {
       }
     };
 
+  const handlePublishDateInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      if (dayjs(evt.currentTarget.value, PUBLISH_DATE_FORMAT).isValid()) {
+        publishDateRef.current = dayjs(
+          evt.currentTarget.value,
+          PUBLISH_DATE_FORMAT
+        )
+          .local()
+          .toISOString();
+      }
+    }
+  };
+
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const formData = new FormData();
 
-    if (fileInputRef.current?.files) {
+    if (fileInputRef.current?.files && fileInputRef.current.files.length > 0) {
       formData.append('file', fileInputRef.current.files[0]);
+    } else {
+      toast.error('Photo is required');
+    }
+
+    if (publishDateRef.current) {
+      formData.append('publishDate', publishDateRef.current);
     }
 
     formData.append('type', typeRef.current);
     formData.append('guitarStrings', guitarStringsRef.current);
-    formData.append('publishDate', publishDateRef.current);
     formData.append('title', titleRef.current);
     formData.append('price', priceRef.current);
     formData.append('vendorCode', vendorCodeRef.current);
     formData.append('description', descriptionRef.current);
 
     dispatch(postGuitarAction(formData));
-    dispatch(redirectToRoute(AppRoute.Catalog));
   };
 
   const handleBackButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
@@ -251,11 +276,10 @@ export default function AddPage(): JSX.Element {
                         type="text"
                         name="publishDate"
                         defaultValue=""
-                        placeholder="Дата в формате 00.00.0000"
-                        onChange={getInputChangeHandler<
-                          string,
-                          HTMLInputElement
-                        >(publishDateRef)}
+                        placeholder={`Дата в формате ${dayjs().format(
+                          DATE_FORMAT
+                        )}`}
+                        onChange={handlePublishDateInputChange}
                       />
                     </label>
                     <p>Заполните поле</p>

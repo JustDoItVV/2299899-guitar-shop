@@ -16,9 +16,9 @@ export default function GuitarItem(props: GuitarItemProps): JSX.Element {
   const { guitar } = props;
   const dispatch = useAppDispatch();
 
-  let publishDate = dayjs();
-  if (guitar.createdAt) {
-    publishDate = dayjs(guitar.createdAt.toString());
+  let publishDate = '';
+  if (guitar.publishDate) {
+    publishDate = dayjs(guitar.publishDate).format(DATE_FORMAT);
   }
 
   const handleDeleteButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
@@ -44,7 +44,7 @@ export default function GuitarItem(props: GuitarItemProps): JSX.Element {
           </Link>
           <br />
           <p className="catalog-item__data-date">
-            Дата добавления {publishDate.format(DATE_FORMAT)}
+            Дата добавления {publishDate}
           </p>
           <p className="catalog-item__data-price">{guitar.price} ₽</p>
         </div>

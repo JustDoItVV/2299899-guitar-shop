@@ -106,6 +106,7 @@ export class GuitarRepository extends BasePostgresRepository<
         guitarStrings: pojoEntity.guitarStrings,
         price: pojoEntity.price,
         userId: pojoEntity.userId,
+        publishDate: pojoEntity.publishDate,
       },
     });
 

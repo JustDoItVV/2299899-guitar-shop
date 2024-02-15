@@ -28,5 +28,8 @@ export class GuitarRdo {
   public price: number;
 
   @Expose()
+  public publishDate: Date;
+
+  @Expose()
   public createdAt: Date;
 }

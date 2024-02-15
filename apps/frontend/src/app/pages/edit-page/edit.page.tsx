@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
 import {
   ChangeEvent,
   FormEvent,
@@ -10,7 +12,7 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 
-import { DATE_FORMAT } from '@guitar-shop/consts';
+import { DATE_FORMAT, PUBLISH_DATE_FORMAT } from '@guitar-shop/consts';
 import {
   fetchGuitarAction,
   patchGuitarAction,
@@ -26,6 +28,9 @@ import LoadingPage from '../../components/loading/loading.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFoundPage from '../not-found-page/not-found.page';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 export default function EditPage(): JSX.Element {
   const { id = '' } = useParams();
@@ -124,6 +129,20 @@ export default function EditPage(): JSX.Element {
       }
     };
 
+  const handlePublishDateInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      if (dayjs(evt.currentTarget.value, PUBLISH_DATE_FORMAT).isValid()) {
+        publishDateRef.current = dayjs(
+          evt.currentTarget.value,
+          PUBLISH_DATE_FORMAT,
+          true
+        )
+          .local()
+          .toISOString();
+      }
+    }
+  };
+
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const formData = new FormData();
@@ -132,9 +151,12 @@ export default function EditPage(): JSX.Element {
       formData.append('file', fileInputRef.current.files[0]);
     }
 
+    if (publishDateRef.current) {
+      formData.append('publishDate', publishDateRef.current);
+    }
+
     formData.append('type', typeRef.current);
     formData.append('guitarStrings', guitarStringsRef.current);
-    formData.append('publishDate', publishDateRef.current);
     formData.append('title', titleRef.current);
     formData.append('price', priceRef.current);
     formData.append('vendorCode', vendorCodeRef.current);
@@ -148,6 +170,8 @@ export default function EditPage(): JSX.Element {
     evt.preventDefault();
     dispatch(redirectToRoute(AppRoute.Catalog));
   };
+
+  const publishDate = dayjs(guitar.publishDate || '').format(DATE_FORMAT);
 
   return (
     <div>
@@ -297,14 +321,9 @@ export default function EditPage(): JSX.Element {
                       <input
                         type="text"
                         name="date"
-                        defaultValue={dayjs(
-                          guitar.createdAt?.toString() || ''
-                        ).format(DATE_FORMAT)}
+                        defaultValue={publishDate}
                         placeholder="Дата в формате 00.00.0000"
-                        onChange={getInputChangeHandler<
-                          string,
-                          HTMLInputElement
-                        >(publishDateRef)}
+                        onChange={handlePublishDateInputChange}
                       />
                     </label>
                     <p>Заполните поле</p>

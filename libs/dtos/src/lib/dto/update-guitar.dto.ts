@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsEnum,
   IsIn,
   IsOptional,
@@ -62,4 +63,8 @@ export class UpdateGuitarDto {
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsOptional()
   public price?: number;
+
+  @IsDateString({}, { message: GuitarErrorMessage.PublishdateInvalid })
+  @IsOptional()
+  public publishDate?: string;
 }

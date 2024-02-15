@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { BackendConfig } from '@guitar-shop/config';
 import {
   GuitarErrorMessage,
-  UPLOAD_SUBDIRECTORY_GUITAR,
+  UPLOAD_GUITARS_SUBDIRECTORY,
 } from '@guitar-shop/consts';
 import {
   CreateGuitarDto,
@@ -44,7 +44,7 @@ export class GuitarService {
     await ensureDir(uploadDirectory);
     const uploadPath = join(
       uploadDirectory,
-      UPLOAD_SUBDIRECTORY_GUITAR,
+      UPLOAD_GUITARS_SUBDIRECTORY,
       filename
     );
     return uploadPath;
@@ -149,13 +149,11 @@ export class GuitarService {
     const filePath = await this.getUploadPath(document.photo);
 
     if (!existsSync(filePath)) {
-      throw new NotFoundException(GuitarErrorMessage.PhotoFileNotFound);
+      return 'notFound';
     }
 
     const file = await readFile(filePath);
-    const fileBase64 = Buffer.from(file).toString('base64');
-
-    return `data:image/png;base64,${fileBase64}`;
+    return `data:image/png;base64,${file.toString('base64')}`;
   }
 
   public async deleteFile(filename: string): Promise<void> {

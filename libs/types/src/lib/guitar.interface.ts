@@ -10,6 +10,7 @@ export interface Guitar {
   guitarStrings: number;
   price: number;
   userId: string;
+  publishDate?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }

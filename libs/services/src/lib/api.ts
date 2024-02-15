@@ -4,6 +4,7 @@ import axios, {
   HttpStatusCode,
   InternalAxiosRequestConfig,
 } from 'axios';
+import { toast } from 'react-toastify';
 
 import { BACKEND_URL, REQUEST_TIMEOUT } from '@guitar-shop/consts';
 
@@ -42,6 +43,18 @@ export const createApiService = (): AxiosInstance => {
       if (error.response && !!StatusCodeMapping[error.response.status]) {
         const detailMessage = error.response.data;
         console.log(detailMessage);
+      }
+
+      throw error;
+    }
+  );
+
+  api.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError<DetailMessageType>) => {
+      if (error.response && !!StatusCodeMapping[error.response.status]) {
+        const detailMessage = error.response.data;
+        toast.error(detailMessage.message);
       }
 
       throw error;

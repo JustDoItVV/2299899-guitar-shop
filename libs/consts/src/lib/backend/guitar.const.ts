@@ -20,7 +20,7 @@ export const GUITAR_STRINGS_STRING = '[4, 6, 7, 12]';
 
 export enum Price {
   Min = 100,
-  Max = 1000,
+  Max = 1000000,
 }
 
 export enum AllowedPhotoFormat {
@@ -42,7 +42,7 @@ export enum GuitarErrorMessage {
   TypeRequired = 'Type required',
   VendorCodeRequired = 'Vendor code required',
   VendorCodeMinLength = `Vendor code min length is ${VendorCodelength.Min} symbols`,
-  VendorCodeMaxLength = `Vendor code min length is ${VendorCodelength.Max} symbols`,
+  VendorCodeMaxLength = `Vendor code max length is ${VendorCodelength.Max} symbols`,
   GuitarStringsRequired = 'Guitar strings required',
   WrongGuitarStrings = `Guitar strings value must be one of ${GUITAR_STRINGS_STRING}`,
   PriceRequired = 'Price required',
@@ -52,12 +52,15 @@ export enum GuitarErrorMessage {
   NotFound = 'Guitar with this id not found',
   PhotoWrongFormat = `File format not allowed. Allowed formats: ${AllowedPhotoFormat.jpg}, ${AllowedPhotoFormat.png}`,
   PhotoFileNotFound = `Photo file not found`,
+  PublishdateInvalid = 'Invalid publish date',
 }
 
-export const UPLOAD_SUBDIRECTORY_GUITAR = 'guitar';
+export const UPLOAD_GUITARS_SUBDIRECTORY = 'guitars';
 
 export enum DefaultPagination {
   Limit = 7,
   Page = 1,
 }
 export const DEFAULT_SORT_DIRECTION = SortDirectionEnum.Asc;
+export const FRONTEND_IMG_DIRECTORY = 'apps/frontend/public/img/content';
+export const PUBLISH_DATE_FORMAT = 'DD.MM.YYYY';

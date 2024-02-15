@@ -23,3 +23,5 @@ export enum UserErrorMessage {
   PasswordWrong = 'Wrong password',
   NotFound = 'User with this email not found',
 }
+
+export const SALT_ROUNDS = 10;

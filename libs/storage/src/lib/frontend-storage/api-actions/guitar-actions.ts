@@ -1,9 +1,15 @@
 import { AxiosInstance } from 'axios';
 
 import { ApiRoute } from '@guitar-shop/consts';
-import { GuitarWithPhoto, NameSpace, Pagination } from '@guitar-shop/types';
+import {
+  AppRoute,
+  GuitarWithPhoto,
+  NameSpace,
+  Pagination,
+} from '@guitar-shop/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { redirectToRoute } from '../actions/common';
 import { AppDispatch } from '../types/app-dispatch.type';
 import { State } from '../types/state.type';
 
@@ -26,7 +32,6 @@ export const fetchGuitarsAction = createAsyncThunk<
   );
 
   data.entities = guitars;
-
   return data;
 });
 
@@ -71,10 +76,11 @@ export const postGuitarAction = createAsyncThunk<
   GuitarWithPhoto,
   FormData,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
->('guitar/postGuitar', async (formData, { extra: api }) => {
+>('guitar/postGuitar', async (formData, { dispatch, extra: api }) => {
   const { data } = await api.post<GuitarWithPhoto>(ApiRoute.Guitars, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
+  dispatch(redirectToRoute(AppRoute.Catalog));
   return data;
 });
 

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { Entity } from '@guitar-shop/core';
 import { CreateGuitarDto } from '@guitar-shop/dtos';
 import { Guitar, GuitarType } from '@guitar-shop/types';
@@ -12,6 +14,7 @@ export class GuitarEntity implements Guitar, Entity<string, Guitar> {
   public guitarStrings: number;
   public price: number;
   public userId: string;
+  public publishDate?: Date;
   public createdAt?: Date;
   public updatedAt?: Date;
 
@@ -25,6 +28,7 @@ export class GuitarEntity implements Guitar, Entity<string, Guitar> {
     this.guitarStrings = data.guitarStrings;
     this.price = data.price;
     this.userId = data.userId;
+    this.publishDate = data.publishDate ?? undefined;
     this.createdAt = data.createdAt ?? undefined;
     this.updatedAt = data.updatedAt ?? undefined;
 
@@ -42,6 +46,7 @@ export class GuitarEntity implements Guitar, Entity<string, Guitar> {
       guitarStrings: this.guitarStrings,
       price: this.price,
       userId: this.userId,
+      publishDate: this.publishDate,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -65,6 +70,7 @@ export class GuitarEntity implements Guitar, Entity<string, Guitar> {
     entity.guitarStrings = dto.guitarStrings;
     entity.price = dto.price;
     entity.userId = userId;
+    entity.publishDate = dayjs(dto.publishDate).toDate();
 
     return entity;
   }

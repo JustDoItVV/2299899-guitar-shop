@@ -6,6 +6,7 @@ import { registerAs } from '@nestjs/config';
 export interface CliConfig {
   environment: string;
   defaultUser: User & { password: string };
+  uploadDirectory: string;
 }
 
 const validationSchema = Joi.object({
@@ -17,6 +18,7 @@ const validationSchema = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().required(),
   }),
+  uploadDirectory: Joi.string().required(),
 });
 
 function validateConfig(config: CliConfig): void {
@@ -35,6 +37,7 @@ function getConfig(): CliConfig {
       email: process.env.DEFAULT_USER_EMAIL,
       password: process.env.DEFAULT_USER_PASSWORD,
     },
+    uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH,
   };
 
   validateConfig(config);

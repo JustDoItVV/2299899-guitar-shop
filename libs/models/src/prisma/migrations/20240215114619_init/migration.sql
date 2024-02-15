@@ -21,6 +21,7 @@ CREATE TABLE "guitars" (
     "guitar_strings" INTEGER NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "user_id" TEXT NOT NULL,
+    "publish_date" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

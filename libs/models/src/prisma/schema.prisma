@@ -36,6 +36,7 @@ model Guitar {
   price         Float
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String   @map("user_id")
+  publishDate   DateTime @default(now()) @map("publish_date") @db.Date
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 

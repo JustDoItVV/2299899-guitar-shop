@@ -1,7 +1,9 @@
 import {
+  IsDateString,
   IsEnum,
   IsIn,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Max,
   MaxLength,
@@ -62,4 +64,8 @@ export class CreateGuitarDto {
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsNotEmpty({ message: GuitarErrorMessage.PriceRequired })
   public price: number;
+
+  @IsDateString({}, { message: GuitarErrorMessage.PublishdateInvalid })
+  @IsOptional()
+  public publishDate?: string;
 }
