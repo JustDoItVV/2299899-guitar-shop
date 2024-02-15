@@ -72,3 +72,15 @@ export const postGuitarAction = createAsyncThunk<
   });
   return data;
 });
+
+export const patchGuitarAction = createAsyncThunk<
+  GuitarWithPhoto,
+  { formData: FormData; id: string },
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('guitar/patchGuitar', async ({ formData, id }, { extra: api }) => {
+  const apiRoute = `${ApiRoute.Guitars}/${id}`;
+  const { data } = await api.patch<GuitarWithPhoto>(apiRoute, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+});

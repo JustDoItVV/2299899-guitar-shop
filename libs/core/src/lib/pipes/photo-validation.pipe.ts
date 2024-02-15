@@ -5,7 +5,9 @@ import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 type PhotoFile = Express.Multer.File;
 
 @Injectable()
-export class PhotoValidationPipe implements PipeTransform<PhotoFile, PhotoFile> {
+export class PhotoValidationPipe
+  implements PipeTransform<PhotoFile, PhotoFile>
+{
   public allowedFormats: Record<string, string>;
   public message: string;
 
@@ -14,15 +16,17 @@ export class PhotoValidationPipe implements PipeTransform<PhotoFile, PhotoFile> 
     this.message = message;
   }
   transform(value: PhotoFile): PhotoFile {
-    const { originalname, mimetype } = value;
-    const fileExtention = originalname.split('.').at(-1);
+    if (value) {
+      const { originalname, mimetype } = value;
+      const fileExtention = originalname.split('.').at(-1);
 
-    if (!Object.keys(this.allowedFormats).includes(fileExtention)) {
-      throw new BadRequestException(this.message);
-    }
+      if (!Object.keys(this.allowedFormats).includes(fileExtention)) {
+        throw new BadRequestException(this.message);
+      }
 
-    if (this.allowedFormats[fileExtention] !== mimetype) {
-      throw new BadRequestException(this.message);
+      if (this.allowedFormats[fileExtention] !== mimetype) {
+        throw new BadRequestException(this.message);
+      }
     }
 
     return value;
