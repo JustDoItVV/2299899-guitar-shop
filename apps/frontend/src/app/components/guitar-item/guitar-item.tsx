@@ -3,7 +3,7 @@ import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DATE_FORMAT } from '@guitar-shop/consts';
-import { deleteGuitarAction, fetchGuitarsAction } from '@guitar-shop/storage';
+import { deleteGuitarAction } from '@guitar-shop/storage';
 import { AppRoute, GuitarWithPhoto } from '@guitar-shop/types';
 
 import { useAppDispatch } from '../../hooks';
@@ -25,7 +25,6 @@ export default function GuitarItem(props: GuitarItemProps): JSX.Element {
     evt.preventDefault();
     if (guitar.id) {
       dispatch(deleteGuitarAction(guitar.id));
-      dispatch(fetchGuitarsAction());
     }
   };
 

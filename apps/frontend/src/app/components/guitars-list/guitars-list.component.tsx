@@ -52,9 +52,9 @@ export default function GuitarsList(): JSX.Element {
     page,
     queryTypes,
     queryGuitarStrings,
-    isArrayChanged,
     querySortDirection,
     querySortOption,
+    isArrayChanged,
   ]);
 
   const handleTypeInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
