@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { ApiRoute } from '@guitar-shop/consts';
-import { GuitarWithPhoto, Pagination } from '@guitar-shop/types';
+import { GuitarWithPhoto, NameSpace, Pagination } from '@guitar-shop/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppDispatch } from '../types/app-dispatch.type';
@@ -45,9 +45,13 @@ export const deleteGuitarAction = createAsyncThunk<
   void,
   string,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
->('guitar/deleteGuitarAction', async (id, { extra: api }) => {
-  await api.delete(`${ApiRoute.Guitars}/${id}`);
-});
+>(
+  'guitar/deleteGuitarAction',
+  async (id, { dispatch, getState, extra: api }) => {
+    await api.delete(`${ApiRoute.Guitars}/${id}`);
+    dispatch(fetchGuitarsAction(getState()[NameSpace.Guitar].query));
+  }
+);
 
 export const fetchGuitarAction = createAsyncThunk<
   GuitarWithPhoto,

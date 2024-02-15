@@ -9,6 +9,7 @@ const initialState: GuitarProcess = {
   guitar: null,
   isLoading: false,
   page: 1,
+  query: '',
 };
 
 export const guitarProcess = createSlice({
@@ -17,6 +18,9 @@ export const guitarProcess = createSlice({
   reducers: {
     setPage: (state, action: PayloadAction<number>) => {
       state.page = action.payload;
+    },
+    setQuery: (state, action: PayloadAction<string>) => {
+      state.query = action.payload;
     },
   },
   extraReducers(builder) {
@@ -50,4 +54,4 @@ export const guitarProcess = createSlice({
   },
 });
 
-export const { setPage } = guitarProcess.actions;
+export const { setPage, setQuery } = guitarProcess.actions;

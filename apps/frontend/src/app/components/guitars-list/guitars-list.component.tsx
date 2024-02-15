@@ -5,6 +5,7 @@ import {
   selectGuitars,
   selectPage,
   setPage,
+  setQuery,
 } from '@guitar-shop/storage';
 import { GuitarType, SortDirection, SortOption } from '@guitar-shop/types';
 
@@ -15,10 +16,6 @@ export default function GuitarsList(): JSX.Element {
   const dispatch = useAppDispatch();
   const guitarsPagination = useAppSelector(selectGuitars);
   const page = useAppSelector(selectPage);
-
-  if (guitarsPagination && page > guitarsPagination.totalPages) {
-    dispatch(setPage(guitarsPagination.totalPages));
-  }
 
   const [queryTypes, setQueryTypes] = useState<string[]>([]);
   const [queryGuitarStrings, setQueryGuitarStrings] = useState<string[]>([]);
@@ -31,6 +28,12 @@ export default function GuitarsList(): JSX.Element {
   );
 
   useEffect(() => {
+    if (guitarsPagination && page > guitarsPagination.totalPages) {
+      dispatch(setPage(1));
+    }
+  }, [dispatch, guitarsPagination, page]);
+
+  useEffect(() => {
     const queryStringSign =
       queryTypes.length !== 0 || querySortDirection || querySortOption
         ? '?'
@@ -41,12 +44,12 @@ export default function GuitarsList(): JSX.Element {
       `page=${page}`,
     ];
 
-    const queryString = `${queryStringSign}${queryParams
+    const query = `${queryStringSign}${queryParams
       .concat(queryTypes.map((type) => `type=${type}`))
       .concat(queryGuitarStrings.map((strings) => `guitarStrings=${strings}`))
       .join('&')}`;
-
-    dispatch(fetchGuitarsAction(queryString));
+    dispatch(setQuery(query));
+    dispatch(fetchGuitarsAction(query));
   }, [
     dispatch,
     page,

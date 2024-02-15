@@ -5,4 +5,5 @@ export type GuitarProcess = {
   guitar: GuitarWithPhoto | null;
   isLoading: boolean;
   page: number;
+  query: string;
 };

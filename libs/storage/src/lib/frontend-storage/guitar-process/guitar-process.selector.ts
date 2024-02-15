@@ -11,3 +11,5 @@ export const selectIsLoading = (state: Pick<State, NameSpace.Guitar>) =>
   state[NameSpace.Guitar].isLoading;
 export const selectPage = (state: Pick<State, NameSpace.Guitar>) =>
   state[NameSpace.Guitar].page;
+export const selectQuery = (state: Pick<State, NameSpace.Guitar>) =>
+  state[NameSpace.Guitar].query;
