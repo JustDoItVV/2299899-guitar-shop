@@ -8,12 +8,17 @@ import { Prisma } from '@prisma/client';
 import { GuitarEntity } from './guitar.entity';
 
 @Injectable()
-export class GuitarRepository extends BasePostgresRepository<GuitarEntity, Guitar> {
+export class GuitarRepository extends BasePostgresRepository<
+  GuitarEntity,
+  Guitar
+> {
   constructor(protected readonly client: PrismaClientService) {
     super(client, GuitarEntity.fromObject);
   }
 
-  private async getGuitarCount(where: Prisma.GuitarWhereInput): Promise<number> {
+  private async getGuitarCount(
+    where: Prisma.GuitarWhereInput
+  ): Promise<number> {
     return this.client.guitar.count({ where });
   }
 
@@ -31,17 +36,26 @@ export class GuitarRepository extends BasePostgresRepository<GuitarEntity, Guita
   }
 
   public async find(query?: GuitarQuery): Promise<Pagination<GuitarEntity>> {
-    const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
+    const skip =
+      query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit;
     const where: Prisma.GuitarWhereInput = {};
     const orderBy: Prisma.GuitarOrderByWithRelationAndSearchRelevanceInput = {};
 
     if (query?.type) {
-      where.type = query.type;
+      if (Array.isArray(query.type)) {
+        where.type = { in: query.type as GuitarType[] };
+      } else {
+        where.type = query.type as GuitarType;
+      }
     }
 
     if (query?.guitarStrings) {
-      where.guitarStrings = query.guitarStrings;
+      if (Array.isArray(query.guitarStrings)) {
+        where.guitarStrings = { in: query.guitarStrings as number[] };
+      } else {
+        where.guitarStrings = query.guitarStrings as number;
+      }
     }
 
     if (query.sortOption === SortOption.CreatedAt) {
@@ -56,7 +70,12 @@ export class GuitarRepository extends BasePostgresRepository<GuitarEntity, Guita
     ]);
 
     return {
-      entities: documents.map((document) => this.createEntityFromDocument({ ...document, type: document.type as GuitarType })),
+      entities: documents.map((document) =>
+        this.createEntityFromDocument({
+          ...document,
+          type: document.type as GuitarType,
+        })
+      ),
       currentPage: query?.page,
       totalPages: this.calculateGuitarPage(count, take),
       itemsPerPage: take,
@@ -66,7 +85,12 @@ export class GuitarRepository extends BasePostgresRepository<GuitarEntity, Guita
 
   public async findById(id: string): Promise<GuitarEntity | null> {
     const document = await this.client.guitar.findFirst({ where: { id } });
-    return document ? this.createEntityFromDocument({ ...document, type: document.type as GuitarType }) : null;
+    return document
+      ? this.createEntityFromDocument({
+          ...document,
+          type: document.type as GuitarType,
+        })
+      : null;
   }
 
   public async update(id: string, entity: GuitarEntity): Promise<GuitarEntity> {
@@ -85,7 +109,10 @@ export class GuitarRepository extends BasePostgresRepository<GuitarEntity, Guita
       },
     });
 
-    return this.createEntityFromDocument({ ...updatedDocument, type: updatedDocument.type as GuitarType });
+    return this.createEntityFromDocument({
+      ...updatedDocument,
+      type: updatedDocument.type as GuitarType,
+    });
   }
 
   public async deleteById(id: string): Promise<void> {
