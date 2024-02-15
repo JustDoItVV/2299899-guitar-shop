@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { toast } from 'react-toastify';
 
 import { ApiRoute } from '@guitar-shop/consts';
 import {
@@ -77,11 +78,23 @@ export const postGuitarAction = createAsyncThunk<
   FormData,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
 >('guitar/postGuitar', async (formData, { dispatch, extra: api }) => {
-  const { data } = await api.post<GuitarWithPhoto>(ApiRoute.Guitars, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-  dispatch(redirectToRoute(AppRoute.Catalog));
-  return data;
+  try {
+    const { data } = await api.post<GuitarWithPhoto>(
+      ApiRoute.Guitars,
+      formData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    );
+    dispatch(redirectToRoute(AppRoute.Catalog));
+    return data;
+  } catch (error) {
+    if (Array.isArray(error.response.data.message)) {
+      error.response.data.message.map((message: string) => toast(message));
+    } else {
+      toast(error.response.data.message);
+    }
+  }
 });
 
 export const patchGuitarAction = createAsyncThunk<
@@ -90,9 +103,17 @@ export const patchGuitarAction = createAsyncThunk<
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
 >('guitar/patchGuitar', async ({ formData, id }, { dispatch, extra: api }) => {
   const apiRoute = `${ApiRoute.Guitars}/${id}`;
-  const { data } = await api.patch<GuitarWithPhoto>(apiRoute, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-  dispatch(redirectToRoute(AppRoute.Catalog));
-  return data;
+  try {
+    const { data } = await api.patch<GuitarWithPhoto>(apiRoute, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    dispatch(redirectToRoute(AppRoute.Catalog));
+    return data;
+  } catch (error) {
+    if (Array.isArray(error.response.data.message)) {
+      error.response.data.message.map((message: string) => toast(message));
+    } else {
+      toast(error.response.data.message);
+    }
+  }
 });

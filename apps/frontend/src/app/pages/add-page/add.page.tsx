@@ -292,6 +292,7 @@ export default function AddPage(): JSX.Element {
                         name="title"
                         defaultValue=""
                         placeholder="Наименование"
+                        required
                         onChange={getInputChangeHandler<
                           string,
                           HTMLInputElement
@@ -307,7 +308,8 @@ export default function AddPage(): JSX.Element {
                         type="text"
                         name="price"
                         defaultValue=""
-                        placeholder="Цена в формате 00 000"
+                        placeholder="Цена в формате 000 000"
+                        required
                         onChange={getInputChangeHandler<
                           string,
                           HTMLInputElement
@@ -324,6 +326,7 @@ export default function AddPage(): JSX.Element {
                         name="vendorCode"
                         defaultValue=""
                         placeholder="Артикул товара"
+                        required
                         onChange={getInputChangeHandler<
                           string,
                           HTMLInputElement
@@ -338,7 +341,8 @@ export default function AddPage(): JSX.Element {
                       <textarea
                         name="description"
                         placeholder=""
-                        defaultValue={''}
+                        defaultValue=""
+                        required
                         onChange={getInputChangeHandler<
                           string,
                           HTMLTextAreaElement
