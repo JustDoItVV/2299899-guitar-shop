@@ -6,7 +6,10 @@ import { Injectable } from '@nestjs/common';
 import { RefreshTokenEntity } from './refresh-token.entity';
 
 @Injectable()
-export class RefreshTokenRepository extends BasePostgresRepository<RefreshTokenEntity, RefreshToken> {
+export class RefreshTokenRepository extends BasePostgresRepository<
+  RefreshTokenEntity,
+  RefreshToken
+> {
   constructor(protected readonly client: PrismaClientService) {
     super(client, RefreshTokenEntity.fromObject);
   }
@@ -20,7 +23,9 @@ export class RefreshTokenRepository extends BasePostgresRepository<RefreshTokenE
     return entity;
   }
 
-  public async findByTokenId(tokenId: string): Promise<RefreshTokenEntity | null> {
+  public async findByTokenId(
+    tokenId: string
+  ): Promise<RefreshTokenEntity | null> {
     const document = await this.client.refreshToken.findFirst({
       where: { tokenId },
     });
@@ -33,6 +38,8 @@ export class RefreshTokenRepository extends BasePostgresRepository<RefreshTokenE
   }
 
   public async deleteExpired() {
-    return this.client.refreshToken.deleteMany({ where: { expiresIn: { lt: new Date() } } });
+    return this.client.refreshToken.deleteMany({
+      where: { expiresIn: { lt: new Date() } },
+    });
   }
 }

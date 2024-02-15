@@ -9,7 +9,9 @@ export interface CliConfig {
 }
 
 const validationSchema = Joi.object({
-  environment: Joi.string().valid(...Object.values(Environment)).required(),
+  environment: Joi.string()
+    .valid(...Object.values(Environment))
+    .required(),
   defaultUser: Joi.object({
     name: Joi.string().required(),
     email: Joi.string().required(),
@@ -32,7 +34,7 @@ function getConfig(): CliConfig {
       name: process.env.DEFAULT_USER_NAME,
       email: process.env.DEFAULT_USER_EMAIL,
       password: process.env.DEFAULT_USER_PASSWORD,
-    }
+    },
   };
 
   validateConfig(config);

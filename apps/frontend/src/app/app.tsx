@@ -5,8 +5,6 @@ import { Route, Routes } from 'react-router-dom';
 import { checkAuthAction, selectAuthStatus } from '@guitar-shop/storage';
 import { AppRoute } from '@guitar-shop/types';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
 import PrivateRoute from './components/private-route/private-route.component';
 import { useAppDispatch, useAppSelector } from './hooks';
 import AddPage from './pages/add-page/add.page';

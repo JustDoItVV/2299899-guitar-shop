@@ -8,17 +8,8 @@ import { GuitarRepository } from './guitar.repository';
 import { GuitarService } from './guitar.service';
 
 @Module({
-  imports: [
-    PrismaClientModule,
-    BackendConfigModule,
-  ],
-  controllers: [
-    GuitarController,
-  ],
-  providers: [
-    GuitarRepository,
-    GuitarService,
-    JwtAccessStrategy,
-  ],
+  imports: [PrismaClientModule, BackendConfigModule],
+  controllers: [GuitarController],
+  providers: [GuitarRepository, GuitarService, JwtAccessStrategy],
 })
 export class GuitarModule {}

@@ -16,7 +16,7 @@ export enum VendorCodelength {
 }
 
 export const GUITAR_STRINGS = [4, 6, 7, 12];
-export const GUITAR_STRINGS_STRING = "[4, 6, 7, 12]";
+export const GUITAR_STRINGS_STRING = '[4, 6, 7, 12]';
 
 export enum Price {
   Min = 100,

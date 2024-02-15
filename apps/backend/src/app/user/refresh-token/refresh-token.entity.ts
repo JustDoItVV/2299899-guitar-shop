@@ -10,7 +10,7 @@ export class RefreshTokenEntity implements Entity<string, RefreshToken> {
   [key: string]: unknown;
 
   constructor(refreshToken: RefreshToken) {
-    this.createdAt = new Date;
+    this.createdAt = new Date();
     this.populate(refreshToken);
   }
 

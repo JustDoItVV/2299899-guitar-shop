@@ -5,10 +5,6 @@ import { GuitarModule } from './guitar/guitar.module';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [
-    BackendConfigModule,
-    UserModule,
-    GuitarModule,
-  ],
+  imports: [BackendConfigModule, UserModule, GuitarModule],
 })
 export class AppModule {}

@@ -9,7 +9,7 @@ export interface MailConfig {
     user: string;
     password: string;
     from: string;
-  },
+  };
 }
 
 const validationSchema = Joi.object({
@@ -46,4 +46,3 @@ function getConfig(): MailConfig {
 }
 
 export default registerAs('mail', getConfig);
-

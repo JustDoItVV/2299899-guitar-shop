@@ -6,8 +6,14 @@ import { CreateUserDto, LoginUserDto } from '@guitar-shop/dtos';
 import { createJWTPayload } from '@guitar-shop/helpers';
 import { Token } from '@guitar-shop/types';
 import {
-    ConflictException, HttpException, HttpStatus, Inject, Injectable, Logger, NotFoundException,
-    UnauthorizedException
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -25,13 +31,14 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly refreshTokenService: RefreshTokenService,
     private readonly jwtService: JwtService,
-    @Inject(JwtConfig.KEY) private readonly jwtConfig: ConfigType<typeof JwtConfig>,
-    private readonly mailService: MailService,
+    @Inject(JwtConfig.KEY)
+    private readonly jwtConfig: ConfigType<typeof JwtConfig>,
+    private readonly mailService: MailService
   ) {}
 
   public async register(dto: CreateUserDto) {
     const { name, email, password } = dto;
-    const user = { name, email, passwordHash: ''};
+    const user = { name, email, passwordHash: '' };
     const existedUser = await this.userRepository.findByEmail(email);
 
     if (existedUser) {
@@ -40,26 +47,36 @@ export class UserService {
 
     const entity = await new UserEntity(user).setPassword(password);
     const document = await this.userRepository.save(entity);
-    await this.mailService.sendRegisterSuccessMail({ ...dto })
+    await this.mailService.sendRegisterSuccessMail({ ...dto });
     return document;
   }
 
   public async createUserToken(user: UserEntity): Promise<Token> {
     const accessTokenPayload = createJWTPayload(user.toPOJO());
-    const refreshTokenPayload = { ...accessTokenPayload, tokenId: crypto.randomUUID() };
+    const refreshTokenPayload = {
+      ...accessTokenPayload,
+      tokenId: crypto.randomUUID(),
+    };
     await this.refreshTokenService.create(refreshTokenPayload);
 
     try {
       const accessToken = await this.jwtService.signAsync(accessTokenPayload);
-      const refreshToken = await this.jwtService.signAsync(refreshTokenPayload, {
-        secret: this.jwtConfig.refreshTokenSecret,
-        expiresIn: this.jwtConfig.refreshTokenExpiresIn,
-      });
+      const refreshToken = await this.jwtService.signAsync(
+        refreshTokenPayload,
+        {
+          secret: this.jwtConfig.refreshTokenSecret,
+          expiresIn: this.jwtConfig.refreshTokenExpiresIn,
+        }
+      );
       return { accessToken, refreshToken };
-
     } catch (error) {
-      this.logger.error(`[${UserErrorMessage.TokenCreationError}]: ${error.message}`);
-      throw new HttpException(UserErrorMessage.TokenCreationError, HttpStatus.INTERNAL_SERVER_ERROR);
+      this.logger.error(
+        `[${UserErrorMessage.TokenCreationError}]: ${error.message}`
+      );
+      throw new HttpException(
+        UserErrorMessage.TokenCreationError,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 
@@ -81,7 +98,7 @@ export class UserService {
       throw new NotFoundException(UserErrorMessage.NotFound);
     }
 
-    if (!await document.comparePassword(password)) {
+    if (!(await document.comparePassword(password))) {
       throw new UnauthorizedException(UserErrorMessage.PasswordWrong);
     }
 

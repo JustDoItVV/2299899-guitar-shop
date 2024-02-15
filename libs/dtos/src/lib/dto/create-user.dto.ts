@@ -1,6 +1,16 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
-import { NameLength, PasswordLength, UserErrorMessage } from '@guitar-shop/consts';
+import {
+  NameLength,
+  PasswordLength,
+  UserErrorMessage,
+} from '@guitar-shop/consts';
 
 export class CreateUserDto {
   @MaxLength(NameLength.Max, { message: UserErrorMessage.NameMaxLength })
@@ -13,8 +23,12 @@ export class CreateUserDto {
   @IsNotEmpty({ message: UserErrorMessage.EmailRequired })
   public email: string;
 
-  @MaxLength(PasswordLength.Max, { message: UserErrorMessage.PasswordMaxLength })
-  @MinLength(PasswordLength.Min, { message: UserErrorMessage.PasswordMinLength })
+  @MaxLength(PasswordLength.Max, {
+    message: UserErrorMessage.PasswordMaxLength,
+  })
+  @MinLength(PasswordLength.Min, {
+    message: UserErrorMessage.PasswordMinLength,
+  })
   @IsString({ message: UserErrorMessage.NotString })
   @IsNotEmpty({ message: UserErrorMessage.PasswordRequired })
   public password: string;

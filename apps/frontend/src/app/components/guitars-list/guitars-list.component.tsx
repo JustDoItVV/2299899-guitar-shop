@@ -10,7 +10,7 @@ import {
 import { GuitarType, SortDirection, SortOption } from '@guitar-shop/types';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import GuitarItem from '../guitar-item/guitar-item';
+import GuitarItem from '../guitar-item/guitar-item.component';
 
 export default function GuitarsList(): JSX.Element {
   const dispatch = useAppDispatch();

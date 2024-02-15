@@ -16,12 +16,13 @@ import { UserService } from './user.service';
   imports: [
     PrismaClientModule,
     RefreshTokenModule,
-    JwtModule.registerAsync({ inject: [ConfigService], useFactory: getJwtOptions }),
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: getJwtOptions,
+    }),
     MailModule,
   ],
-  controllers: [
-    UserController,
-  ],
+  controllers: [UserController],
   providers: [
     UserRepository,
     UserService,

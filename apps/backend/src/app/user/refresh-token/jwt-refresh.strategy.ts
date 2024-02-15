@@ -11,11 +11,15 @@ import { RefreshTokenService } from './refresh-token.service';
 import { TokenNotExistsException } from './token-not-exists.exception';
 
 @Injectable()
-export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
+export class JwtRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh'
+) {
   constructor(
-    @Inject(JwtConfig.KEY) private readonly jwtConfig: ConfigType<typeof JwtConfig>,
+    @Inject(JwtConfig.KEY)
+    private readonly jwtConfig: ConfigType<typeof JwtConfig>,
     private readonly authService: UserService,
-    private readonly refreshTokenService: RefreshTokenService,
+    private readonly refreshTokenService: RefreshTokenService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

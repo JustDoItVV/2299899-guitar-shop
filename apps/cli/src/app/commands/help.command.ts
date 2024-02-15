@@ -16,8 +16,12 @@ export class HelpCommand implements CliCommand {
       Example:
           ${chalk.green('npm run cli --<command> [--arguments]')}
       Commands:
-          ${chalk.green('--help')}:                       # Prints help text with available commands
-          ${chalk.green('--generate <n> <connection string>')}:  # Generates <n> number of mock data and fill database via <connection string>
+          ${chalk.green(
+            '--help'
+          )}:                       # Prints help text with available commands
+          ${chalk.green(
+            '--generate <n> <connection string>'
+          )}:  # Generates <n> number of mock data and fill database via <connection string>
     `)
     );
   }

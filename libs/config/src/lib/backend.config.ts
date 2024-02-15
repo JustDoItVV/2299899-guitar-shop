@@ -10,7 +10,9 @@ export interface BackendConfig {
 }
 
 const validationSchema = Joi.object({
-  environment: Joi.string().valid(...Object.values(Environment)).required(),
+  environment: Joi.string()
+    .valid(...Object.values(Environment))
+    .required(),
   appPort: Joi.number().port().required(),
   uploadDirectory: Joi.string().required(),
 });

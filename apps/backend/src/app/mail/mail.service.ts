@@ -13,7 +13,8 @@ interface UserWithPassword extends User {
 export class MailService {
   constructor(
     private readonly mailerService: MailerService,
-    @Inject(MailConfig.KEY) private readonly mailConfig: ConfigType<typeof MailConfig>,
+    @Inject(MailConfig.KEY)
+    private readonly mailConfig: ConfigType<typeof MailConfig>
   ) {}
 
   public async sendRegisterSuccessMail(user: UserWithPassword): Promise<void> {

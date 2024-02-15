@@ -13,7 +13,8 @@ import { RefreshTokenRepository } from './refresh-token.repository';
 export class RefreshTokenService {
   constructor(
     private readonly refreshTokenRepository: RefreshTokenRepository,
-    @Inject(JwtConfig.KEY) private readonly jwtOptions: ConfigType<typeof JwtConfig>,
+    @Inject(JwtConfig.KEY)
+    private readonly jwtOptions: ConfigType<typeof JwtConfig>
   ) {}
 
   public async create(payload: RefreshTokenPayload) {
@@ -33,7 +34,9 @@ export class RefreshTokenService {
   }
 
   public async isExists(tokenId: string): Promise<boolean> {
-    const refreshToken = await this.refreshTokenRepository.findByTokenId(tokenId);
+    const refreshToken = await this.refreshTokenRepository.findByTokenId(
+      tokenId
+    );
     return refreshToken !== null;
   }
 

@@ -22,7 +22,9 @@ export class CliApplication {
 
   public getDefaultCommand(): CliCommand | never {
     if (!this.commands[this.defaultCommand]) {
-      throw new Error(`The default command (${this.defaultCommand}) is not registered`);
+      throw new Error(
+        `The default command (${this.defaultCommand}) is not registered`
+      );
     }
 
     return this.commands[this.defaultCommand];

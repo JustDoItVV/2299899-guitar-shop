@@ -14,7 +14,7 @@ export enum UserErrorMessage {
   TokenCreationError = 'Token creation error',
   EmailRequired = 'Email required',
   EmailNotValid = 'Email not valid',
-  NameRequired = 'User\'s name required',
+  NameRequired = "User's name required",
   NameMinLength = `User name min length is ${NameLength.Min} symbols`,
   NameMaxLength = `User name max length is ${NameLength.Max} symbols`,
   PasswordRequired = 'Password required',

@@ -10,11 +10,7 @@ import { MailService } from './mail.service';
     BackendConfigModule,
     MailerModule.forRootAsync(getMailerAsyncOptions('mail.mail')),
   ],
-  providers: [
-    MailService,
-  ],
-  exports: [
-    MailService,
-  ],
+  providers: [MailService],
+  exports: [MailService],
 })
 export class MailModule {}
