@@ -8,12 +8,17 @@ const initialState: GuitarProcess = {
   guitars: null,
   guitar: null,
   isLoading: false,
+  page: 1,
 };
 
 export const guitarProcess = createSlice({
   name: NameSpace.Guitar,
   initialState,
-  reducers: {},
+  reducers: {
+    setPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchGuitarsAction.pending, (state) => {
@@ -45,4 +50,4 @@ export const guitarProcess = createSlice({
   },
 });
 
-// export const { } = userProcess.actions;
+export const { setPage } = guitarProcess.actions;

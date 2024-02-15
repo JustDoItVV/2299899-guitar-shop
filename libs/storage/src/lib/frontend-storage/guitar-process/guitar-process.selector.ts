@@ -9,3 +9,5 @@ export const selectGuitar = (state: Pick<State, NameSpace.Guitar>) =>
   state[NameSpace.Guitar].guitar;
 export const selectIsLoading = (state: Pick<State, NameSpace.Guitar>) =>
   state[NameSpace.Guitar].isLoading;
+export const selectPage = (state: Pick<State, NameSpace.Guitar>) =>
+  state[NameSpace.Guitar].page;

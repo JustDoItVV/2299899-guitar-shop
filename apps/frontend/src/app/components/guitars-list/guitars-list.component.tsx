@@ -1,6 +1,11 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 
-import { fetchGuitarsAction, selectGuitars } from '@guitar-shop/storage';
+import {
+  fetchGuitarsAction,
+  selectGuitars,
+  selectPage,
+  setPage,
+} from '@guitar-shop/storage';
 import { GuitarType, SortDirection, SortOption } from '@guitar-shop/types';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -9,6 +14,11 @@ import GuitarItem from '../guitar-item/guitar-item';
 export default function GuitarsList(): JSX.Element {
   const dispatch = useAppDispatch();
   const guitarsPagination = useAppSelector(selectGuitars);
+  const page = useAppSelector(selectPage);
+
+  if (guitarsPagination && page > guitarsPagination.totalPages) {
+    dispatch(setPage(guitarsPagination.totalPages));
+  }
 
   const [queryTypes, setQueryTypes] = useState<string[]>([]);
   const [queryGuitarStrings, setQueryGuitarStrings] = useState<string[]>([]);
@@ -28,6 +38,7 @@ export default function GuitarsList(): JSX.Element {
     const queryParams = [
       `sortDirection=${querySortDirection}`,
       `sortOption=${querySortOption}`,
+      `page=${page}`,
     ];
 
     const queryString = `${queryStringSign}${queryParams
@@ -38,6 +49,7 @@ export default function GuitarsList(): JSX.Element {
     dispatch(fetchGuitarsAction(queryString));
   }, [
     dispatch,
+    page,
     queryTypes,
     queryGuitarStrings,
     isArrayChanged,
