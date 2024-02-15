@@ -15,6 +15,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { redirectToRoute } from '../actions/common';
 import { AppDispatch } from '../types/app-dispatch.type';
 import { State } from '../types/state.type';
+import { setResponseError } from '../user-process/user-process.slice';
 
 export const checkAuthAction = createAsyncThunk<
   UserWithToken,
@@ -30,16 +31,31 @@ export const loginAction = createAsyncThunk<
   UserWithToken,
   AuthData,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
->('user/login', async ({ email, password }, { dispatch, extra: api }) => {
-  const apiRoute = `${ApiRoute.User}${ApiRoute.Login}`;
-  const { data } = await api.post<UserWithToken>(apiRoute, {
-    email,
-    password,
-  });
-  saveToken(data.accessToken);
-  dispatch(redirectToRoute(AppRoute.Catalog));
-  return data;
-});
+>(
+  'user/login',
+  async ({ email, password }, { dispatch, extra: api, rejectWithValue }) => {
+    const apiRoute = `${ApiRoute.User}${ApiRoute.Login}`;
+    try {
+      const res = await api.post<UserWithToken>(apiRoute, {
+        email,
+        password,
+      });
+      const { data } = res;
+
+      saveToken(data.accessToken);
+      dispatch(setResponseError(null));
+      dispatch(redirectToRoute(AppRoute.Catalog));
+      return data;
+    } catch (error) {
+      if (!error.response) {
+        throw error;
+      }
+
+      dispatch(setResponseError(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const registerAction = createAsyncThunk<
   User,
@@ -47,15 +63,30 @@ export const registerAction = createAsyncThunk<
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
 >(
   'user/register',
-  async ({ name, email, password }, { dispatch, extra: api }) => {
+  async (
+    { name, email, password },
+    { dispatch, extra: api, rejectWithValue }
+  ) => {
     const apiRoute = `${ApiRoute.User}${ApiRoute.Register}`;
-    const { data } = await api.post<User>(apiRoute, {
-      name,
-      email,
-      password,
-    });
-    dispatch(redirectToRoute(AppRoute.Login));
-    toast(`Registration successful! Email was sent to ${email}. Please login!`);
-    return data;
+    try {
+      const { data } = await api.post<User>(apiRoute, {
+        name,
+        email,
+        password,
+      });
+      dispatch(setResponseError(null));
+      dispatch(redirectToRoute(AppRoute.Login));
+      toast(
+        `Registration successful! Email was sent to ${email}. Please login!`
+      );
+      return data;
+    } catch (error) {
+      if (!error.response) {
+        throw error;
+      }
+
+      dispatch(setResponseError(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
   }
 );

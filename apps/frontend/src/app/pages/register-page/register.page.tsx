@@ -5,6 +5,7 @@ import {
   redirectToRoute,
   registerAction,
   selectAuthStatus,
+  selectResponseError,
 } from '@guitar-shop/storage';
 import { AppRoute, AuthStatus } from '@guitar-shop/types';
 
@@ -18,6 +19,7 @@ export default function RegisterPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authStatus = useAppSelector(selectAuthStatus);
+  const responseError = useAppSelector(selectResponseError);
 
   const nameRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -50,6 +52,25 @@ export default function RegisterPage(): JSX.Element {
     }
   };
 
+  const getMessage = (
+    codes: number[],
+    statusCode: number | undefined,
+    message: string | string[] | undefined,
+    field: string
+  ) => {
+    if (!statusCode || !message || !codes.includes(statusCode)) {
+      return ' ';
+    }
+
+    if (!Array.isArray(message)) {
+      return message;
+    }
+
+    return message
+      .filter((item) => item.toLowerCase().includes(field))
+      .join(', ');
+  };
+
   return (
     <div>
       <Helmet>
@@ -73,7 +94,14 @@ export default function RegisterPage(): JSX.Element {
                     autoComplete="off"
                     required
                   />
-                  <p className="input-login__error">Заполните поле</p>
+                  <p className="input-login__error">
+                    {getMessage(
+                      [400],
+                      responseError?.statusCode,
+                      responseError?.message,
+                      'name'
+                    )}
+                  </p>
                 </div>
                 <div className="input-login">
                   <label htmlFor="email">Введите e-mail</label>
@@ -85,7 +113,14 @@ export default function RegisterPage(): JSX.Element {
                     autoComplete="off"
                     required
                   />
-                  <p className="input-login__error">Заполните поле</p>
+                  <p className="input-login__error">
+                    {getMessage(
+                      [400, 409],
+                      responseError?.statusCode,
+                      responseError?.message,
+                      'email'
+                    )}
+                  </p>
                 </div>
                 <div className="input-login">
                   <label htmlFor="password">Придумайте пароль</label>
@@ -105,7 +140,14 @@ export default function RegisterPage(): JSX.Element {
                       </svg>
                     </button>
                   </span>
-                  <p className="input-login__error">Заполните поле</p>
+                  <p className="input-login__error">
+                    {getMessage(
+                      [400],
+                      responseError?.statusCode,
+                      responseError?.message,
+                      'password'
+                    )}
+                  </p>
                 </div>
                 <button
                   className="button login__button button--medium"

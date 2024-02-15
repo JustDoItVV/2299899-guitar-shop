@@ -2,11 +2,12 @@ import { AuthStatus, NameSpace, User } from '@guitar-shop/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { checkAuthAction, loginAction } from '../api-actions/user-actions';
-import { UserProcess } from '../types/user-process.type';
+import { ResponseError, UserProcess } from '../types/user-process.type';
 
 const initialState: UserProcess = {
   authStatus: AuthStatus.Unknown,
   user: null,
+  responseError: null,
 };
 
 export const userProcess = createSlice({
@@ -18,6 +19,9 @@ export const userProcess = createSlice({
     },
     setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
+    },
+    setResponseError: (state, action: PayloadAction<ResponseError | null>) => {
+      state.responseError = action.payload;
     },
   },
   extraReducers(builder) {
@@ -39,4 +43,4 @@ export const userProcess = createSlice({
   },
 });
 
-export const { setUser, setAuthStatus } = userProcess.actions;
+export const { setUser, setAuthStatus, setResponseError } = userProcess.actions;

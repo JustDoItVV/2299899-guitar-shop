@@ -1,25 +1,8 @@
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  HttpStatusCode,
-  InternalAxiosRequestConfig,
-} from 'axios';
-import { toast } from 'react-toastify';
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 
 import { BACKEND_URL, REQUEST_TIMEOUT } from '@guitar-shop/consts';
 
 import { getToken } from './token';
-
-type DetailMessageType = {
-  type: string;
-  message: string;
-};
-
-const StatusCodeMapping: Record<number, boolean> = {
-  [HttpStatusCode.BadRequest]: true,
-  [HttpStatusCode.Unauthorized]: true,
-  [HttpStatusCode.NotFound]: true,
-};
 
 export const createApiService = (): AxiosInstance => {
   const api = axios.create({
@@ -36,30 +19,6 @@ export const createApiService = (): AxiosInstance => {
 
     return config;
   });
-
-  api.interceptors.response.use(
-    (response) => response,
-    (error: AxiosError<DetailMessageType>) => {
-      if (error.response && !!StatusCodeMapping[error.response.status]) {
-        const detailMessage = error.response.data;
-        console.log(detailMessage);
-      }
-
-      throw error;
-    }
-  );
-
-  api.interceptors.response.use(
-    (response) => response,
-    (error: AxiosError<DetailMessageType>) => {
-      if (error.response && !!StatusCodeMapping[error.response.status]) {
-        const detailMessage = error.response.data;
-        toast.error(detailMessage.message);
-      }
-
-      throw error;
-    }
-  );
 
   return api;
 };

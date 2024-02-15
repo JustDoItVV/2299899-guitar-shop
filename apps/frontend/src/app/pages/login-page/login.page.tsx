@@ -6,6 +6,7 @@ import {
   loginAction,
   redirectToRoute,
   selectAuthStatus,
+  selectResponseError,
 } from '@guitar-shop/storage';
 import { AppRoute, AuthStatus } from '@guitar-shop/types';
 
@@ -22,6 +23,7 @@ export default function LoginPage(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const authStatus = useAppSelector(selectAuthStatus);
+  const responseError = useAppSelector(selectResponseError);
 
   useEffect(() => {
     if (authStatus === AuthStatus.Auth) {
@@ -43,6 +45,25 @@ export default function LoginPage(): JSX.Element {
         })
       );
     }
+  };
+
+  const getMessage = (
+    codes: number[],
+    statusCode: number | undefined,
+    message: string | string[] | undefined,
+    field: string
+  ) => {
+    if (!statusCode || !message || !codes.includes(statusCode)) {
+      return ' ';
+    }
+
+    if (!Array.isArray(message)) {
+      return message;
+    }
+
+    return message
+      .filter((item) => item.toLowerCase().includes(field))
+      .join(', ');
   };
 
   return (
@@ -75,7 +96,14 @@ export default function LoginPage(): JSX.Element {
                     autoComplete="off"
                     required
                   />
-                  <p className="input-login__error">Заполните поле</p>
+                  <p className="input-login__error">
+                    {getMessage(
+                      [400, 404],
+                      responseError?.statusCode,
+                      responseError?.message,
+                      'email'
+                    )}
+                  </p>
                 </div>
                 <div className="input-login">
                   <label htmlFor="passwordLogin">Введите пароль</label>
@@ -95,7 +123,14 @@ export default function LoginPage(): JSX.Element {
                       </svg>
                     </button>
                   </span>
-                  <p className="input-login__error">Заполните поле</p>
+                  <p className="input-login__error">
+                    {getMessage(
+                      [400, 401],
+                      responseError?.statusCode,
+                      responseError?.message,
+                      'password'
+                    )}
+                  </p>
                 </div>
                 <button
                   className="button login__button button--medium"
