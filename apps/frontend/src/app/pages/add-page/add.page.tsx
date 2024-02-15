@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  MouseEvent,
+  useRef,
+  useState,
+} from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
@@ -20,7 +26,7 @@ export default function AddPage(): JSX.Element {
   const titleRef = useRef<string>('');
   const priceRef = useRef<string>('');
   const vendorCodeRef = useRef<string>('');
-  const descriptionref = useRef<string>('');
+  const descriptionRef = useRef<string>('');
 
   const [imagePreview, setImagePreview] = useState<JSX.Element | null>(null);
 
@@ -58,49 +64,23 @@ export default function AddPage(): JSX.Element {
     }
   };
 
-  const handleTypeRadioClick = (evt: MouseEvent<HTMLInputElement>) => {
-    if (evt.currentTarget) {
-      typeRef.current = evt.currentTarget.defaultValue as GuitarType;
-    }
-  };
+  const getRadioButtonClickHandler =
+    <T,>(ref: React.MutableRefObject<T>) =>
+    (evt: MouseEvent<HTMLInputElement>) => {
+      if (evt.currentTarget) {
+        ref.current = evt.currentTarget.defaultValue as T;
+      }
+    };
 
-  const handleGuitarStringsRadioClick = (evt: MouseEvent<HTMLInputElement>) => {
-    if (evt.currentTarget) {
-      guitarStringsRef.current = evt.currentTarget.defaultValue;
-    }
-  };
-
-  const handlePublishDateInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (evt.currentTarget) {
-      publishDateRef.current = evt.currentTarget.value;
-    }
-  };
-
-  const handleTitleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (evt.currentTarget) {
-      titleRef.current = evt.currentTarget.value;
-    }
-  };
-
-  const handlePriceInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (evt.currentTarget) {
-      priceRef.current = evt.currentTarget.value;
-    }
-  };
-
-  const handleVendorCodeInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (evt.currentTarget) {
-      vendorCodeRef.current = evt.currentTarget.value;
-    }
-  };
-
-  const handleDesciptionInputChange = (
-    evt: ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    if (evt.currentTarget) {
-      descriptionref.current = evt.currentTarget.value;
-    }
-  };
+  const getInputChangeHandler =
+    <T, V extends HTMLInputElement | HTMLTextAreaElement>(
+      ref: React.MutableRefObject<T>
+    ) =>
+    (evt: ChangeEvent<V>) => {
+      if (evt.currentTarget) {
+        ref.current = evt.currentTarget.value as T;
+      }
+    };
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -116,7 +96,7 @@ export default function AddPage(): JSX.Element {
     formData.append('title', titleRef.current);
     formData.append('price', priceRef.current);
     formData.append('vendorCode', vendorCodeRef.current);
-    formData.append('description', descriptionref.current);
+    formData.append('description', descriptionRef.current);
 
     dispatch(postGuitarAction(formData));
     dispatch(redirectToRoute(AppRoute.Catalog));
@@ -197,7 +177,7 @@ export default function AddPage(): JSX.Element {
                       id="guitar"
                       name="type"
                       defaultValue={GuitarType.Accustic}
-                      onClick={handleTypeRadioClick}
+                      onClick={getRadioButtonClickHandler<GuitarType>(typeRef)}
                       defaultChecked
                     />
                     <label htmlFor="guitar">Акустическая гитара</label>
@@ -206,7 +186,7 @@ export default function AddPage(): JSX.Element {
                       id="el-guitar"
                       name="type"
                       defaultValue={GuitarType.Electro}
-                      onClick={handleTypeRadioClick}
+                      onClick={getRadioButtonClickHandler<GuitarType>(typeRef)}
                     />
                     <label htmlFor="el-guitar">Электрогитара</label>
                     <input
@@ -214,7 +194,7 @@ export default function AddPage(): JSX.Element {
                       id="ukulele"
                       name="type"
                       defaultValue={GuitarType.Ukulele}
-                      onClick={handleTypeRadioClick}
+                      onClick={getRadioButtonClickHandler<GuitarType>(typeRef)}
                     />
                     <label htmlFor="ukulele">Укулеле</label>
                   </div>
@@ -225,7 +205,9 @@ export default function AddPage(): JSX.Element {
                       id="string-qty-4"
                       name="guitarStrings"
                       defaultValue={4}
-                      onClick={handleGuitarStringsRadioClick}
+                      onClick={getRadioButtonClickHandler<string>(
+                        guitarStringsRef
+                      )}
                       defaultChecked
                     />
                     <label htmlFor="string-qty-4">4</label>
@@ -233,7 +215,9 @@ export default function AddPage(): JSX.Element {
                       type="radio"
                       id="string-qty-6"
                       name="guitarStrings"
-                      onClick={handleGuitarStringsRadioClick}
+                      onClick={getRadioButtonClickHandler<string>(
+                        guitarStringsRef
+                      )}
                       defaultValue={6}
                     />
                     <label htmlFor="string-qty-6">6</label>
@@ -241,7 +225,9 @@ export default function AddPage(): JSX.Element {
                       type="radio"
                       id="string-qty-7"
                       name="guitarStrings"
-                      onClick={handleGuitarStringsRadioClick}
+                      onClick={getRadioButtonClickHandler<string>(
+                        guitarStringsRef
+                      )}
                       defaultValue={7}
                     />
                     <label htmlFor="string-qty-7">7</label>
@@ -249,7 +235,9 @@ export default function AddPage(): JSX.Element {
                       type="radio"
                       id="string-qty-12"
                       name="guitarStrings"
-                      onClick={handleGuitarStringsRadioClick}
+                      onClick={getRadioButtonClickHandler<string>(
+                        guitarStringsRef
+                      )}
                       defaultValue={12}
                     />
                     <label htmlFor="string-qty-12">12</label>
@@ -264,7 +252,10 @@ export default function AddPage(): JSX.Element {
                         name="publishDate"
                         defaultValue=""
                         placeholder="Дата в формате 00.00.0000"
-                        onChange={handlePublishDateInputChange}
+                        onChange={getInputChangeHandler<
+                          string,
+                          HTMLInputElement
+                        >(publishDateRef)}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -277,7 +268,10 @@ export default function AddPage(): JSX.Element {
                         name="title"
                         defaultValue=""
                         placeholder="Наименование"
-                        onChange={handleTitleInputChange}
+                        onChange={getInputChangeHandler<
+                          string,
+                          HTMLInputElement
+                        >(titleRef)}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -290,7 +284,10 @@ export default function AddPage(): JSX.Element {
                         name="price"
                         defaultValue=""
                         placeholder="Цена в формате 00 000"
-                        onChange={handlePriceInputChange}
+                        onChange={getInputChangeHandler<
+                          string,
+                          HTMLInputElement
+                        >(priceRef)}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -303,7 +300,10 @@ export default function AddPage(): JSX.Element {
                         name="vendorCode"
                         defaultValue=""
                         placeholder="Артикул товара"
-                        onChange={handleVendorCodeInputChange}
+                        onChange={getInputChangeHandler<
+                          string,
+                          HTMLInputElement
+                        >(vendorCodeRef)}
                       />
                     </label>
                     <p>Заполните поле</p>
@@ -315,7 +315,10 @@ export default function AddPage(): JSX.Element {
                         name="description"
                         placeholder=""
                         defaultValue={''}
-                        onChange={handleDesciptionInputChange}
+                        onChange={getInputChangeHandler<
+                          string,
+                          HTMLTextAreaElement
+                        >(descriptionRef)}
                       />
                     </label>
                     <p>Заполните поле</p>
