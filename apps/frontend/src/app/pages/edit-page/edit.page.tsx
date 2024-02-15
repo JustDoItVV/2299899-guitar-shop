@@ -20,7 +20,7 @@ import {
   selectGuitar,
   selectIsLoading,
 } from '@guitar-shop/storage';
-import { AppRoute, GuitarType } from '@guitar-shop/types';
+import { AppRoute, GuitarType, GuitarWithPhoto } from '@guitar-shop/types';
 
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
@@ -39,7 +39,11 @@ export default function EditPage(): JSX.Element {
   const guitar = useAppSelector(selectGuitar);
   const isLoading = useAppSelector(selectIsLoading);
 
-  const defaultImagePreview = (
+  useEffect(() => {
+    dispatch(fetchGuitarAction(id));
+  }, [id, dispatch]);
+
+  const getImagePreview = (guitar: GuitarWithPhoto | null) => (
     <img
       className="edit-item-image__image"
       src={guitar?.photoUrl}
@@ -51,8 +55,12 @@ export default function EditPage(): JSX.Element {
   );
 
   const [imagePreview, setImagePreview] = useState<JSX.Element | null>(
-    defaultImagePreview
+    getImagePreview(guitar)
   );
+
+  useEffect(() => {
+    setImagePreview(getImagePreview(guitar));
+  }, [guitar]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const typeRef = useRef<GuitarType>(guitar?.type || GuitarType.Accustic);
@@ -64,10 +72,6 @@ export default function EditPage(): JSX.Element {
   const priceRef = useRef<string>(guitar?.price.toString() || '');
   const vendorCodeRef = useRef<string>(guitar?.vendorCode || '');
   const descriptionRef = useRef<string>(guitar?.description || '');
-
-  useEffect(() => {
-    dispatch(fetchGuitarAction(id));
-  }, [id, dispatch]);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -92,7 +96,7 @@ export default function EditPage(): JSX.Element {
         />
       );
     } else {
-      setImagePreview(defaultImagePreview);
+      setImagePreview(getImagePreview(guitar));
     }
   };
 
@@ -107,7 +111,7 @@ export default function EditPage(): JSX.Element {
     evt.preventDefault();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
-      setImagePreview(defaultImagePreview);
+      setImagePreview(getImagePreview(guitar));
     }
   };
 
@@ -163,7 +167,6 @@ export default function EditPage(): JSX.Element {
     formData.append('description', descriptionRef.current);
 
     dispatch(patchGuitarAction({ formData, id }));
-    dispatch(redirectToRoute(AppRoute.Catalog));
   };
 
   const handleBackButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {

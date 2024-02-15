@@ -46,7 +46,9 @@ export default function GuitarItem(props: GuitarItemProps): JSX.Element {
           <p className="catalog-item__data-date">
             Дата добавления {publishDate}
           </p>
-          <p className="catalog-item__data-price">{guitar.price} ₽</p>
+          <p className="catalog-item__data-price">
+            {guitar.price.toLocaleString().replace(/,/g, ' ')} ₽
+          </p>
         </div>
       </div>
       <div className="catalog-item__buttons">
