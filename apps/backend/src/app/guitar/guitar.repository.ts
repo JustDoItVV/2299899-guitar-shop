@@ -64,6 +64,8 @@ export class GuitarRepository extends BasePostgresRepository<
       orderBy.price = query.sortDirection;
     }
 
+    where.price = { gte: query.price[0], lte: query.price[1] };
+
     const [documents, count] = await Promise.all([
       this.client.guitar.findMany({ where, orderBy, skip, take }),
       this.getGuitarCount(where),

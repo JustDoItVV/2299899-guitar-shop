@@ -6,6 +6,7 @@ import {
   DefaultPagination,
   GUITAR_STRINGS,
   GuitarErrorMessage,
+  Price,
 } from '@guitar-shop/consts';
 import { TransformToInt } from '@guitar-shop/core';
 import { GuitarType, SortDirection, SortOption } from '@guitar-shop/types';
@@ -40,4 +41,8 @@ export class GuitarQuery {
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsOptional()
   public guitarStrings?: number | number[];
+
+  @TransformToInt(GuitarErrorMessage.Nan)
+  @IsOptional()
+  public price: [number, number] = [Price.Min, Price.Max];
 }

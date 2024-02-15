@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
+import { EMAIL_ERROR_CODES, PASSWORD_ERROR_CODES } from '@guitar-shop/consts';
 import {
   loginAction,
   redirectToRoute,
@@ -98,7 +99,7 @@ export default function LoginPage(): JSX.Element {
                   />
                   <p className="input-login__error">
                     {getMessage(
-                      [400, 404],
+                      EMAIL_ERROR_CODES,
                       responseError?.statusCode,
                       responseError?.message,
                       'email'
@@ -125,7 +126,7 @@ export default function LoginPage(): JSX.Element {
                   </span>
                   <p className="input-login__error">
                     {getMessage(
-                      [400, 401],
+                      PASSWORD_ERROR_CODES,
                       responseError?.statusCode,
                       responseError?.message,
                       'password'

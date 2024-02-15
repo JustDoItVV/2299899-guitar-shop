@@ -57,12 +57,12 @@ export default function GuitarPage(): JSX.Element {
               </li>
               <li className="breadcrumbs__item">
                 <Link className="link" to={AppRoute.Catalog}>
-                  Каталог
+                  Товары
                 </Link>
               </li>
               <li className="breadcrumbs__item">
                 <Link className="link" to={`.${AppRoute.Catalog}/${id}`}>
-                  Товар
+                  {guitar.title}
                 </Link>
               </li>
             </ul>

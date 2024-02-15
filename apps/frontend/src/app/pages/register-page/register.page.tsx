@@ -2,6 +2,11 @@ import { FormEvent, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import {
+  EMAIL_ERROR_CODES,
+  NAME_ERROR_CODES,
+  PASSWORD_ERROR_CODES,
+} from '@guitar-shop/consts';
+import {
   redirectToRoute,
   registerAction,
   selectAuthStatus,
@@ -96,7 +101,7 @@ export default function RegisterPage(): JSX.Element {
                   />
                   <p className="input-login__error">
                     {getMessage(
-                      [400],
+                      NAME_ERROR_CODES,
                       responseError?.statusCode,
                       responseError?.message,
                       'name'
@@ -115,7 +120,7 @@ export default function RegisterPage(): JSX.Element {
                   />
                   <p className="input-login__error">
                     {getMessage(
-                      [400, 409],
+                      EMAIL_ERROR_CODES,
                       responseError?.statusCode,
                       responseError?.message,
                       'email'
@@ -142,7 +147,7 @@ export default function RegisterPage(): JSX.Element {
                   </span>
                   <p className="input-login__error">
                     {getMessage(
-                      [400],
+                      PASSWORD_ERROR_CODES,
                       responseError?.statusCode,
                       responseError?.message,
                       'password'

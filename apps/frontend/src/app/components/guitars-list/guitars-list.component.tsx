@@ -1,5 +1,14 @@
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import {
+  ChangeEvent,
+  FormEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
+import { Price } from '@guitar-shop/consts';
 import {
   fetchGuitarsAction,
   selectGuitars,
@@ -26,6 +35,10 @@ export default function GuitarsList(): JSX.Element {
   const [querySortOption, setQuerySortOption] = useState<string>(
     SortOption.CreatedAt
   );
+  const [queryPrice, setQueryPrice] = useState<[number, number]>([
+    Price.Min,
+    Price.Max,
+  ]);
 
   useEffect(() => {
     if (guitarsPagination && page > guitarsPagination.totalPages) {
@@ -47,6 +60,7 @@ export default function GuitarsList(): JSX.Element {
     const query = `${queryStringSign}${queryParams
       .concat(queryTypes.map((type) => `type=${type}`))
       .concat(queryGuitarStrings.map((strings) => `guitarStrings=${strings}`))
+      .concat(queryPrice.map((price) => `price=${price}`))
       .join('&')}`;
     dispatch(setQuery(query));
     dispatch(fetchGuitarsAction(query));
@@ -57,8 +71,35 @@ export default function GuitarsList(): JSX.Element {
     queryGuitarStrings,
     querySortDirection,
     querySortOption,
+    queryPrice,
     isArrayChanged,
   ]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedSetQueryPrice = useCallback(
+    debounce((value: [number, number]) => {
+      setQueryPrice(value);
+      setIsArrayChanged(!isArrayChanged);
+    }, 500),
+    []
+  );
+
+  const handlePriceMinInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      const value = parseInt(evt.currentTarget.value, 10);
+      if (value) {
+        debouncedSetQueryPrice([value, queryPrice[1]]);
+      }
+    }
+  };
+  const handlePriceMaxInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    if (evt.currentTarget) {
+      const value = parseInt(evt.currentTarget.value, 10);
+      if (value) {
+        debouncedSetQueryPrice([queryPrice[0], value]);
+      }
+    }
+  };
 
   const handleTypeInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     if (evt.currentTarget) {
@@ -93,7 +134,6 @@ export default function GuitarsList(): JSX.Element {
   };
 
   const handleResetFormEvent = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
     setQueryTypes([]);
     setQueryGuitarStrings([]);
     setIsArrayChanged(!isArrayChanged);
@@ -117,6 +157,24 @@ export default function GuitarsList(): JSX.Element {
       ))
     : [];
 
+  const guitarMinPrice = guitarsPagination
+    ? guitarsPagination.entities.reduce(
+        (guitar, value) => {
+          return guitar.price > value.price ? value : guitar;
+        },
+        { price: Price.Max }
+      )
+    : { price: Price.Max };
+
+  const guitarMaxPrice = guitarsPagination
+    ? guitarsPagination.entities.reduce(
+        (guitar, value) => {
+          return guitar.price < value.price ? value : guitar;
+        },
+        { price: Price.Min }
+      )
+    : { price: Price.Min };
+
   return (
     <div className="catalog">
       <form
@@ -126,6 +184,31 @@ export default function GuitarsList(): JSX.Element {
         onReset={handleResetFormEvent}
       >
         <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
+        <fieldset className="catalog-filter__block">
+          <legend className="catalog-filter__block-title">Цена</legend>
+          <div className="form-input">
+            <label htmlFor="priceMin">От </label>
+            <input
+              type="number"
+              min={0}
+              placeholder={guitarMinPrice.price.toString()}
+              id="priceMin"
+              name="priceMin"
+              onChange={handlePriceMinInputChange}
+            />
+          </div>
+          <div className="form-input">
+            <label htmlFor="priceMax">До </label>
+            <input
+              type="number"
+              placeholder={guitarMaxPrice.price.toString()}
+              max={Price.Max}
+              id="priceMax"
+              name="priceMax"
+              onChange={handlePriceMaxInputChange}
+            />
+          </div>
+        </fieldset>
         <fieldset className="catalog-filter__block">
           <legend className="catalog-filter__block-title">Тип гитар</legend>
           <div className="form-checkbox catalog-filter__block-item">
