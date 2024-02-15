@@ -11,9 +11,9 @@ import { AppRoute, AuthStatus } from '@guitar-shop/types';
 
 import Footer from '../../components/footer/footer.component';
 import Header from '../../components/header/header.component';
+import LoadingPage from '../../components/loading/loading.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import LoadingPage from '../loading-page/loading-page';
 
 export default function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();

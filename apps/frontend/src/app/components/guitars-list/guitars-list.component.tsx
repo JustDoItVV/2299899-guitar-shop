@@ -1,16 +1,13 @@
-import { GuitarWithPhoto, Pagination } from '@guitar-shop/types';
+import { selectGuitars } from '@guitar-shop/storage';
 
+import { useAppSelector } from '../../hooks';
 import GuitarItem from '../guitar-item/guitar-item';
 
-type GuitarsListProps = {
-  pagination: Pagination<GuitarWithPhoto>;
-};
+export default function GuitarsList(): JSX.Element {
+  const guitarsPagination = useAppSelector(selectGuitars);
 
-export default function GuitarsList(props: GuitarsListProps): JSX.Element {
-  const { pagination } = props;
-
-  const items = pagination
-    ? pagination.entities.map((guitar) => (
+  const items = guitarsPagination
+    ? guitarsPagination.entities.map((guitar) => (
         <GuitarItem guitar={guitar} key={`guitar-item-${guitar.id}`} />
       ))
     : [];

@@ -9,10 +9,11 @@ import { State } from '../types/state.type';
 
 export const fetchGuitarsAction = createAsyncThunk<
   Pagination<GuitarWithPhoto>,
-  undefined,
+  string,
   { dispatch: AppDispatch; state: State; extra: AxiosInstance }
->('guitar/fetchGuitars', async (_arg, { extra: api }) => {
-  const { data } = await api.get<Pagination<GuitarWithPhoto>>(ApiRoute.Guitars);
+>('guitar/fetchGuitars', async (queryString, { extra: api }) => {
+  const apiRoute = `${ApiRoute.Guitars}${queryString}`;
+  const { data } = await api.get<Pagination<GuitarWithPhoto>>(apiRoute);
 
   const guitars = await Promise.all(
     data.entities.map(async (guitar) => {

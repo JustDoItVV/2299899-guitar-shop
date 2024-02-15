@@ -1,35 +1,48 @@
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import {
-  fetchGuitarsAction,
-  redirectToRoute,
-  selectGuitars,
-  selectIsLoading,
-} from '@guitar-shop/storage';
-import { AppRoute } from '@guitar-shop/types';
+import { fetchGuitarsAction, redirectToRoute } from '@guitar-shop/storage';
+import { AppRoute, SortDirection, SortOption } from '@guitar-shop/types';
 
 import Footer from '../../components/footer/footer.component';
 import GuitarsList from '../../components/guitars-list/guitars-list.component';
 import Header from '../../components/header/header.component';
 import SvgIcons from '../../components/svg-icons/svg-icons.component';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import LoadingPage from '../loading-page/loading-page';
+import { useAppDispatch } from '../../hooks';
 
 export default function CatalogPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const guitars = useAppSelector(selectGuitars);
-  const isLoading = useAppSelector(selectIsLoading);
+  const [queryType, setQueryType] = useState<string>('');
+  const [querySortDirection, setQuerySortDirection] = useState<string>(
+    SortDirection.Asc
+  );
+  const [querySortOption, setQuerySortOption] = useState<string>(
+    SortOption.CreatedAt
+  );
 
   useEffect(() => {
-    dispatch(fetchGuitarsAction());
-  }, [dispatch]);
+    const queryStringSign = queryType || querySortDirection ? '?' : '';
+    const queryString = `${queryStringSign}${[
+      `${queryType ? 'type=' : ''}${queryType}`,
+      `sortDirection=${querySortDirection}`,
+      `sortOption=${querySortOption}`,
+    ].join('&')}`;
+    dispatch(fetchGuitarsAction(queryString));
+  }, [dispatch, queryType, querySortDirection, querySortOption]);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  const handleSortOptionButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    setQuerySortOption(evt.currentTarget.value);
+  };
+
+  const handleSortDirectionButtonClick = (
+    evt: MouseEvent<HTMLButtonElement>
+  ) => {
+    evt.preventDefault();
+    setQuerySortDirection(evt.currentTarget.value);
+  };
 
   const handleAddButtonClick = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
@@ -154,31 +167,55 @@ export default function CatalogPage(): JSX.Element {
                   <h2 className="catalog-sort__title">Сортировать:</h2>
                   <div className="catalog-sort__type">
                     <button
-                      className="catalog-sort__type-button catalog-sort__type-button--active"
-                      aria-label="по цене"
+                      className={`catalog-sort__type-button ${
+                        querySortOption === SortOption.CreatedAt
+                          ? 'catalog-sort__type-button--active'
+                          : ''
+                      }`}
+                      aria-label="по дате"
+                      value={SortOption.CreatedAt}
+                      onClick={handleSortOptionButtonClick}
                     >
                       по дате
                     </button>
                     <button
-                      className="catalog-sort__type-button"
+                      className={`catalog-sort__type-button ${
+                        querySortOption === SortOption.Price
+                          ? 'catalog-sort__type-button--active'
+                          : ''
+                      }`}
                       aria-label="по цене"
+                      value={SortOption.Price}
+                      onClick={handleSortOptionButtonClick}
                     >
                       по цене
                     </button>
                   </div>
                   <div className="catalog-sort__order">
                     <button
-                      className="catalog-sort__order-button catalog-sort__order-button--up"
+                      className={`catalog-sort__order-button catalog-sort__order-button--up ${
+                        querySortDirection === SortDirection.Asc
+                          ? 'catalog-sort__order-button--active'
+                          : ''
+                      }`}
                       aria-label="По возрастанию"
+                      value={SortDirection.Asc}
+                      onClick={handleSortDirectionButtonClick}
                     />
                     <button
-                      className="catalog-sort__order-button catalog-sort__order-button--down catalog-sort__order-button--active"
+                      className={`catalog-sort__order-button catalog-sort__order-button--down ${
+                        querySortDirection === SortDirection.Desc
+                          ? 'catalog-sort__order-button--active'
+                          : ''
+                      }`}
                       aria-label="По убыванию"
+                      value={SortDirection.Desc}
+                      onClick={handleSortDirectionButtonClick}
                     />
                   </div>
                 </div>
                 <div className="catalog-cards">
-                  <GuitarsList pagination={guitars} />
+                  <GuitarsList />
                 </div>
               </div>
               <button
