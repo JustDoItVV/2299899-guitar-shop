@@ -1,15 +1,34 @@
 import {
-    IsDateString, IsEnum, IsIn, IsOptional, IsString, Max, MaxLength, Min, MinLength
-} from 'class-validator';
+  IsDateString,
+  IsEnum,
+  IsIn,
+  IsOptional,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+} from "class-validator";
 
 import {
-    DescriptionLength, GUITAR_STRINGS, GuitarErrorMessage, Price, TitleLength, VendorCodelength
-} from '@guitar-shop/consts';
-import { TransformToInt } from '@guitar-shop/core';
-import { getValidationErrorMessageWithLogging } from '@guitar-shop/helpers';
-import { GuitarType } from '@guitar-shop/types';
+  DescriptionLength,
+  GUITAR_STRINGS,
+  GuitarErrorMessage,
+  Price,
+  TitleLength,
+  VendorCodelength,
+} from "@guitar-shop/consts";
+import { TransformToInt } from "@guitar-shop/core";
+import { getValidationErrorMessageWithLogging } from "@guitar-shop/helpers";
+import { GuitarType } from "@guitar-shop/types";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateGuitarDto {
+  @ApiProperty({
+    description: "Guitar title.",
+    example: "Bass guitar",
+    required: false,
+  })
   @MaxLength(TitleLength.Max, {
     message: getValidationErrorMessageWithLogging(
       GuitarErrorMessage.TitleMaxLength
@@ -24,6 +43,11 @@ export class UpdateGuitarDto {
   @IsOptional()
   public title?: string;
 
+  @ApiProperty({
+    description: "Guitar description.",
+    example: "Good bass guitar",
+    required: false,
+  })
   @MaxLength(DescriptionLength.Max, {
     message: getValidationErrorMessageWithLogging(
       GuitarErrorMessage.DescriptionMaxLength
@@ -40,6 +64,12 @@ export class UpdateGuitarDto {
   @IsOptional()
   public description?: string;
 
+  @ApiProperty({
+    description: "Guitar type.",
+    enum: GuitarType,
+    example: GuitarType.Accustic,
+    required: false,
+  })
   @IsEnum(GuitarType)
   @IsString({
     message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
@@ -47,6 +77,11 @@ export class UpdateGuitarDto {
   @IsOptional()
   public type?: GuitarType;
 
+  @ApiProperty({
+    description: "Guitar vendor code.",
+    example: "123456789",
+    required: false,
+  })
   @MaxLength(VendorCodelength.Max, {
     message: getValidationErrorMessageWithLogging(
       GuitarErrorMessage.VendorCodeMaxLength
@@ -63,6 +98,11 @@ export class UpdateGuitarDto {
   @IsOptional()
   public vendorCode?: string;
 
+  @ApiProperty({
+    description: "Guitar strings number.",
+    example: 4,
+    required: false,
+  })
   @IsIn(GUITAR_STRINGS, {
     message: getValidationErrorMessageWithLogging(
       GuitarErrorMessage.WrongGuitarStrings
@@ -72,6 +112,11 @@ export class UpdateGuitarDto {
   @IsOptional()
   public guitarStrings?: number;
 
+  @ApiProperty({
+    description: "Guitar price.",
+    example: 500000,
+    required: false,
+  })
   @Max(Price.Max, {
     message: getValidationErrorMessageWithLogging(GuitarErrorMessage.PriceMax),
   })
@@ -82,6 +127,11 @@ export class UpdateGuitarDto {
   @IsOptional()
   public price?: number;
 
+  @ApiProperty({
+    description: "Guitar publish date",
+    example: "2024-02-16T00:00:00.000Z",
+    required: false,
+  })
   @IsDateString(
     {},
     {

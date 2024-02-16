@@ -1,20 +1,25 @@
-import 'multer';
+import "multer";
 
-import { AllowedPhotoFormat, GuitarErrorMessage } from '@guitar-shop/consts';
+import {
+  AllowedPhotoFormat,
+  ApiGuitarMessage,
+  FILE_PARAMETER,
+  GuitarErrorMessage,
+} from "@guitar-shop/consts";
 import {
   GuitarDataTrasformationPipe,
   JwtAuthGuard,
   PhotoValidationPipe,
-} from '@guitar-shop/core';
+} from "@guitar-shop/core";
 import {
   CreateGuitarDto,
   GuitarPaginationRdo,
   GuitarQuery,
   GuitarRdo,
   UpdateGuitarDto,
-} from '@guitar-shop/dtos';
-import { fillDto } from '@guitar-shop/helpers';
-import { RequestWithTokenPayload } from '@guitar-shop/types';
+} from "@guitar-shop/dtos";
+import { fillDto } from "@guitar-shop/helpers";
+import { RequestWithTokenPayload } from "@guitar-shop/types";
 import {
   Body,
   Controller,
@@ -32,16 +37,32 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiParam,
+  ApiResponse,
+  ApiSecurity,
+  ApiTags,
+} from "@nestjs/swagger";
 
-import { GuitarService } from './guitar.service';
+import { GuitarService } from "./guitar.service";
 
-@Controller('guitars')
+@ApiSecurity("basic")
+@ApiTags("guitars")
+@Controller("guitars")
 export class GuitarController {
   constructor(private readonly guitarService: GuitarService) {}
 
-  @Get('/')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: ApiGuitarMessage.GuitarShow,
+    type: GuitarPaginationRdo,
+  })
+  @Get("/")
   @UsePipes(
     new ValidationPipe({
       transform: true,
@@ -53,8 +74,25 @@ export class GuitarController {
     return fillDto(GuitarPaginationRdo, result);
   }
 
-  @Post('/')
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiBearerAuth()
+  @ApiParam(FILE_PARAMETER)
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ description: "New guitar data", type: CreateGuitarDto })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: ApiGuitarMessage.GuitarCreated,
+    type: GuitarRdo,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: ApiGuitarMessage.Unauthorized,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: ApiGuitarMessage.ValidationFailed,
+  })
+  @Post("/")
+  @UseInterceptors(FileInterceptor("file"))
   @UseGuards(JwtAuthGuard)
   public async create(
     @Req() { user }: RequestWithTokenPayload,
@@ -71,17 +109,44 @@ export class GuitarController {
     return fillDto(GuitarRdo, newGuitar.toPOJO());
   }
 
-  @Get('/:id')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: ApiGuitarMessage.GuitarRead,
+    type: GuitarRdo,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: ApiGuitarMessage.GuitarNotFound,
+  })
+  @Get("/:id")
   @UseGuards(JwtAuthGuard)
-  public async showById(@Param('id') id: string) {
+  public async showById(@Param("id") id: string) {
     return await this.guitarService.getById(id);
   }
 
-  @Patch('/:id')
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiBearerAuth()
+  @ApiParam({ ...FILE_PARAMETER, required: false })
+  @ApiConsumes("application/json", "multipart/form-data")
+  @ApiBody({ description: "New guitar data", type: UpdateGuitarDto })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: ApiGuitarMessage.GuitarUpdate,
+    type: GuitarRdo,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: ApiGuitarMessage.Unauthorized,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: ApiGuitarMessage.ValidationFailed,
+  })
+  @Patch("/:id")
+  @UseInterceptors(FileInterceptor("file"))
   @UseGuards(JwtAuthGuard)
   public async update(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body(new GuitarDataTrasformationPipe()) dto: UpdateGuitarDto,
     @UploadedFile(
       new PhotoValidationPipe(
@@ -95,15 +160,37 @@ export class GuitarController {
     return fillDto(GuitarRdo, updatedGuitar.toPOJO());
   }
 
-  @Delete('/:id')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: ApiGuitarMessage.GuitarDelete,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: ApiGuitarMessage.Unauthorized,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: ApiGuitarMessage.GuitarNotFound,
+  })
+  @Delete("/:id")
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
-  public async delete(@Param('id') id: string) {
+  public async delete(@Param("id") id: string) {
     await this.guitarService.delete(id);
   }
 
-  @Get('/:id/photo')
-  public async getPhoto(@Param('id') id: string) {
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: ApiGuitarMessage.PhotoRead,
+    type: String,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: ApiGuitarMessage.PhotoNotFound,
+  })
+  @Get("/:id/photo")
+  public async getPhoto(@Param("id") id: string) {
     const photoUrl = await this.guitarService.getFile(id);
     return photoUrl;
   }
