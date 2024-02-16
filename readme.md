@@ -54,6 +54,16 @@ npm run backend
 npm run frontend
 ```
 
+### 8. Ручное тестирование
+
+- Ручное тестирование rest api сервиса `Backend` доступно с помощь .http файлов:
+  - [apps/backend/src/app/user/user.http](apps/backend/src/app/user/user.http)
+  - [apps/backend/src/app/guitar/guitar.http](apps/backend/src/app/guitar/guitar.http)
+- Интерфейс FakeSMPTServer для контроля отправки почты: [http://localhost:1083/](http://localhost:1083/)
+- Frontend: [http://localhost:3000/](http://localhost:3000/)
+- Интерактивная OpenAPI спецификация: [http://localhost:3001/spec/](http://localhost:3001/spec/)
+- Файл .yml спецификации [specification/specification.yml](specification/specification.yml)
+
 ## Сценарии
 
 - `cli` - запук CLI утилиты для генерации моковых данных и заполнения базы данных. Команды:
