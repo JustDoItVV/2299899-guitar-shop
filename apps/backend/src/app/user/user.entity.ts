@@ -1,9 +1,8 @@
 import { compare, genSalt, hash } from 'bcrypt';
 
+import { SALT_ROUNDS } from '@guitar-shop/consts';
 import { Entity } from '@guitar-shop/core';
 import { UserAuth } from '@guitar-shop/types';
-
-import { SALT_ROUNDS } from '../../const';
 
 export class UserEntity implements UserAuth, Entity<string, UserAuth> {
   public id: string;
