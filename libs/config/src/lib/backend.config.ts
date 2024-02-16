@@ -28,7 +28,7 @@ function validateConfig(config: BackendConfig): void {
 function getConfig(): BackendConfig {
   const config: BackendConfig = {
     environment: process.env.NODE_ENV as Environment,
-    appPort: parseInt(process.env.APP_PORT, 10),
+    appPort: parseInt(process.env.BACKEND_PORT, 10),
     uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH,
   };
 
