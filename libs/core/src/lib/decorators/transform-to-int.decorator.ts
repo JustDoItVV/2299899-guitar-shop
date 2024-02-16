@@ -1,13 +1,15 @@
 import { Transform } from 'class-transformer';
 
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Logger } from '@nestjs/common';
 
 export function TransformToInt(message: string) {
   const parseValue = (value: string) => {
     const parsedValue = parseInt(value, 10);
 
     if (!parsedValue) {
-      throw new BadRequestException(`${value} ${message}`);
+      const error = new BadRequestException(`${value} ${message}`);
+      Logger.error(error);
+      throw error;
     }
 
     return parsedValue;

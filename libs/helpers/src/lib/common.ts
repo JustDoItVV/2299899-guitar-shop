@@ -1,4 +1,8 @@
 import { ClassTransformOptions, plainToInstance } from 'class-transformer';
+import { ValidationArguments } from 'class-validator';
+
+import { UserErrorMessage } from '@guitar-shop/consts';
+import { BadRequestException, Logger } from '@nestjs/common';
 
 export type DateTimeUnit = 's' | 'h' | 'd' | 'm' | 'y';
 export type TimeAndUnit = {
@@ -46,4 +50,22 @@ export function parseTime(time: string): TimeAndUnit {
   }
 
   return { value, unit };
+}
+
+export function getTokenNotExistErrorMessage(tokenId: string): string {
+  return `${tokenId}: ${UserErrorMessage.TokenNotExist}`;
+}
+
+export function getUserAlreadyExist(email: string): string {
+  return `${email}: ${UserErrorMessage.UserExists}`;
+}
+
+export function getValidationErrorMessageWithLogging(
+  message: string
+): (args: ValidationArguments) => string {
+  return (args: ValidationArguments) => {
+    const exception = new BadRequestException(`${args.value}: ${message}`);
+    Logger.error(exception);
+    return message;
+  };
 }

@@ -14,6 +14,7 @@ export * from './lib/pipes/guitar-data-trasformation.pipe';
 export * from './lib/pipes/photo-validation.pipe';
 
 export * from './lib/exceptions/only-anonymous.exception';
+export * from './lib/exceptions/token-not-exists.exception';
 
 export * from './lib/decorators/user-param.decorator';
 export * from './lib/decorators/transform-to-int.decorator';

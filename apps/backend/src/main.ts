@@ -10,7 +10,7 @@ import { AppModule } from './app/app.module';
 import { GLOBAL_PREFIX } from './const';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { logger: ['error'] });
   app.enableCors();
   app.setGlobalPrefix(GLOBAL_PREFIX);
 

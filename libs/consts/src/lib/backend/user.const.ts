@@ -12,6 +12,7 @@ export enum UserErrorMessage {
   NotString = 'must be a string',
   UserExists = 'User with this email already exists',
   TokenCreationError = 'Token creation error',
+  TokenNotExist = "Token does't exist",
   EmailRequired = 'Email required',
   EmailNotValid = 'Email not valid',
   NameRequired = "User's name required",
@@ -22,6 +23,7 @@ export enum UserErrorMessage {
   PasswordMaxLength = `Password max length is ${PasswordLength.Max} symbols`,
   PasswordWrong = 'Wrong password',
   NotFound = 'User with this email not found',
+  OnlyAnonymous = 'Forbidden. Allowed only for unauthorized',
 }
 
 export const SALT_ROUNDS = 10;

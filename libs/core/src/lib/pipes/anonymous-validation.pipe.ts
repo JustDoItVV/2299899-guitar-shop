@@ -1,4 +1,5 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
+import { UserErrorMessage } from '@guitar-shop/consts';
+import { Injectable, Logger, PipeTransform } from '@nestjs/common';
 
 import { OnlyAnonymousException } from '../exceptions/only-anonymous.exception';
 
@@ -8,6 +9,7 @@ export class AnonymousValidationPipe
 {
   transform(value: Record<string, unknown>): Record<string, unknown> {
     if (Object.keys(value).length !== 0) {
+      Logger.error(UserErrorMessage.OnlyAnonymous);
       throw new OnlyAnonymousException();
     }
 

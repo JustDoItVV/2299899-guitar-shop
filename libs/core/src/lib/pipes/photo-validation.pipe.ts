@@ -1,6 +1,6 @@
 import 'multer';
 
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, PipeTransform } from '@nestjs/common';
 
 type PhotoFile = Express.Multer.File;
 
@@ -20,12 +20,16 @@ export class PhotoValidationPipe
       const { originalname, mimetype } = value;
       const fileExtention = originalname.split('.').at(-1);
 
-      if (!Object.keys(this.allowedFormats).includes(fileExtention)) {
-        throw new BadRequestException(this.message);
-      }
+      const isValidFormatCondition1 = Object.keys(this.allowedFormats).includes(
+        fileExtention
+      );
+      const isValidFormatCondition2 =
+        this.allowedFormats[fileExtention] === mimetype;
 
-      if (this.allowedFormats[fileExtention] !== mimetype) {
-        throw new BadRequestException(this.message);
+      if (!isValidFormatCondition1 || !isValidFormatCondition2) {
+        const error = new BadRequestException(this.message);
+        Logger.error(error);
+        throw error;
       }
     }
 

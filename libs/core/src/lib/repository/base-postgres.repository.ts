@@ -1,3 +1,4 @@
+import { NOT_IMPLEMENTED_ERROR } from '@guitar-shop/consts';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { PrismaClientService } from '@guitar-shop/models';
 
@@ -25,21 +26,21 @@ export abstract class BasePostgresRepository<
   }
 
   public async save(_entity: EntityType): Promise<EntityType> {
-    throw new Error('Not implemented');
+    throw new Error(NOT_IMPLEMENTED_ERROR);
   }
 
   public async findById(_id: EntityType['id']): Promise<EntityType | null> {
-    throw new Error('Not implemented');
+    throw new Error(NOT_IMPLEMENTED_ERROR);
   }
 
   public async update(
     _id: EntityType['id'],
     _entity: EntityType
   ): Promise<EntityType> {
-    throw new Error('Not implemented');
+    throw new Error(NOT_IMPLEMENTED_ERROR);
   }
 
   public async deleteById(_id: EntityType['id']): Promise<void> {
-    throw new Error('Not implemented');
+    throw new Error(NOT_IMPLEMENTED_ERROR);
   }
 }

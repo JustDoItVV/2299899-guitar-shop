@@ -2,13 +2,10 @@ import { Transform } from 'class-transformer';
 import { IsEnum, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import {
-  DEFAULT_SORT_DIRECTION,
-  DefaultPagination,
-  GUITAR_STRINGS,
-  GuitarErrorMessage,
-  Price,
+    DEFAULT_SORT_DIRECTION, DefaultPagination, GUITAR_STRINGS, GuitarErrorMessage, Price
 } from '@guitar-shop/consts';
 import { TransformToInt } from '@guitar-shop/core';
+import { getValidationErrorMessageWithLogging } from '@guitar-shop/helpers';
 import { GuitarType, SortDirection, SortOption } from '@guitar-shop/types';
 
 export class GuitarQuery {
@@ -30,13 +27,18 @@ export class GuitarQuery {
   public page: number = DefaultPagination.Page;
 
   @IsEnum(GuitarType, { each: true })
-  @IsString({ message: GuitarErrorMessage.NotString, each: true })
+  @IsString({
+    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    each: true,
+  })
   @IsOptional()
   public type?: GuitarType | GuitarType[];
 
   @IsIn(GUITAR_STRINGS, {
     each: true,
-    message: GuitarErrorMessage.WrongGuitarStrings,
+    message: getValidationErrorMessageWithLogging(
+      GuitarErrorMessage.WrongGuitarStrings
+    ),
   })
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsOptional()

@@ -3,17 +3,11 @@ import * as crypto from 'node:crypto';
 import { JwtConfig } from '@guitar-shop/config';
 import { UserErrorMessage } from '@guitar-shop/consts';
 import { CreateUserDto, LoginUserDto } from '@guitar-shop/dtos';
-import { createJWTPayload } from '@guitar-shop/helpers';
+import { createJWTPayload, getUserAlreadyExist } from '@guitar-shop/helpers';
 import { Token } from '@guitar-shop/types';
 import {
-  ConflictException,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  Logger,
-  NotFoundException,
-  UnauthorizedException,
+    ConflictException, HttpException, HttpStatus, Inject, Injectable, Logger, NotFoundException,
+    UnauthorizedException
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -25,8 +19,6 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  private readonly logger = new Logger(UserService.name);
-
   constructor(
     private readonly userRepository: UserRepository,
     private readonly refreshTokenService: RefreshTokenService,
@@ -42,7 +34,9 @@ export class UserService {
     const existedUser = await this.userRepository.findByEmail(email);
 
     if (existedUser) {
-      throw new ConflictException(UserErrorMessage.UserExists);
+      const error = new ConflictException(getUserAlreadyExist(email));
+      Logger.error(error);
+      throw error;
     }
 
     const entity = await new UserEntity(user).setPassword(password);
@@ -69,14 +63,13 @@ export class UserService {
         }
       );
       return { accessToken, refreshToken };
-    } catch (error) {
-      this.logger.error(
-        `[${UserErrorMessage.TokenCreationError}]: ${error.message}`
-      );
-      throw new HttpException(
+    } catch {
+      const error = new HttpException(
         UserErrorMessage.TokenCreationError,
         HttpStatus.INTERNAL_SERVER_ERROR
       );
+      Logger.error(error);
+      throw error;
     }
   }
 
@@ -84,7 +77,9 @@ export class UserService {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new NotFoundException(UserErrorMessage.NotFound);
+      const error = new NotFoundException(UserErrorMessage.NotFound);
+      Logger.error(error);
+      throw error;
     }
 
     return user;
@@ -95,11 +90,15 @@ export class UserService {
     const document = await this.userRepository.findByEmail(email);
 
     if (!document) {
-      throw new NotFoundException(UserErrorMessage.NotFound);
+      const error = new NotFoundException(UserErrorMessage.NotFound);
+      Logger.error(error);
+      throw error;
     }
 
     if (!(await document.comparePassword(password))) {
-      throw new UnauthorizedException(UserErrorMessage.PasswordWrong);
+      const error = new UnauthorizedException(UserErrorMessage.PasswordWrong);
+      Logger.error(error);
+      throw error;
     }
 
     return document;

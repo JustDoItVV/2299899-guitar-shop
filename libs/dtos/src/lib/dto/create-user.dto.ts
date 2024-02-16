@@ -1,35 +1,61 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
-import {
-  NameLength,
-  PasswordLength,
-  UserErrorMessage,
-} from '@guitar-shop/consts';
+import { NameLength, PasswordLength, UserErrorMessage } from '@guitar-shop/consts';
+import { getValidationErrorMessageWithLogging } from '@guitar-shop/helpers';
 
 export class CreateUserDto {
-  @MaxLength(NameLength.Max, { message: UserErrorMessage.NameMaxLength })
-  @MinLength(NameLength.Min, { message: UserErrorMessage.NameMinLength })
-  @IsString({ message: UserErrorMessage.NotString })
-  @IsNotEmpty({ message: UserErrorMessage.NameRequired })
+  @MaxLength(NameLength.Max, {
+    message: getValidationErrorMessageWithLogging(
+      UserErrorMessage.NameMaxLength
+    ),
+  })
+  @MinLength(NameLength.Min, {
+    message: getValidationErrorMessageWithLogging(
+      UserErrorMessage.NameMinLength
+    ),
+  })
+  @IsString({
+    message: getValidationErrorMessageWithLogging(UserErrorMessage.NotString),
+  })
+  @IsNotEmpty({
+    message: getValidationErrorMessageWithLogging(
+      UserErrorMessage.NameRequired
+    ),
+  })
   public name: string;
 
-  @IsEmail({}, { message: UserErrorMessage.EmailNotValid })
-  @IsNotEmpty({ message: UserErrorMessage.EmailRequired })
+  @IsEmail(
+    {},
+    {
+      message: getValidationErrorMessageWithLogging(
+        UserErrorMessage.EmailNotValid
+      ),
+    }
+  )
+  @IsNotEmpty({
+    message: getValidationErrorMessageWithLogging(
+      UserErrorMessage.EmailRequired
+    ),
+  })
   public email: string;
 
   @MaxLength(PasswordLength.Max, {
-    message: UserErrorMessage.PasswordMaxLength,
+    message: getValidationErrorMessageWithLogging(
+      UserErrorMessage.PasswordMaxLength
+    ),
   })
   @MinLength(PasswordLength.Min, {
-    message: UserErrorMessage.PasswordMinLength,
+    message: getValidationErrorMessageWithLogging(
+      UserErrorMessage.PasswordMinLength
+    ),
   })
-  @IsString({ message: UserErrorMessage.NotString })
-  @IsNotEmpty({ message: UserErrorMessage.PasswordRequired })
+  @IsString({
+    message: getValidationErrorMessageWithLogging(UserErrorMessage.NotString),
+  })
+  @IsNotEmpty({
+    message: getValidationErrorMessageWithLogging(
+      UserErrorMessage.PasswordRequired
+    ),
+  })
   public password: string;
 }
