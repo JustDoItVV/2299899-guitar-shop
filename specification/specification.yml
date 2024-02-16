@@ -1,0 +1,555 @@
+---
+openapi: 3.0.0
+paths:
+  "/api/user/register":
+    post:
+      operationId: UserController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: New user created
+        "400":
+          description: User creation validation error
+        "409":
+          description: User already exists conflict
+      tags:
+        - users
+      security:
+        - basic: []
+  "/api/user/login":
+    post:
+      operationId: UserController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginUserDto"
+      responses:
+        "201":
+          description: Login successfully
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserRdo"
+        "400":
+          description: Login validation error
+        "401":
+          description: Wrong password
+        "404":
+          description: Email not found
+      tags:
+        - users
+      security:
+        - basic: []
+  "/api/user/check":
+    post:
+      operationId: UserController_checkToken
+      parameters: []
+      responses:
+        "201":
+          description: Check user token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TokenPayloadRdo"
+        "401":
+          description: Unauthorized
+      tags:
+        - users
+      security:
+        - basic: []
+        - bearer: []
+  "/api/user/refresh":
+    post:
+      operationId: UserController_refreshToken
+      parameters:
+        - name: Authorization
+          in: header
+          description: Refresh JWT token
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Refresh token success
+        "401":
+          description: Unauthorized
+      tags:
+        - users
+      security:
+        - basic: []
+        - bearer: []
+  "/api/guitars":
+    get:
+      operationId: GuitarController_show
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Change limit pagination elements count
+          schema:
+            type: number
+        - name: sortOption
+          required: false
+          in: query
+          description: Sort field option
+          schema:
+            enum:
+              - createdAt
+              - Price
+            type: string
+        - name: sortDirection
+          required: false
+          in: query
+          description: Sort direction
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Pagination page
+          schema:
+            type: number
+        - name: type
+          required: false
+          in: query
+          description: Guitar type.
+          schema:
+            enum:
+              - электро
+              - аккустика
+              - укулеле
+            type: string
+        - name: guitarStrings
+          required: false
+          in: query
+          description: Guitar strings number.
+          schema:
+            type: array
+            items:
+              type: number
+        - name: price
+          required: false
+          in: query
+          description: Guitar price.
+          example: 500000
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Guitars list pagination
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GuitarPaginationRdo"
+      tags:
+        - guitars
+      security:
+        - basic: []
+    post:
+      operationId: GuitarController_create
+      parameters:
+        - name: file
+          required: true
+          in: path
+          description: Picture file
+          schema:
+            properties:
+              file:
+                type: string
+                format: binary
+            type: file
+      requestBody:
+        required: true
+        description: New guitar data
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/CreateGuitarDto"
+      responses:
+        "201":
+          description: New post created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GuitarRdo"
+        "400":
+          description: Bad request, failed request validation
+        "401":
+          description: Required jwt token authorization
+      tags:
+        - guitars
+      security:
+        - basic: []
+        - bearer: []
+  "/api/guitars/{id}":
+    get:
+      operationId: GuitarController_showById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Single Guitar
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GuitarRdo"
+        "404":
+          description: Guitar with provided id not found
+      tags:
+        - guitars
+      security:
+        - basic: []
+        - bearer: []
+    patch:
+      operationId: GuitarController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: file
+          in: path
+          description: Picture file
+          schema:
+            properties:
+              file:
+                type: string
+                format: binary
+            type: file
+      requestBody:
+        required: true
+        description: New guitar data
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateGuitarDto"
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/UpdateGuitarDto"
+      responses:
+        "200":
+          description: Guitar updated successfully
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GuitarRdo"
+        "400":
+          description: Bad request, failed request validation
+        "401":
+          description: Required jwt token authorization
+      tags:
+        - guitars
+      security:
+        - basic: []
+        - bearer: []
+    delete:
+      operationId: GuitarController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Guitar deleted
+        "401":
+          description: Required jwt token authorization
+        "404":
+          description: Guitar with provided id not found
+      tags:
+        - guitars
+      security:
+        - basic: []
+        - bearer: []
+  "/api/guitars/{id}/photo":
+    get:
+      operationId: GuitarController_getPhoto
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Photo base64 url
+          content:
+            application/json:
+              schema:
+                type: string
+        "404":
+          description: Photo file not found
+      tags:
+        - guitars
+      security:
+        - basic: []
+info:
+  title: Guitar Shop REST API "Backend" service
+  description: Guitar Shop REST API "Backend" service
+  version: "1.0"
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    CreateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User's name.
+          example: John
+        email:
+          type: string
+          description: Unique user's email.
+          example: user@user.com
+        password:
+          type: string
+          description: User's password.
+          example: "123456"
+      required:
+        - name
+        - email
+        - password
+    LoginUserDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Unique user's email.
+          example: admin@local.local
+        password:
+          type: string
+          description: User's password.
+          example: admin
+      required:
+        - email
+        - password
+    UserRdo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user's ID
+          example: 0d359ca0-386b-4a75-a6f9-8a46a8787bf4
+        name:
+          type: string
+          description: User's name.
+          example: John
+        email:
+          type: string
+          description: Unique user's email.
+          example: user@user.com
+      required:
+        - id
+        - name
+        - email
+    TokenPayloadRdo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user's ID
+          example: 0d359ca0-386b-4a75-a6f9-8a46a8787bf4
+        name:
+          type: string
+          description: User's name.
+          example: John
+        email:
+          type: string
+          description: Unique user's email.
+          example: user@user.com
+      required:
+        - id
+        - name
+        - email
+    GuitarRdo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique guitar ID
+          example: 0d359ca0-386b-4a75-a6f9-8a46a8787bf4
+        title:
+          type: string
+          description: Guitar title.
+          example: Bass guitar
+        description:
+          type: string
+          description: Guitar description.
+          example: Good bass guitar
+        type:
+          type: string
+          description: Guitar type.
+          enum:
+            - электро
+            - аккустика
+            - укулеле
+          example: аккустика
+        photo:
+          type: string
+          description: Guitar photo file name.
+          example: guitar.jpg
+        vendorCode:
+          type: string
+          description: Guitar vendor code.
+          example: "123456789"
+        guitarStrings:
+          type: number
+          description: Guitar strings number.
+          example: 4
+        price:
+          type: number
+          description: Guitar price.
+          example: 500000
+        publishDate:
+          format: date-time
+          type: string
+          description: Guitar publish date
+          example: "2024-02-16T00:00:00.000Z"
+        createdAt:
+          format: date-time
+          type: string
+          description: Guitar creation date
+          example: "2024-02-16T00:00:00.000Z"
+      required:
+        - id
+        - title
+        - description
+        - type
+        - photo
+        - vendorCode
+        - guitarStrings
+        - price
+    GuitarPaginationRdo:
+      type: object
+      properties:
+        entities:
+          description: Guitars list.
+          type: array
+          items:
+            "$ref": "#/components/schemas/GuitarRdo"
+        totalPages:
+          type: number
+          description: Pagination total pages.
+          example: 1
+        totalItems:
+          type: number
+          description: Pagination total items.
+          example: 1
+        currentPage:
+          type: number
+          description: Pagination current page.
+          example: 1
+        itemsPerPage:
+          type: number
+          description: Pagination items per page.
+          example: 7
+      required:
+        - entities
+        - totalPages
+        - totalItems
+        - currentPage
+        - itemsPerPage
+    CreateGuitarDto:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Guitar title.
+          example: Bass guitar
+        description:
+          type: string
+          description: Guitar description.
+          example: Good bass guitar
+        type:
+          type: string
+          description: Guitar type.
+          enum:
+            - электро
+            - аккустика
+            - укулеле
+          example: аккустика
+        vendorCode:
+          type: string
+          description: Guitar vendor code.
+          example: "123456789"
+        guitarStrings:
+          type: number
+          description: Guitar strings number.
+          example: 4
+        price:
+          type: number
+          description: Guitar price.
+          example: 500000
+        publishDate:
+          type: string
+          description: Guitar publish date
+          example: "2024-02-16T00:00:00.000Z"
+      required:
+        - title
+        - description
+        - type
+        - vendorCode
+        - guitarStrings
+        - price
+    UpdateGuitarDto:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Guitar title.
+          example: Bass guitar
+        description:
+          type: string
+          description: Guitar description.
+          example: Good bass guitar
+        type:
+          type: string
+          description: Guitar type.
+          enum:
+            - электро
+            - аккустика
+            - укулеле
+          example: аккустика
+        vendorCode:
+          type: string
+          description: Guitar vendor code.
+          example: "123456789"
+        guitarStrings:
+          type: number
+          description: Guitar strings number.
+          example: 4
+        price:
+          type: number
+          description: Guitar price.
+          example: 500000
+        publishDate:
+          type: string
+          description: Guitar publish date
+          example: "2024-02-16T00:00:00.000Z"
