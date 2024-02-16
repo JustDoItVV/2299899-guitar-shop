@@ -20,20 +20,27 @@ npm i
 docker compose --file ./apps/backend/docker-compose.yml --env-file ./.env --project-name "guitar-shop" up -d --remove-orphans
 ```
 
-### 4. Сгенерировать клиент PrismaClient и применить миграции
+### 4. Подключить сервер в Postgres
+
+- PGAdmin ([http://localhost:8081/browser/](http://localhost:8081/browser/)) -> Object -> Register -> Server...
+- Вкладка General -> поле Name: POSTGRES_DB из env файла
+- Вкладка Connection -> поле username: POSTGRES_USER из env файла
+- Вкладка Connection -> поле password: POSTGRES_PASSWORD из env файла
+
+### 5. Сгенерировать клиент PrismaClient и применить миграции
 
 ```
 npx nx run backend:db:generate
 npx nx run backend:db:migrate
 ```
 
-### 5. Наполнить базу моковыми данными
+### 6. Наполнить базу моковыми данными
 
 ```
 npm run cli -- --generate 20 postgresql://admin:123456@localhost:5432/guitar_shop?schema=public
 ```
 
-### 6. Запустить проект
+### 7. Запустить проект
 
 Окно терминала 1:
 
