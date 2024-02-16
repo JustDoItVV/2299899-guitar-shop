@@ -22,8 +22,9 @@ docker compose --file ./apps/backend/docker-compose.yml --env-file ./.env --proj
 
 ### 4. Подключить сервер в Postgres
 
-- PGAdmin ([http://localhost:8081/browser/](http://localhost:8081/browser/)) -> Object -> Register -> Server...
+- PGAdmin ([http://localhost:8081/browser/](http://localhost:8081/browser/)) -> ПКМ на Servers -> Register -> Server...
 - Вкладка General -> поле Name: POSTGRES_DB из env файла
+- Вкладка Connection -> поле Hostname/address: guitar_shop_postgres (container_name из docker-compose.yml)
 - Вкладка Connection -> поле username: POSTGRES_USER из env файла
 - Вкладка Connection -> поле password: POSTGRES_PASSWORD из env файла
 
