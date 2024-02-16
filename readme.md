@@ -8,9 +8,14 @@ To start the development server run `nx serve Guitar shop`. Open your browser an
 
 ## Сценарии
 
-If you happen to use Nx plugins, you can leverage code generators that might come with it.
-
-Run `nx list` to get a list of available plugins and whether they have generators. Then run `nx list <plugin-name>` to see what generators are available.
+- `cli` - запук CLI утилиты для генерации моковых данных и заполнения базы данных. Команды:
+  - `--help` - показать справку
+  - `--generate <n> <connection string>` - генерация `<n>` записей и наполнение базы данных по адресу `<connection string>`. Пример:
+  ```
+  npm run cli -- --generate 10 postgresql://admin:123456@localhost:5432/guitar_shop?schema=public
+  ```
+- `backend` - запуск бэкэнд приложения
+- `frontend` - запуск фронтэнд приложения
 
 ## Переменные окружения
 

@@ -5,10 +5,7 @@
   "scripts": {
     "cli": "npx nx run cli:build && node dist/apps/cli/main.js",
     "backend": "npx nx serve backend",
-    "frontend": "npx nx serve frontend",
-    "backend:prod": "npx nx serve backend -c production",
-    "frontend:prod": "npx nx serve frontend -c production",
-    "lint": ""
+    "frontend": "npx nx serve frontend"
   },
   "private": true,
   "dependencies": {
