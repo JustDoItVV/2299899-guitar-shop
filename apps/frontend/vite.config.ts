@@ -1,52 +1,49 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
-  root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/frontend',
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd());
 
-  server: {
-    // port: parseInt(import.meta.env.VITE_FRONTEND_SERVER_PORT, 10),
-    port: 3000,
-    host: 'localhost',
-  },
+  return {
+    root: __dirname,
+    cacheDir: '../../node_modules/.vite/apps/frontend',
 
-  preview: {
-    // port: parseInt(import.meta.env.VITE_FRONTEND_PREVIEW_PORT, 10),
-    port: 3100,
-    host: 'localhost',
-  },
-
-  plugins: [react(), nxViteTsPaths()],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-
-  build: {
-    outDir: '../../dist/apps/frontend',
-    reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
+    server: {
+      port: parseInt(env.VITE_FRONTEND_PORT, 10),
+      host: env.VITE_FRONTEND_HOST,
     },
-  },
 
-  test: {
-    globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
+    preview: {
+      port: parseInt(env.VITE_FRONTEND_PREVIEW_PORT, 10),
+      host: env.VITE_FRONTEND_HOST,
     },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
 
-    reporters: ['default'],
-    coverage: {
-      reportsDirectory: '../../coverage/apps/frontend',
-      provider: 'v8',
+    plugins: [react(), nxViteTsPaths()],
+
+    build: {
+      outDir: '../../dist/apps/frontend',
+      reportCompressedSize: true,
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
     },
-  },
+
+    test: {
+      globals: true,
+      cache: {
+        dir: '../../node_modules/.vitest',
+      },
+      environment: 'jsdom',
+      include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+
+      reporters: ['default'],
+      coverage: {
+        reportsDirectory: '../../coverage/apps/frontend',
+        provider: 'v8',
+      },
+    },
+  };
 });

@@ -18,9 +18,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const port = BackendConfig().appPort;
+  const host = BackendConfig().host;
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${BACKEND_GLOBAL_PREFIX}`
+    `🚀 Application is running on: http://${host}:${port}/${BACKEND_GLOBAL_PREFIX}`
   );
 }
 
