@@ -8,6 +8,7 @@ export const createApiService = (): AxiosInstance => {
   const api = axios.create({
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
+    withCredentials: true,
   });
 
   api.interceptors.request.use((config: InternalAxiosRequestConfig) => {

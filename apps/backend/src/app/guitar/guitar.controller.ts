@@ -1,25 +1,25 @@
-import "multer";
+import 'multer';
 
 import {
   AllowedPhotoFormat,
   ApiGuitarMessage,
   FILE_PARAMETER,
   GuitarErrorMessage,
-} from "@guitar-shop/consts";
+} from '@guitar-shop/consts';
 import {
   GuitarDataTrasformationPipe,
   JwtAuthGuard,
   PhotoValidationPipe,
-} from "@guitar-shop/core";
+} from '@guitar-shop/core';
 import {
   CreateGuitarDto,
   GuitarPaginationRdo,
   GuitarQuery,
   GuitarRdo,
   UpdateGuitarDto,
-} from "@guitar-shop/dtos";
-import { fillDto } from "@guitar-shop/helpers";
-import { RequestWithTokenPayload } from "@guitar-shop/types";
+} from '@guitar-shop/dtos';
+import { fillDto } from '@guitar-shop/helpers';
+import { RequestWithTokenPayload } from '@guitar-shop/types';
 import {
   Body,
   Controller,
@@ -37,8 +37,8 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
-} from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -47,13 +47,13 @@ import {
   ApiResponse,
   ApiSecurity,
   ApiTags,
-} from "@nestjs/swagger";
+} from '@nestjs/swagger';
 
-import { GuitarService } from "./guitar.service";
+import { GuitarService } from './guitar.service';
 
-@ApiSecurity("basic")
-@ApiTags("guitars")
-@Controller("guitars")
+@ApiSecurity('basic')
+@ApiTags('guitars')
+@Controller('guitars')
 export class GuitarController {
   constructor(private readonly guitarService: GuitarService) {}
 
@@ -62,7 +62,7 @@ export class GuitarController {
     description: ApiGuitarMessage.GuitarShow,
     type: GuitarPaginationRdo,
   })
-  @Get("/")
+  @Get('/')
   @UsePipes(
     new ValidationPipe({
       transform: true,
@@ -76,8 +76,8 @@ export class GuitarController {
 
   @ApiBearerAuth()
   @ApiParam(FILE_PARAMETER)
-  @ApiConsumes("multipart/form-data")
-  @ApiBody({ description: "New guitar data", type: CreateGuitarDto })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ description: 'New guitar data', type: CreateGuitarDto })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: ApiGuitarMessage.GuitarCreated,
@@ -95,8 +95,8 @@ export class GuitarController {
     status: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
     description: ApiGuitarMessage.PhotoUnsupportedType,
   })
-  @Post("/")
-  @UseInterceptors(FileInterceptor("file"))
+  @Post('/')
+  @UseInterceptors(FileInterceptor('file'))
   @UseGuards(JwtAuthGuard)
   public async create(
     @Req() { user }: RequestWithTokenPayload,
@@ -123,16 +123,17 @@ export class GuitarController {
     status: HttpStatus.NOT_FOUND,
     description: ApiGuitarMessage.GuitarNotFound,
   })
-  @Get("/:id")
+  @Get('/:id')
   @UseGuards(JwtAuthGuard)
-  public async showById(@Param("id") id: string) {
-    return await this.guitarService.getById(id);
+  public async showById(@Param('id') id: string) {
+    const guitar = await this.guitarService.getById(id);
+    return fillDto(GuitarRdo, guitar.toPOJO());
   }
 
   @ApiBearerAuth()
   @ApiParam({ ...FILE_PARAMETER, required: false })
-  @ApiConsumes("application/json", "multipart/form-data")
-  @ApiBody({ description: "New guitar data", type: UpdateGuitarDto })
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({ description: 'New guitar data', type: UpdateGuitarDto })
   @ApiResponse({
     status: HttpStatus.OK,
     description: ApiGuitarMessage.GuitarUpdate,
@@ -150,11 +151,11 @@ export class GuitarController {
     status: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
     description: ApiGuitarMessage.PhotoUnsupportedType,
   })
-  @Patch("/:id")
-  @UseInterceptors(FileInterceptor("file"))
+  @Patch('/:id')
+  @UseInterceptors(FileInterceptor('file'))
   @UseGuards(JwtAuthGuard)
   public async update(
-    @Param("id") id: string,
+    @Param('id') id: string,
     @Body(new GuitarDataTrasformationPipe()) dto: UpdateGuitarDto,
     @UploadedFile(
       new PhotoValidationPipe(
@@ -181,10 +182,10 @@ export class GuitarController {
     status: HttpStatus.NOT_FOUND,
     description: ApiGuitarMessage.GuitarNotFound,
   })
-  @Delete("/:id")
+  @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
-  public async delete(@Param("id") id: string) {
+  public async delete(@Param('id') id: string) {
     await this.guitarService.delete(id);
   }
 
@@ -197,8 +198,8 @@ export class GuitarController {
     status: HttpStatus.NOT_FOUND,
     description: ApiGuitarMessage.PhotoNotFound,
   })
-  @Get("/:id/photo")
-  public async getPhoto(@Param("id") id: string) {
+  @Get('/:id/photo')
+  public async getPhoto(@Param('id') id: string) {
     const photoUrl = await this.guitarService.getFile(id);
     return photoUrl;
   }

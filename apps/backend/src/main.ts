@@ -3,29 +3,33 @@
  * This is only a minimal backend to get started.
  */
 
-import { BackendConfig } from "@guitar-shop/config";
-import { BACKEND_GLOBAL_PREFIX } from "@guitar-shop/consts";
-import { LoggingErrorInterceptor } from "@guitar-shop/core";
-import { BackendLoggerService } from "@guitar-shop/logger";
-import { Logger, ValidationPipe } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { BackendConfig } from '@guitar-shop/config';
+import { BACKEND_GLOBAL_PREFIX } from '@guitar-shop/consts';
+import { LoggingErrorInterceptor } from '@guitar-shop/core';
+import { BackendLoggerService } from '@guitar-shop/logger';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { AppModule } from "./app/app.module";
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   app.setGlobalPrefix(BACKEND_GLOBAL_PREFIX);
 
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Guitar Shop REST API "Backend" service')
     .setDescription('Guitar Shop REST API "Backend" service')
-    .setVersion("1.0")
+    .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("spec", app, document);
+  SwaggerModule.setup('spec', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(
