@@ -1,6 +1,7 @@
 # Guitar Shop
 
 - Автор: [Вадим Антипов](https://up.htmlacademy.ru/nodejs-2/5/user/2299899)
+- Затраченное время: 63 ч
 
 ## Запуск проект
 
