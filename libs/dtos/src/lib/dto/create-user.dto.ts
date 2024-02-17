@@ -11,28 +11,21 @@ import {
   PasswordLength,
   UserErrorMessage,
 } from "@guitar-shop/consts";
-import { getValidationErrorMessageWithLogging } from "@guitar-shop/helpers";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto {
   @ApiProperty({ description: "User's name.", example: "John" })
   @MaxLength(NameLength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.NameMaxLength
-    ),
+    message: UserErrorMessage.NameMaxLength,
   })
   @MinLength(NameLength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.NameMinLength
-    ),
+    message: UserErrorMessage.NameMinLength,
   })
   @IsString({
-    message: getValidationErrorMessageWithLogging(UserErrorMessage.NotString),
+    message: UserErrorMessage.NotString,
   })
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.NameRequired
-    ),
+    message: UserErrorMessage.NameRequired,
   })
   public name: string;
 
@@ -43,36 +36,26 @@ export class CreateUserDto {
   @IsEmail(
     {},
     {
-      message: getValidationErrorMessageWithLogging(
-        UserErrorMessage.EmailNotValid
-      ),
+      message: UserErrorMessage.EmailNotValid,
     }
   )
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.EmailRequired
-    ),
+    message: UserErrorMessage.EmailRequired,
   })
   public email: string;
 
   @ApiProperty({ description: "User's password.", example: "123456" })
   @MaxLength(PasswordLength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.PasswordMaxLength
-    ),
+    message: UserErrorMessage.PasswordMaxLength,
   })
   @MinLength(PasswordLength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.PasswordMinLength
-    ),
+    message: UserErrorMessage.PasswordMinLength,
   })
   @IsString({
-    message: getValidationErrorMessageWithLogging(UserErrorMessage.NotString),
+    message: UserErrorMessage.NotString,
   })
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.PasswordRequired
-    ),
+    message: UserErrorMessage.PasswordRequired,
   })
   public password: string;
 }

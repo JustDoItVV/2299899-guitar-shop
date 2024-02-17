@@ -1,30 +1,44 @@
-import 'multer';
+import "multer";
 
-import { ensureDir } from 'fs-extra';
-import * as crypto from 'node:crypto';
-import { existsSync, unlink } from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { ensureDir } from "fs-extra";
+import * as crypto from "node:crypto";
+import { existsSync, unlink } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 
-import { BackendConfig } from '@guitar-shop/config';
-import { GuitarErrorMessage, UPLOAD_GUITARS_SUBDIRECTORY } from '@guitar-shop/consts';
-import { CreateGuitarDto, GuitarQuery, GuitarRdo, UpdateGuitarDto } from '@guitar-shop/dtos';
-import { fillDto } from '@guitar-shop/helpers';
-import { Pagination } from '@guitar-shop/types';
+import { BackendConfig } from "@guitar-shop/config";
 import {
-    BadRequestException, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException
-} from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
+  GuitarErrorMessage,
+  UPLOAD_GUITARS_SUBDIRECTORY,
+} from "@guitar-shop/consts";
+import {
+  CreateGuitarDto,
+  GuitarQuery,
+  GuitarRdo,
+  UpdateGuitarDto,
+} from "@guitar-shop/dtos";
+import { fillDto } from "@guitar-shop/helpers";
+import { BackendLoggerService } from "@guitar-shop/logger";
+import { Pagination } from "@guitar-shop/types";
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
+import { ConfigType } from "@nestjs/config";
 
-import { GuitarEntity } from './guitar.entity';
-import { GuitarRepository } from './guitar.repository';
+import { GuitarEntity } from "./guitar.entity";
+import { GuitarRepository } from "./guitar.repository";
 
 @Injectable()
 export class GuitarService {
   constructor(
     private readonly guitarRepository: GuitarRepository,
     @Inject(BackendConfig.KEY)
-    private readonly config: ConfigType<typeof BackendConfig>
+    private readonly config: ConfigType<typeof BackendConfig>,
+    private readonly loggerService: BackendLoggerService
   ) {}
 
   private async getUploadPath(filename: string): Promise<string> {
@@ -65,9 +79,7 @@ export class GuitarService {
     const document = await this.guitarRepository.findById(id);
 
     if (!document) {
-      const error = new NotFoundException(GuitarErrorMessage.NotFound);
-      Logger.error(error);
-      throw error;
+      throw new NotFoundException(GuitarErrorMessage.NotFound);
     }
 
     return document;
@@ -81,9 +93,7 @@ export class GuitarService {
     const document = await this.guitarRepository.findById(id);
 
     if (!document) {
-      const error = new NotFoundException(GuitarErrorMessage.NotFound);
-      Logger.error(error);
-      throw error;
+      throw new NotFoundException(GuitarErrorMessage.NotFound);
     }
 
     let hasChanges = false;
@@ -101,7 +111,7 @@ export class GuitarService {
         hasChanges = true;
       }
 
-      if (key === 'publishDate') {
+      if (key === "publishDate") {
         document[key] = new Date(value);
         hasChanges = true;
       }
@@ -120,19 +130,13 @@ export class GuitarService {
       await this.deleteFile(document.photo);
       await this.guitarRepository.deleteById(id);
     } catch {
-      const error = new NotFoundException(GuitarErrorMessage.NotFound);
-      Logger.error(error);
-      throw error;
+      throw new NotFoundException(GuitarErrorMessage.NotFound);
     }
   }
 
   public async saveFile(file: Express.Multer.File): Promise<string> {
     if (!file) {
-      const error = new BadRequestException(
-        GuitarErrorMessage.PhotoFileRequired
-      );
-      Logger.error(error);
-      throw error;
+      throw new BadRequestException(GuitarErrorMessage.PhotoFileRequired);
     }
 
     const filename = `${crypto.randomUUID()}-${file.originalname}`;
@@ -147,12 +151,14 @@ export class GuitarService {
     const filePath = await this.getUploadPath(document.photo);
 
     if (!existsSync(filePath)) {
-      Logger.error(GuitarErrorMessage.PhotoFileNotFound);
-      return 'notFound';
+      this.loggerService.error(
+        `Guitar ${id}: ${GuitarErrorMessage.PhotoFileNotFound}`
+      );
+      return "notFound";
     }
 
     const file = await readFile(filePath);
-    return `data:image/png;base64,${file.toString('base64')}`;
+    return `data:image/png;base64,${file.toString("base64")}`;
   }
 
   public async deleteFile(filename: string): Promise<void> {
@@ -161,9 +167,9 @@ export class GuitarService {
     if (existsSync(filePath)) {
       unlink(filePath, (error) => {
         if (error) {
-          const exception = new InternalServerErrorException(error);
-          Logger.error(exception);
-          throw exception;
+          throw new InternalServerErrorException(
+            `${error.message}: photo file not found: ${filePath}`
+          );
         }
       });
     }

@@ -9,7 +9,6 @@ import {
   Price,
 } from "@guitar-shop/consts";
 import { TransformToInt } from "@guitar-shop/core";
-import { getValidationErrorMessageWithLogging } from "@guitar-shop/helpers";
 import { GuitarType, SortDirection, SortOption } from "@guitar-shop/types";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -53,7 +52,7 @@ export class GuitarQuery {
   })
   @IsEnum(GuitarType, { each: true })
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
     each: true,
   })
   @IsOptional()
@@ -66,9 +65,7 @@ export class GuitarQuery {
   })
   @IsIn(GUITAR_STRINGS, {
     each: true,
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.WrongGuitarStrings
-    ),
+    message: GuitarErrorMessage.WrongGuitarStrings,
   })
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsOptional()

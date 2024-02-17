@@ -13,11 +13,11 @@ GET http://localhost:3001/api/guitars?type=аккустика&price=100&page=2 H
 # Create a new guitar
 POST http://localhost:3001/api/guitars HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVhMzJkNmQxLTYyNGYtNGYxNy1iMWYzLTg4YjFhNDhiOWI5YSIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDgxNTk5MjMsImV4cCI6MTcwODQ1OTkyM30.LvYVziUt-0-uf4AtZIOxZYEanVKwEcytcZ4pwufr-Gs
 
 --boundary
 Content-Disposition: form-data; name="file"; filename="catalog-product-0@2x.png"
-Content-Type: image/png
+Content-Type: image/tif
 
 < ../../../../frontend/public/img/content/catalog-product-0@2x.png
 
@@ -50,13 +50,13 @@ Content-Disposition: form-data; name="price"
 ###
 
 # Get guitar by id
-GET http://localhost:3001/api/guitars/4ec63218-cf59-4cb7-8850-1fa5ed14f903 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
+GET http://localhost:3001/api/guitars/021fcf51-615c-48f5-94bd-ecd38aa92358 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVhMzJkNmQxLTYyNGYtNGYxNy1iMWYzLTg4YjFhNDhiOWI5YSIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDgxNTI4NjUsImV4cCI6MTcwODQ1Mjg2NX0.wC-g50Zordy74o_9C25q5tvXkT2cOYDjrUv_sS2i6CQ
 
 ###
 
 # Get guitar photoUrl
-GET http://localhost:3001/api/guitars/4ec63218-cf59-4cb7-8850-1fa5ed14f903/photo HTTP/1.1
+GET http://localhost:3001/api/guitars/021fcf51-615c-48f5-94bd-ecd38aa92358/photo HTTP/1.1
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
 
 ###
@@ -85,7 +85,7 @@ Content-Disposition: form-data; name="price"
 ###
 
 # Delete guitar by id
-DELETE http://localhost:3001/api/guitars/adb78fac-c23c-47f9-974f-6257cfc3423a HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJiNGQ2MzE1LTIzODgtNDBjYS05ZDBhLTJmMDE1ZDIzMTVhYyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDc4MTExMjcsImV4cCI6MTcwODExMTEyN30._U3gQYUCT2SD0LnBmLv-MwL6mdKEt_O2h_jxQay8EDc
+DELETE http://localhost:3001/api/guitars/021fcf51-615c-48f5-94bd-ecd38aa92358 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVhMzJkNmQxLTYyNGYtNGYxNy1iMWYzLTg4YjFhNDhiOWI5YSIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbG9jYWwubG9jYWwiLCJpYXQiOjE3MDgxNTI4NjUsImV4cCI6MTcwODQ1Mjg2NX0.wC-g50Zordy74o_9C25q5tvXkT2cOYDjrUv_sS2i6CQ
 
 ###

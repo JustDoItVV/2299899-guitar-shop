@@ -190,6 +190,8 @@ paths:
           description: Bad request, failed request validation
         "401":
           description: Required jwt token authorization
+        "415":
+          description: Photo file format not unsupported
       tags:
         - guitars
       security:
@@ -256,6 +258,8 @@ paths:
           description: Bad request, failed request validation
         "401":
           description: Required jwt token authorization
+        "415":
+          description: Photo file format not unsupported
       tags:
         - guitars
       security:

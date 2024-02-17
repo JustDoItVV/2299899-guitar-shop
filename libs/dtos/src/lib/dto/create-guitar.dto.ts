@@ -20,29 +20,22 @@ import {
   VendorCodelength,
 } from "@guitar-shop/consts";
 import { TransformToInt } from "@guitar-shop/core";
-import { getValidationErrorMessageWithLogging } from "@guitar-shop/helpers";
 import { GuitarType } from "@guitar-shop/types";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateGuitarDto {
   @ApiProperty({ description: "Guitar title.", example: "Bass guitar" })
   @MaxLength(TitleLength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.TitleMaxLength
-    ),
+    message: GuitarErrorMessage.TitleMaxLength,
   })
   @MinLength(TitleLength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.TitleMinLength
-    ),
+    message: GuitarErrorMessage.TitleMinLength,
   })
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
   })
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.TitleRequired
-    ),
+    message: GuitarErrorMessage.TitleRequired,
   })
   public title: string;
 
@@ -51,22 +44,16 @@ export class CreateGuitarDto {
     example: "Good bass guitar",
   })
   @MaxLength(DescriptionLength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.DescriptionMaxLength
-    ),
+    message: GuitarErrorMessage.DescriptionMaxLength,
   })
   @MinLength(DescriptionLength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.DescriptionMinLength
-    ),
+    message: GuitarErrorMessage.DescriptionMinLength,
   })
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
   })
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.DescriptionRequired
-    ),
+    message: GuitarErrorMessage.DescriptionRequired,
   })
   public description: string;
 
@@ -77,62 +64,48 @@ export class CreateGuitarDto {
   })
   @IsEnum(GuitarType)
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
   })
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.TypeRequired
-    ),
+    message: GuitarErrorMessage.TypeRequired,
   })
   public type: GuitarType;
 
   @ApiProperty({ description: "Guitar vendor code.", example: "123456789" })
   @MaxLength(VendorCodelength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.VendorCodeMaxLength
-    ),
+    message: GuitarErrorMessage.VendorCodeMaxLength,
   })
   @MinLength(VendorCodelength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.VendorCodeMinLength
-    ),
+    message: GuitarErrorMessage.VendorCodeMinLength,
   })
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
   })
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.VendorCodeRequired
-    ),
+    message: GuitarErrorMessage.VendorCodeRequired,
   })
   public vendorCode: string;
 
   @ApiProperty({ description: "Guitar strings number.", example: 4 })
   @IsIn(GUITAR_STRINGS, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.WrongGuitarStrings
-    ),
+    message: GuitarErrorMessage.WrongGuitarStrings,
   })
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.GuitarStringsRequired
-    ),
+    message: GuitarErrorMessage.GuitarStringsRequired,
   })
   public guitarStrings: number;
 
   @ApiProperty({ description: "Guitar price.", example: 500000 })
   @Max(Price.Max, {
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.PriceMax),
+    message: GuitarErrorMessage.PriceMax,
   })
   @Min(Price.Min, {
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.PriceMin),
+    message: GuitarErrorMessage.PriceMin,
   })
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.PriceRequired
-    ),
+    message: GuitarErrorMessage.PriceRequired,
   })
   public price: number;
 
@@ -144,9 +117,7 @@ export class CreateGuitarDto {
   @IsDateString(
     {},
     {
-      message: getValidationErrorMessageWithLogging(
-        GuitarErrorMessage.PublishdateInvalid
-      ),
+      message: GuitarErrorMessage.PublishdateInvalid,
     }
   )
   @IsOptional()

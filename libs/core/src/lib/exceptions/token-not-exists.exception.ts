@@ -1,8 +1,7 @@
-import { getTokenNotExistErrorMessage } from '@guitar-shop/helpers';
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException } from "@nestjs/common";
 
 export class TokenNotExistsException extends UnauthorizedException {
-  constructor(tokenId: string) {
-    super(getTokenNotExistErrorMessage(tokenId));
+  constructor(id: string) {
+    super(`${id}: token with this id doen't exist`);
   }
 }

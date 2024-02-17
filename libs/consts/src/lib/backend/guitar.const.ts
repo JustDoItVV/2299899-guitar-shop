@@ -78,6 +78,7 @@ export enum ApiGuitarMessage {
   GuitarNotAuthorForbidden = "Forbidden, Guitar belongs to the user",
   PhotoRead = "Photo base64 url",
   PhotoNotFound = "Photo file not found",
+  PhotoUnsupportedType = "Photo file format not unsupported",
 }
 
 export const FILE_PARAMETER = {

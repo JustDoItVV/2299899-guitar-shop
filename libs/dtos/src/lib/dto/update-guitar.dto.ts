@@ -19,7 +19,6 @@ import {
   VendorCodelength,
 } from "@guitar-shop/consts";
 import { TransformToInt } from "@guitar-shop/core";
-import { getValidationErrorMessageWithLogging } from "@guitar-shop/helpers";
 import { GuitarType } from "@guitar-shop/types";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -30,14 +29,10 @@ export class UpdateGuitarDto {
     required: false,
   })
   @MaxLength(TitleLength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.TitleMaxLength
-    ),
+    message: GuitarErrorMessage.TitleMaxLength,
   })
   @MinLength(TitleLength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.TitleMinLength
-    ),
+    message: GuitarErrorMessage.TitleMinLength,
   })
   @IsString({ message: GuitarErrorMessage.NotString })
   @IsOptional()
@@ -49,17 +44,13 @@ export class UpdateGuitarDto {
     required: false,
   })
   @MaxLength(DescriptionLength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.DescriptionMaxLength
-    ),
+    message: GuitarErrorMessage.DescriptionMaxLength,
   })
   @MinLength(DescriptionLength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.DescriptionMinLength
-    ),
+    message: GuitarErrorMessage.DescriptionMinLength,
   })
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
   })
   @IsOptional()
   public description?: string;
@@ -72,7 +63,7 @@ export class UpdateGuitarDto {
   })
   @IsEnum(GuitarType)
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
   })
   @IsOptional()
   public type?: GuitarType;
@@ -83,17 +74,13 @@ export class UpdateGuitarDto {
     required: false,
   })
   @MaxLength(VendorCodelength.Max, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.VendorCodeMaxLength
-    ),
+    message: GuitarErrorMessage.VendorCodeMaxLength,
   })
   @MinLength(VendorCodelength.Min, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.VendorCodeMinLength
-    ),
+    message: GuitarErrorMessage.VendorCodeMinLength,
   })
   @IsString({
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.NotString),
+    message: GuitarErrorMessage.NotString,
   })
   @IsOptional()
   public vendorCode?: string;
@@ -104,9 +91,7 @@ export class UpdateGuitarDto {
     required: false,
   })
   @IsIn(GUITAR_STRINGS, {
-    message: getValidationErrorMessageWithLogging(
-      GuitarErrorMessage.WrongGuitarStrings
-    ),
+    message: GuitarErrorMessage.WrongGuitarStrings,
   })
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsOptional()
@@ -118,10 +103,10 @@ export class UpdateGuitarDto {
     required: false,
   })
   @Max(Price.Max, {
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.PriceMax),
+    message: GuitarErrorMessage.PriceMax,
   })
   @Min(Price.Min, {
-    message: getValidationErrorMessageWithLogging(GuitarErrorMessage.PriceMin),
+    message: GuitarErrorMessage.PriceMin,
   })
   @TransformToInt(GuitarErrorMessage.Nan)
   @IsOptional()
@@ -135,9 +120,7 @@ export class UpdateGuitarDto {
   @IsDateString(
     {},
     {
-      message: getValidationErrorMessageWithLogging(
-        GuitarErrorMessage.PublishdateInvalid
-      ),
+      message: GuitarErrorMessage.PublishdateInvalid,
     }
   )
   @IsOptional()

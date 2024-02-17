@@ -5,6 +5,8 @@
 
 import { BackendConfig } from "@guitar-shop/config";
 import { BACKEND_GLOBAL_PREFIX } from "@guitar-shop/consts";
+import { LoggingErrorInterceptor } from "@guitar-shop/core";
+import { BackendLoggerService } from "@guitar-shop/logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -26,6 +28,9 @@ async function bootstrap() {
   SwaggerModule.setup("spec", app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(
+    new LoggingErrorInterceptor(new BackendLoggerService())
+  );
 
   const port = BackendConfig().appPort;
   const host = BackendConfig().host;

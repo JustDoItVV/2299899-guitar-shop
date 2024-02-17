@@ -91,6 +91,10 @@ export class GuitarController {
     status: HttpStatus.BAD_REQUEST,
     description: ApiGuitarMessage.ValidationFailed,
   })
+  @ApiResponse({
+    status: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+    description: ApiGuitarMessage.PhotoUnsupportedType,
+  })
   @Post("/")
   @UseInterceptors(FileInterceptor("file"))
   @UseGuards(JwtAuthGuard)
@@ -141,6 +145,10 @@ export class GuitarController {
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: ApiGuitarMessage.ValidationFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+    description: ApiGuitarMessage.PhotoUnsupportedType,
   })
   @Patch("/:id")
   @UseInterceptors(FileInterceptor("file"))

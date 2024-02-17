@@ -1,7 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 import { UserErrorMessage } from "@guitar-shop/consts";
-import { getValidationErrorMessageWithLogging } from "@guitar-shop/helpers";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class LoginUserDto {
@@ -12,26 +11,20 @@ export class LoginUserDto {
   @IsEmail(
     {},
     {
-      message: getValidationErrorMessageWithLogging(
-        UserErrorMessage.EmailNotValid
-      ),
+      message: UserErrorMessage.EmailNotValid,
     }
   )
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.EmailRequired
-    ),
+    message: UserErrorMessage.EmailRequired,
   })
   public email: string;
 
   @ApiProperty({ description: "User's password.", example: "admin" })
   @IsString({
-    message: getValidationErrorMessageWithLogging(UserErrorMessage.NotString),
+    message: UserErrorMessage.NotString,
   })
   @IsNotEmpty({
-    message: getValidationErrorMessageWithLogging(
-      UserErrorMessage.PasswordRequired
-    ),
+    message: UserErrorMessage.PasswordRequired,
   })
   public password: string;
 }

@@ -1,21 +1,25 @@
-import * as crypto from 'node:crypto';
+import * as crypto from "node:crypto";
 
-import { JwtConfig } from '@guitar-shop/config';
-import { UserErrorMessage } from '@guitar-shop/consts';
-import { CreateUserDto, LoginUserDto } from '@guitar-shop/dtos';
-import { createJWTPayload, getUserAlreadyExist } from '@guitar-shop/helpers';
-import { Token } from '@guitar-shop/types';
+import { JwtConfig } from "@guitar-shop/config";
+import { UserErrorMessage } from "@guitar-shop/consts";
+import { CreateUserDto, LoginUserDto } from "@guitar-shop/dtos";
+import { createJWTPayload } from "@guitar-shop/helpers";
+import { Token } from "@guitar-shop/types";
 import {
-    ConflictException, HttpException, HttpStatus, Inject, Injectable, Logger, NotFoundException,
-    UnauthorizedException
-} from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
+  ConflictException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
+import { ConfigType } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 
-import { MailService } from '../mail/mail.service';
-import { RefreshTokenService } from './refresh-token/refresh-token.service';
-import { UserEntity } from './user.entity';
-import { UserRepository } from './user.repository';
+import { MailService } from "../mail/mail.service";
+import { RefreshTokenService } from "./refresh-token/refresh-token.service";
+import { UserEntity } from "./user.entity";
+import { UserRepository } from "./user.repository";
 
 @Injectable()
 export class UserService {
@@ -30,13 +34,11 @@ export class UserService {
 
   public async register(dto: CreateUserDto) {
     const { name, email, password } = dto;
-    const user = { name, email, passwordHash: '' };
+    const user = { name, email, passwordHash: "" };
     const existedUser = await this.userRepository.findByEmail(email);
 
     if (existedUser) {
-      const error = new ConflictException(getUserAlreadyExist(email));
-      Logger.error(error);
-      throw error;
+      throw new ConflictException(UserErrorMessage.UserExists);
     }
 
     const entity = await new UserEntity(user).setPassword(password);
@@ -64,12 +66,9 @@ export class UserService {
       );
       return { accessToken, refreshToken };
     } catch {
-      const error = new HttpException(
-        UserErrorMessage.TokenCreationError,
-        HttpStatus.INTERNAL_SERVER_ERROR
+      throw new InternalServerErrorException(
+        UserErrorMessage.TokenCreationError
       );
-      Logger.error(error);
-      throw error;
     }
   }
 
@@ -77,9 +76,7 @@ export class UserService {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      const error = new NotFoundException(UserErrorMessage.NotFound);
-      Logger.error(error);
-      throw error;
+      throw new NotFoundException(UserErrorMessage.NotFound);
     }
 
     return user;
@@ -90,15 +87,11 @@ export class UserService {
     const document = await this.userRepository.findByEmail(email);
 
     if (!document) {
-      const error = new NotFoundException(UserErrorMessage.NotFound);
-      Logger.error(error);
-      throw error;
+      throw new NotFoundException(UserErrorMessage.NotFound);
     }
 
     if (!(await document.comparePassword(password))) {
-      const error = new UnauthorizedException(UserErrorMessage.PasswordWrong);
-      Logger.error(error);
-      throw error;
+      throw new UnauthorizedException(UserErrorMessage.PasswordWrong);
     }
 
     return document;
