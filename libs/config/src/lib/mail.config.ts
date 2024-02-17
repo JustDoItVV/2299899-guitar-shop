@@ -1,6 +1,7 @@
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
-import { registerAs } from '@nestjs/config';
+import { logger } from "@guitar-shop/logger";
+import { registerAs } from "@nestjs/config";
 
 export interface MailConfig {
   mail: {
@@ -14,11 +15,11 @@ export interface MailConfig {
 
 const validationSchema = Joi.object({
   mail: Joi.object({
-    host: Joi.string().required(),
-    port: Joi.number().port().required(),
-    user: Joi.string().required(),
-    password: Joi.string().required(),
-    from: Joi.string().required(),
+    host: Joi.string().required().label("MAIL_SMTP_HOST"),
+    port: Joi.number().port().required().label("MAIL_SMTP_PORT"),
+    user: Joi.string().required().label("MAIL_USER_NAME"),
+    password: Joi.string().required().label("MAIL_USER_PASSWORD"),
+    from: Joi.string().required().label("MAIL_FROM"),
   }),
 });
 
@@ -26,7 +27,9 @@ function validateConfig(config: MailConfig): void {
   const { error } = validationSchema.validate(config, { abortEarly: true });
 
   if (error) {
-    throw new Error(`[Mail config validation error]: ${error.message}`);
+    const message = `[Mail config validation error]: ${error.message}`;
+    logger.error(message, { context: "Backend API" });
+    process.exit(1);
   }
 }
 
@@ -45,4 +48,4 @@ function getConfig(): MailConfig {
   return config;
 }
 
-export default registerAs('mail', getConfig);
+export default registerAs("mail", getConfig);

@@ -1,6 +1,7 @@
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
-import { registerAs } from '@nestjs/config';
+import { logger } from "@guitar-shop/logger";
+import { registerAs } from "@nestjs/config";
 
 export interface BackendConfig {
   host: string;
@@ -9,16 +10,18 @@ export interface BackendConfig {
 }
 
 const validationSchema = Joi.object({
-  host: Joi.string().required(),
-  appPort: Joi.number().port().required(),
-  uploadDirectory: Joi.string().required(),
+  host: Joi.string().required().label("HOST"),
+  appPort: Joi.number().port().required().label("BACKEND_PORT"),
+  uploadDirectory: Joi.string().required().label("UPLOAD_DIRECTORY_PATH"),
 });
 
 function validateConfig(config: BackendConfig): void {
   const { error } = validationSchema.validate(config, { abortEarly: true });
 
   if (error) {
-    throw new Error(`[Backend config validation error]: ${error.message}`);
+    const message = `[Backend config validation error]: ${error.message}`;
+    logger.error(message, { context: "Backend API" });
+    process.exit(1);
   }
 }
 
@@ -33,4 +36,4 @@ function getConfig(): BackendConfig {
   return config;
 }
 
-export default registerAs('app', getConfig);
+export default registerAs("app", getConfig);

@@ -1,6 +1,7 @@
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
-import { registerAs } from '@nestjs/config';
+import { logger } from "@guitar-shop/logger";
+import { registerAs } from "@nestjs/config";
 
 export interface JWTConfig {
   accessTokenSecret: string;
@@ -10,17 +11,23 @@ export interface JWTConfig {
 }
 
 const validationSchema = Joi.object({
-  accessTokenSecret: Joi.string().required(),
-  accessTokenExpiresIn: Joi.string().required(),
-  refreshTokenSecret: Joi.string().required(),
-  refreshTokenExpiresIn: Joi.string().required(),
+  accessTokenSecret: Joi.string().required().label("JWT_ACCESS_TOKEN_SECRET"),
+  accessTokenExpiresIn: Joi.string()
+    .required()
+    .label("JWT_ACCESS_TOKEN_EXPIRES_IN"),
+  refreshTokenSecret: Joi.string().required().label("JWT_REFRESH_TOKEN_SECRET"),
+  refreshTokenExpiresIn: Joi.string()
+    .required()
+    .label("JWT_REFRESH_TOKEN_EXPIRES_IN"),
 });
 
 function validateConfig(config: JWTConfig): void {
   const { error } = validationSchema.validate(config, { abortEarly: true });
 
   if (error) {
-    throw new Error(`[Backend JWTConfig Validation Error]: ${error.message}`);
+    const message = `[JWTConfig Validation Error]: ${error.message}`;
+    logger.error(message, { context: "Backend API" });
+    process.exit(1);
   }
 }
 
@@ -36,4 +43,4 @@ function getConfig(): JWTConfig {
   return config;
 }
 
-export default registerAs('jwt', getConfig);
+export default registerAs("jwt", getConfig);

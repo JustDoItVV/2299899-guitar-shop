@@ -1,7 +1,8 @@
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
-import { User } from '@guitar-shop/types';
-import { registerAs } from '@nestjs/config';
+import { logger } from "@guitar-shop/logger";
+import { User } from "@guitar-shop/types";
+import { registerAs } from "@nestjs/config";
 
 export interface CliConfig {
   defaultUser: User & { password: string };
@@ -10,18 +11,20 @@ export interface CliConfig {
 
 const validationSchema = Joi.object({
   defaultUser: Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().required(),
-    password: Joi.string().required(),
+    name: Joi.string().required().label("DEFAULT_USER_NAME"),
+    email: Joi.string().required().label("DEFAULT_USER_EMAIL"),
+    password: Joi.string().required().label("DEFAULT_USER_PASSWORD"),
   }),
-  uploadDirectory: Joi.string().required(),
+  uploadDirectory: Joi.string().required().label("UPLOAD_DIRECTORY_PATH"),
 });
 
 function validateConfig(config: CliConfig): void {
   const { error } = validationSchema.validate(config, { abortEarly: true });
 
   if (error) {
-    throw new Error(`[CLI config validation error]: ${error.message}`);
+    const message = `[CLI config validation error]: ${error.message}`;
+    logger.error(message, { context: "CLI" });
+    process.exit(1);
   }
 }
 
@@ -39,4 +42,4 @@ function getConfig(): CliConfig {
   return config;
 }
 
-export default registerAs('app', getConfig);
+export default registerAs("app", getConfig);
