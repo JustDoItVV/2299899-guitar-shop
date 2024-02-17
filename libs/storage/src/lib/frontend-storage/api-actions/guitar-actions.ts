@@ -10,7 +10,7 @@ import {
 } from '@guitar-shop/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { redirectToRoute } from '../actions/common';
+import { redirectToRoute } from '../actions/redirect-to-route';
 import { AppDispatch } from '../types/app-dispatch.type';
 import { State } from '../types/state.type';
 
