@@ -1,6 +1,6 @@
-import { Transform } from "class-transformer";
+import { Transform } from 'class-transformer';
 
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException } from '@nestjs/common';
 
 export function TransformToInt(message: string) {
   const parseValue = (value: string) => {

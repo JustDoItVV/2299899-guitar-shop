@@ -9,7 +9,7 @@ import {
   MaxLength,
   Min,
   MinLength,
-} from "class-validator";
+} from 'class-validator';
 
 import {
   DescriptionLength,
@@ -18,13 +18,13 @@ import {
   Price,
   TitleLength,
   VendorCodelength,
-} from "@guitar-shop/consts";
-import { TransformToInt } from "@guitar-shop/core";
-import { GuitarType } from "@guitar-shop/types";
-import { ApiProperty } from "@nestjs/swagger";
+} from '@guitar-shop/consts';
+import { TransformToInt } from '@guitar-shop/core';
+import { GuitarType } from '@guitar-shop/types';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateGuitarDto {
-  @ApiProperty({ description: "Guitar title.", example: "Bass guitar" })
+  @ApiProperty({ description: 'Guitar title.', example: 'Bass guitar' })
   @MaxLength(TitleLength.Max, {
     message: GuitarErrorMessage.TitleMaxLength,
   })
@@ -40,8 +40,8 @@ export class CreateGuitarDto {
   public title: string;
 
   @ApiProperty({
-    description: "Guitar description.",
-    example: "Good bass guitar",
+    description: 'Guitar description.',
+    example: 'Good bass guitar',
   })
   @MaxLength(DescriptionLength.Max, {
     message: GuitarErrorMessage.DescriptionMaxLength,
@@ -58,7 +58,7 @@ export class CreateGuitarDto {
   public description: string;
 
   @ApiProperty({
-    description: "Guitar type.",
+    description: 'Guitar type.',
     enum: GuitarType,
     example: GuitarType.Accustic,
   })
@@ -71,7 +71,7 @@ export class CreateGuitarDto {
   })
   public type: GuitarType;
 
-  @ApiProperty({ description: "Guitar vendor code.", example: "123456789" })
+  @ApiProperty({ description: 'Guitar vendor code.', example: '123456789' })
   @MaxLength(VendorCodelength.Max, {
     message: GuitarErrorMessage.VendorCodeMaxLength,
   })
@@ -86,7 +86,7 @@ export class CreateGuitarDto {
   })
   public vendorCode: string;
 
-  @ApiProperty({ description: "Guitar strings number.", example: 4 })
+  @ApiProperty({ description: 'Guitar strings number.', example: 4 })
   @IsIn(GUITAR_STRINGS, {
     message: GuitarErrorMessage.WrongGuitarStrings,
   })
@@ -96,7 +96,7 @@ export class CreateGuitarDto {
   })
   public guitarStrings: number;
 
-  @ApiProperty({ description: "Guitar price.", example: 500000 })
+  @ApiProperty({ description: 'Guitar price.', example: 500000 })
   @Max(Price.Max, {
     message: GuitarErrorMessage.PriceMax,
   })
@@ -110,8 +110,8 @@ export class CreateGuitarDto {
   public price: number;
 
   @ApiProperty({
-    description: "Guitar publish date",
-    example: "2024-02-16T00:00:00.000Z",
+    description: 'Guitar publish date',
+    example: '2024-02-16T00:00:00.000Z',
     required: false,
   })
   @IsDateString(

@@ -186,7 +186,7 @@ export class GuitarController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
   public async delete(@Param('id') id: string) {
-    await this.guitarService.delete(id);
+    await this.guitarService.deleteById(id);
   }
 
   @ApiResponse({
@@ -200,7 +200,6 @@ export class GuitarController {
   })
   @Get('/:id/photo')
   public async getPhoto(@Param('id') id: string) {
-    const photoUrl = await this.guitarService.getFile(id);
-    return photoUrl;
+    return await this.guitarService.getFile(id);
   }
 }

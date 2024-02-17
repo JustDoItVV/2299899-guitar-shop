@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
-import { logger } from "./winston.config";
+import { logger } from './winston.config';
 
-const CONTEXT = "Backend API";
+const CONTEXT = 'Backend API';
 
 @Injectable()
 export class BackendLoggerService {

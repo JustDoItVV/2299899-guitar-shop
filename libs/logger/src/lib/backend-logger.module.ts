@@ -1,8 +1,8 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 
-import { BackendLoggerService } from "./backend-logger.service";
+import { BackendLoggerService } from './backend-logger.service';
 
-export const ENV_FILE_PATH = ".env";
+export const ENV_FILE_PATH = '.env';
 
 @Module({
   providers: [BackendLoggerService],

@@ -8,7 +8,7 @@ import {
   MaxLength,
   Min,
   MinLength,
-} from "class-validator";
+} from 'class-validator';
 
 import {
   DescriptionLength,
@@ -17,15 +17,15 @@ import {
   Price,
   TitleLength,
   VendorCodelength,
-} from "@guitar-shop/consts";
-import { TransformToInt } from "@guitar-shop/core";
-import { GuitarType } from "@guitar-shop/types";
-import { ApiProperty } from "@nestjs/swagger";
+} from '@guitar-shop/consts';
+import { TransformToInt } from '@guitar-shop/core';
+import { GuitarType } from '@guitar-shop/types';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateGuitarDto {
   @ApiProperty({
-    description: "Guitar title.",
-    example: "Bass guitar",
+    description: 'Guitar title.',
+    example: 'Bass guitar',
     required: false,
   })
   @MaxLength(TitleLength.Max, {
@@ -39,8 +39,8 @@ export class UpdateGuitarDto {
   public title?: string;
 
   @ApiProperty({
-    description: "Guitar description.",
-    example: "Good bass guitar",
+    description: 'Guitar description.',
+    example: 'Good bass guitar',
     required: false,
   })
   @MaxLength(DescriptionLength.Max, {
@@ -56,7 +56,7 @@ export class UpdateGuitarDto {
   public description?: string;
 
   @ApiProperty({
-    description: "Guitar type.",
+    description: 'Guitar type.',
     enum: GuitarType,
     example: GuitarType.Accustic,
     required: false,
@@ -69,8 +69,8 @@ export class UpdateGuitarDto {
   public type?: GuitarType;
 
   @ApiProperty({
-    description: "Guitar vendor code.",
-    example: "123456789",
+    description: 'Guitar vendor code.',
+    example: '123456789',
     required: false,
   })
   @MaxLength(VendorCodelength.Max, {
@@ -86,7 +86,7 @@ export class UpdateGuitarDto {
   public vendorCode?: string;
 
   @ApiProperty({
-    description: "Guitar strings number.",
+    description: 'Guitar strings number.',
     example: 4,
     required: false,
   })
@@ -98,7 +98,7 @@ export class UpdateGuitarDto {
   public guitarStrings?: number;
 
   @ApiProperty({
-    description: "Guitar price.",
+    description: 'Guitar price.',
     example: 500000,
     required: false,
   })
@@ -113,8 +113,8 @@ export class UpdateGuitarDto {
   public price?: number;
 
   @ApiProperty({
-    description: "Guitar publish date",
-    example: "2024-02-16T00:00:00.000Z",
+    description: 'Guitar publish date',
+    example: '2024-02-16T00:00:00.000Z',
     required: false,
   })
   @IsDateString(

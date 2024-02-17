@@ -1,5 +1,5 @@
 import { MailConfig } from '@guitar-shop/config';
-import { EmailSubject, EmailTemplate, LOGIN_URL } from '@guitar-shop/consts';
+import { EMAIL_SUBJECT, EMAIL_TEMPLATE, LOGIN_URL } from '@guitar-shop/consts';
 import { User } from '@guitar-shop/types';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Inject, Injectable } from '@nestjs/common';
@@ -21,8 +21,8 @@ export class MailService {
     await this.mailerService.sendMail({
       from: this.mailConfig.mail.from,
       to: user.email,
-      subject: EmailSubject.RegisterSuccess,
-      template: EmailTemplate.RegisterSuccess,
+      subject: EMAIL_SUBJECT,
+      template: EMAIL_TEMPLATE,
       context: {
         name: `${user.name}`,
         email: `${user.email}`,

@@ -1,6 +1,6 @@
-import { Injectable, PipeTransform } from "@nestjs/common";
+import { Injectable, PipeTransform } from '@nestjs/common';
 
-import { OnlyAnonymousException } from "../exceptions/only-anonymous.exception";
+import { OnlyAnonymousException } from '../exceptions/only-anonymous.exception';
 
 @Injectable()
 export class AnonymousValidationPipe

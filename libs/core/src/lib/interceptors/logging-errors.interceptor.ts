@@ -1,13 +1,13 @@
-import { Observable, tap } from "rxjs";
+import { Observable, tap } from 'rxjs';
 
-import { BackendLoggerService } from "@guitar-shop/logger";
+import { BackendLoggerService } from '@guitar-shop/logger';
 import {
   CallHandler,
   ExecutionContext,
   HttpException,
   Injectable,
   NestInterceptor,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
 @Injectable()
 export class LoggingErrorInterceptor implements NestInterceptor {
@@ -19,8 +19,8 @@ export class LoggingErrorInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap({
         error: (error: HttpException) => {
-          if (Array.isArray(error["response"]["message"])) {
-            error["response"]["message"].map((message) =>
+          if (Array.isArray(error['response']['message'])) {
+            error['response']['message'].map((message) =>
               this.loggerService.error(message)
             );
           } else {

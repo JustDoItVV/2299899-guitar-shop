@@ -1,8 +1,5 @@
-export enum EmailSubject {
-  RegisterSuccess = 'Register success',
-}
+export const EMAIL_SUBJECT = 'Register success';
 
-export enum EmailTemplate {
-  RegisterSuccess = './register-success.hbs',
-}
+export const EMAIL_TEMPLATE = './register-success.hbs';
+
 export const LOGIN_URL = 'http://localhost:3000/login';

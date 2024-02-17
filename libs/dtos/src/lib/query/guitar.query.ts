@@ -1,5 +1,5 @@
-import { Transform } from "class-transformer";
-import { IsEnum, IsIn, IsNumber, IsOptional, IsString } from "class-validator";
+import { Transform } from 'class-transformer';
+import { IsEnum, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import {
   DEFAULT_SORT_DIRECTION,
@@ -7,14 +7,14 @@ import {
   GUITAR_STRINGS,
   GuitarErrorMessage,
   Price,
-} from "@guitar-shop/consts";
-import { TransformToInt } from "@guitar-shop/core";
-import { GuitarType, SortDirection, SortOption } from "@guitar-shop/types";
-import { ApiProperty } from "@nestjs/swagger";
+} from '@guitar-shop/consts';
+import { TransformToInt } from '@guitar-shop/core';
+import { GuitarType, SortDirection, SortOption } from '@guitar-shop/types';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class GuitarQuery {
   @ApiProperty({
-    description: "Change limit pagination elements count",
+    description: 'Change limit pagination elements count',
     required: false,
   })
   @Transform(({ value }) => +value || DefaultPagination.Limit)
@@ -23,7 +23,7 @@ export class GuitarQuery {
   public limit: number = DefaultPagination.Limit;
 
   @ApiProperty({
-    description: "Sort field option",
+    description: 'Sort field option',
     required: false,
     enum: SortOption,
   })
@@ -32,7 +32,7 @@ export class GuitarQuery {
   public sortOption: SortOption = SortOption.CreatedAt;
 
   @ApiProperty({
-    description: "Sort direction",
+    description: 'Sort direction',
     required: false,
     enum: SortDirection,
   })
@@ -40,13 +40,13 @@ export class GuitarQuery {
   @IsOptional()
   public sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
 
-  @ApiProperty({ description: "Pagination page", required: false })
+  @ApiProperty({ description: 'Pagination page', required: false })
   @Transform(({ value }) => +value || DefaultPagination.Page)
   @IsOptional()
   public page: number = DefaultPagination.Page;
 
   @ApiProperty({
-    description: "Guitar type.",
+    description: 'Guitar type.',
     enum: GuitarType,
     required: false,
   })
@@ -59,7 +59,7 @@ export class GuitarQuery {
   public type?: GuitarType | GuitarType[];
 
   @ApiProperty({
-    description: "Guitar strings number.",
+    description: 'Guitar strings number.',
     type: [Number],
     required: false,
   })
@@ -72,7 +72,7 @@ export class GuitarQuery {
   public guitarStrings?: number | number[];
 
   @ApiProperty({
-    description: "Guitar price.",
+    description: 'Guitar price.',
     example: 500000,
     required: false,
   })

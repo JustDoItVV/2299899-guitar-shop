@@ -48,7 +48,7 @@ export const loginAction = createAsyncThunk<
       return data;
     } catch (error) {
       if (!error.response) {
-        throw error;
+        throw new Error(error);
       }
 
       dispatch(setResponseError(error.response.data));
@@ -82,7 +82,7 @@ export const registerAction = createAsyncThunk<
       return data;
     } catch (error) {
       if (!error.response) {
-        throw error;
+        throw new Error(error);
       }
 
       dispatch(setResponseError(error.response.data));

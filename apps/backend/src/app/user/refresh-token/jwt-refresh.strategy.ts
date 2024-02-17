@@ -1,19 +1,19 @@
-import { ExtractJwt, Strategy } from "passport-jwt";
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { JwtConfig } from "@guitar-shop/config";
-import { TokenNotExistsException } from "@guitar-shop/core";
-import { RefreshTokenPayload } from "@guitar-shop/types";
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
-import { PassportStrategy } from "@nestjs/passport";
+import { JwtConfig } from '@guitar-shop/config';
+import { TokenNotExistsException } from '@guitar-shop/core';
+import { RefreshTokenPayload } from '@guitar-shop/types';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { PassportStrategy } from '@nestjs/passport';
 
-import { UserService } from "../user.service";
-import { RefreshTokenService } from "./refresh-token.service";
+import { UserService } from '../user.service';
+import { RefreshTokenService } from './refresh-token.service';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
   Strategy,
-  "jwt-refresh"
+  'jwt-refresh'
 ) {
   constructor(
     @Inject(JwtConfig.KEY)
@@ -32,7 +32,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
       throw new TokenNotExistsException(payload.tokenId);
     }
 
-    await this.refreshTokenService.delete(payload.tokenId);
+    await this.refreshTokenService.deleteById(payload.tokenId);
 
     return this.authService.getUserByEmail(payload.email);
   }

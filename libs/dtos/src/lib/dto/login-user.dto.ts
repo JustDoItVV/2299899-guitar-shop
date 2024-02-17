@@ -1,12 +1,12 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-import { UserErrorMessage } from "@guitar-shop/consts";
-import { ApiProperty } from "@nestjs/swagger";
+import { UserErrorMessage } from '@guitar-shop/consts';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginUserDto {
   @ApiProperty({
     description: "Unique user's email.",
-    example: "admin@local.local",
+    example: 'admin@local.local',
   })
   @IsEmail(
     {},
@@ -19,7 +19,7 @@ export class LoginUserDto {
   })
   public email: string;
 
-  @ApiProperty({ description: "User's password.", example: "admin" })
+  @ApiProperty({ description: "User's password.", example: 'admin' })
   @IsString({
     message: UserErrorMessage.NotString,
   })

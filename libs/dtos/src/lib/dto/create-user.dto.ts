@@ -4,17 +4,17 @@ import {
   IsString,
   MaxLength,
   MinLength,
-} from "class-validator";
+} from 'class-validator';
 
 import {
   NameLength,
   PasswordLength,
   UserErrorMessage,
-} from "@guitar-shop/consts";
-import { ApiProperty } from "@nestjs/swagger";
+} from '@guitar-shop/consts';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
-  @ApiProperty({ description: "User's name.", example: "John" })
+  @ApiProperty({ description: "User's name.", example: 'John' })
   @MaxLength(NameLength.Max, {
     message: UserErrorMessage.NameMaxLength,
   })
@@ -31,7 +31,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: "Unique user's email.",
-    example: "user@user.com",
+    example: 'user@user.com',
   })
   @IsEmail(
     {},
@@ -44,7 +44,7 @@ export class CreateUserDto {
   })
   public email: string;
 
-  @ApiProperty({ description: "User's password.", example: "123456" })
+  @ApiProperty({ description: "User's password.", example: '123456' })
   @MaxLength(PasswordLength.Max, {
     message: UserErrorMessage.PasswordMaxLength,
   })

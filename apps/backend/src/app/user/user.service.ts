@@ -1,10 +1,10 @@
-import * as crypto from "node:crypto";
+import * as crypto from 'node:crypto';
 
-import { JwtConfig } from "@guitar-shop/config";
-import { UserErrorMessage } from "@guitar-shop/consts";
-import { CreateUserDto, LoginUserDto } from "@guitar-shop/dtos";
-import { createJWTPayload } from "@guitar-shop/helpers";
-import { Token } from "@guitar-shop/types";
+import { JwtConfig } from '@guitar-shop/config';
+import { UserErrorMessage } from '@guitar-shop/consts';
+import { CreateUserDto, LoginUserDto } from '@guitar-shop/dtos';
+import { createJWTPayload } from '@guitar-shop/helpers';
+import { Token } from '@guitar-shop/types';
 import {
   ConflictException,
   Inject,
@@ -12,14 +12,14 @@ import {
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
-} from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
-import { JwtService } from "@nestjs/jwt";
+} from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
-import { MailService } from "../mail/mail.service";
-import { RefreshTokenService } from "./refresh-token/refresh-token.service";
-import { UserEntity } from "./user.entity";
-import { UserRepository } from "./user.repository";
+import { MailService } from '../mail/mail.service';
+import { RefreshTokenService } from './refresh-token/refresh-token.service';
+import { UserEntity } from './user.entity';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
@@ -34,7 +34,7 @@ export class UserService {
 
   public async register(dto: CreateUserDto) {
     const { name, email, password } = dto;
-    const user = { name, email, passwordHash: "" };
+    const user = { name, email, passwordHash: '' };
     const existedUser = await this.userRepository.findByEmail(email);
 
     if (existedUser) {

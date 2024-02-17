@@ -1,36 +1,36 @@
-import "multer";
+import 'multer';
 
-import { ensureDir } from "fs-extra";
-import * as crypto from "node:crypto";
-import { existsSync, unlink } from "node:fs";
-import { readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { ensureDir } from 'fs-extra';
+import * as crypto from 'node:crypto';
+import { existsSync, unlink } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 
-import { BackendConfig } from "@guitar-shop/config";
+import { BackendConfig } from '@guitar-shop/config';
 import {
   GuitarErrorMessage,
   UPLOAD_GUITARS_SUBDIRECTORY,
-} from "@guitar-shop/consts";
+} from '@guitar-shop/consts';
 import {
   CreateGuitarDto,
   GuitarQuery,
   GuitarRdo,
   UpdateGuitarDto,
-} from "@guitar-shop/dtos";
-import { fillDto } from "@guitar-shop/helpers";
-import { BackendLoggerService } from "@guitar-shop/logger";
-import { Pagination } from "@guitar-shop/types";
+} from '@guitar-shop/dtos';
+import { fillDto } from '@guitar-shop/helpers';
+import { BackendLoggerService } from '@guitar-shop/logger';
+import { Pagination } from '@guitar-shop/types';
 import {
   BadRequestException,
   Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-} from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
+} from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 
-import { GuitarEntity } from "./guitar.entity";
-import { GuitarRepository } from "./guitar.repository";
+import { GuitarEntity } from './guitar.entity';
+import { GuitarRepository } from './guitar.repository';
 
 @Injectable()
 export class GuitarService {
@@ -111,7 +111,7 @@ export class GuitarService {
         hasChanges = true;
       }
 
-      if (key === "publishDate") {
+      if (key === 'publishDate') {
         document[key] = new Date(value);
         hasChanges = true;
       }
@@ -124,7 +124,7 @@ export class GuitarService {
     return this.guitarRepository.update(id, document);
   }
 
-  public async delete(id: string) {
+  public async deleteById(id: string) {
     try {
       const document = await this.getById(id);
       await this.deleteFile(document.photo);
@@ -154,11 +154,11 @@ export class GuitarService {
       this.loggerService.error(
         `Guitar ${id}: ${GuitarErrorMessage.PhotoFileNotFound}`
       );
-      return "notFound";
+      return GuitarErrorMessage.PhotoFileNotFound;
     }
 
     const file = await readFile(filePath);
-    return `data:image/png;base64,${file.toString("base64")}`;
+    return `data:image/png;base64,${file.toString('base64')}`;
   }
 
   public async deleteFile(filename: string): Promise<void> {

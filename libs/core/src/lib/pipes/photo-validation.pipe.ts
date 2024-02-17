@@ -1,10 +1,10 @@
-import "multer";
+import 'multer';
 
 import {
   Injectable,
   PipeTransform,
   UnsupportedMediaTypeException,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
 type PhotoFile = Express.Multer.File;
 
@@ -22,7 +22,7 @@ export class PhotoValidationPipe
   transform(value: PhotoFile): PhotoFile {
     if (value) {
       const { originalname, mimetype } = value;
-      const fileExtention = originalname.split(".").at(-1);
+      const fileExtention = originalname.split('.').at(-1);
 
       const isValidFormatCondition1 = Object.keys(this.allowedFormats).includes(
         fileExtention
